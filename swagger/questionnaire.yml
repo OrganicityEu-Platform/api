@@ -1,0 +1,75 @@
+swagger: '2.0'
+info:
+  title: Questionnaires
+  description:
+    'This API specifices access to the questionnaire of the scenario tool.'
+  version: testing
+hostname: dev.itm.uni-luebeck.de
+basepath: /organicity-scenario-tool/api/v1
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+definitions:
+  Questionnaire:
+    type: object
+    description: A single questionnaire.
+    properties:
+      version:
+        description: The version name of this questionnaire.
+        type: integer
+        required: true
+      author:
+        type: string
+        required: true
+      description:
+        type: string
+    example:
+      {"version":"1",
+       "author": "Florian Büther",
+       "description": "The default questionnaire."}
+paths:
+  /questionnaire:
+    get:
+      summary:
+        Returns the currently active questionnaire, or a list of all
+        questionnaires if requested.
+      description: If no version is supplied, this will return the current
+        questionnaire. Usually, questionnaires are versioned in increasing
+        numbers, so if the current questionnaire has version number 7,
+        the previous versions can be requested by passing version as 6, 5,
+        and so on.
+      parameters:
+        - name: version
+          in: query
+          required: false
+          description:
+            The requested version, or 'all' if all versions should be returned.
+          type: string
+          format: Either 'all' or a version number.
+      responses:
+        200:
+          description: '* If successful, this returns the current questionnaire if no version was specificed, or the questionnaire of the specified version.
+* If all versions are requested, this returns a list of questionnaire objects.'
+          schema:
+            '$ref': '#/definitions/Questionnaire'
+        404:
+          description:
+            Returned if no questionnaire with the given version number exists.
+    patch:
+      summary: Updates the questionnaire. Only used for cosmetic updates.
+      responses:
+        200:
+          description:
+            The questionnaire has been updated. Returns the new questionnaire,
+            including the updated version number.
+          schema:
+            '$ref': '#/definitions/Questionnaire'
+        401:
+          description: The user is not authenticated.
+        403:
+          description:
+            The authenticated user is not authorised, because he does not
+            have an administrator role.
