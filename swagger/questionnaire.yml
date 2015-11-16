@@ -12,24 +12,134 @@ consumes:
   - application/json
 produces:
   - application/json
+
 definitions:
   Questionnaire:
     type: object
     description: A single questionnaire.
     properties:
       version:
-        description: The version name of this questionnaire.
+        description:
+          The version name of this questionnaire. The version is assigned by
+          the server, where it is incremented by one for each new version
+          posted.
         type: integer
         required: true
       author:
+        description:
+          The UUID of the user that created this version of the questionnaire.
         type: string
+        format: uuid
         required: true
       description:
+        description:
+          A description of this questionnaire for internal use. This text is
+          not displayed to the front end users.
         type: string
+      explanation:
+        description:
+          An explanatory text that is shown to users at the top of the
+          questionnaire.
+        type: string
+        required: true
+      questions:
+        description:
+          'The list of questions this questionnaire asks. These might be
+          classified as technical or non-technical, and usually only the
+          subset matching the user''s choice should be shown as choices.'
+        type: array
+        items:
+          $ref: '#/definitions/Question'
+    example: {
+      "questions": [
+        {
+          "values": [
+            {
+              "weight": -1,
+              "value": "This does not affect me."
+            },
+            {
+              "weight": 0,
+              "value": "Don't really know, maybe?"
+            },
+            {
+              "weight": 1,
+              "value": "Yes, I can use that."
+            }
+          ],
+          "text": "Does this idea apply to your daily life?",
+          "tech": false
+        },
+        {
+          "values": [
+            {
+              "weight": -1,
+              "value": "No"
+            },
+            {
+              "weight": 1,
+              "value": "Yes"
+            }
+          ],
+          "text": "Is this scenario plausible?",
+          "tech": true
+        }
+      ],
+      "explanation":
+        "Please rate the scenario provided from your personal perspective.",
+      "description": "Second revision of initial questionnaire, fixed typos.",
+      "version": 2
+    }
+
+  Question:
+    type: object
+    description: A single question belonging to a questionnaire.
+    properties:
+      tech:
+        description:
+          true if this question is a question is a technical question
+        type: boolean
+        required: true
+      text:
+        description:
+          The question description that is shown to the user
+        type: string
+        required: true
+      value:
+        description: The possible answers the user can choose from
+        type: array
+        items:
+          type: object
+          properties:
+            value:
+              description:
+                A textual description of the answer that is shown to the user
+              type: string
+              required: true
+            weight:
+              description:
+                The weight that this answer applies to the overall rating.
+                Higher values will have a larger effect.
+              type: integer
+              required: true
+        required: true
     example:
-      {"version":"1",
-       "author": "Florian Büther",
-       "description": "The default questionnaire."}
+      {
+        "text": "Are existing technologies capable of handling this scenario?",
+        "tech": true,
+        "values": [
+          {
+            "weight": 1,
+            "value": "Yes"
+          },
+          {
+            "weight": -1,
+            "value": "No"
+          }
+        ]
+      }
+
+
 paths:
   /questionnaire:
     get:
@@ -51,25 +161,37 @@ paths:
           format: Either 'all' or a version number.
       responses:
         200:
-          description: '* If successful, this returns the current questionnaire if no version was specificed, or the questionnaire of the specified version.
-* If all versions are requested, this returns a list of questionnaire objects.'
+          description: '
+            - If successful, this returns the current questionnaire if no
+              version was specificed, or the questionnaire of the specified
+              version.
+            - If all versions are requested, this returns a list of
+              questionnaire objects.'
           schema:
-            '$ref': '#/definitions/Questionnaire'
+            $ref: '#/definitions/Questionnaire'
         404:
           description:
             Returned if no questionnaire with the given version number exists.
+
     patch:
       summary: Updates the questionnaire. Only used for cosmetic updates.
+      parameters:
+        - name: questionnaire
+          description:
+            The body of this request must contain the update questionnaire.
+          in: body
+          schema:
+            $ref: '#/definitions/Questionnaire'
       responses:
         200:
           description:
             The questionnaire has been updated. Returns the new questionnaire,
             including the updated version number.
           schema:
-            '$ref': '#/definitions/Questionnaire'
+            $ref: '#/definitions/Questionnaire'
         401:
           description: The user is not authenticated.
         403:
           description:
-            The authenticated user is not authorised, because he does not
-            have an administrator role.
+            The authenticated user is not authorised, usually because he does
+            not have an administrator role.
