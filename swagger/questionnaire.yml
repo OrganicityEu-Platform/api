@@ -1,18 +1,35 @@
 swagger: '2.0'
 info:
-  title: Questionnaires
-  description:
-    'This API specifices access to the questionnaire of the scenario tool.'
-  version: testing
+  title: OrganiCity Scenario Tool
+  description: |
+    This API specifies the API of the OrganiCity Scenario Tool.
+
+    It comprises functionality for the following parts:
+    - Authentication and authorisation
+    - Querying and managing scenarios
+    - Reviewing and evaluating scenarios
+    - Administrative tasks like updating questionnaires
+
+  version: 0.1.0-testing
 hostname: dev.itm.uni-luebeck.de
 basepath: /organicity-scenario-tool/api/v1
 schemes:
   - http
-consumes:
-  - application/json
-produces:
-  - application/json
 
+securityDefinitions:
+  cookieSession:
+    type: apiKey
+    in: header
+    name: cookie
+    description: |
+      The Scenario Tool requires setting up a session prior to
+      performing actions that require authorisation. This session is
+      kept in a cookie of name `connect.sid`. This cookie can be
+      acquired via the various login endpoints described in this
+      document.
+externalDocs:
+  description: More information can be found on the OrganiCity website.
+  url: http://www.organicity.eu/
 definitions:
   Questionnaire:
     type: object
@@ -43,10 +60,11 @@ definitions:
         type: string
         required: true
       questions:
-        description:
-          'The list of questions this questionnaire asks. These might be
-          classified as technical or non-technical, and usually only the
-          subset matching the user''s choice should be shown as choices.'
+        description: |
+          The list of questions this questionnaire asks. These might
+          be classified as technical or non-technical, and usually
+          only the subset matching the user's choice should be
+          displayed.
         type: array
         items:
           $ref: '#/definitions/Question'
@@ -151,6 +169,10 @@ paths:
         numbers, so if the current questionnaire has version number 7,
         the previous versions can be requested by passing version as 6, 5,
         and so on.
+      tags:
+        - Questionnaires
+      produces:
+        - application/json
       parameters:
         - name: version
           in: query
@@ -161,12 +183,12 @@ paths:
           format: Either 'all' or a version number.
       responses:
         200:
-          description: '
+          description: |
             - If successful, this returns the current questionnaire if no
               version was specificed, or the questionnaire of the specified
               version.
             - If all versions are requested, this returns a list of
-              questionnaire objects.'
+              questionnaire objects.
           schema:
             $ref: '#/definitions/Questionnaire'
         404:
@@ -175,10 +197,38 @@ paths:
 
     patch:
       summary: Updates the questionnaire. Only used for cosmetic updates.
+      description: |
+        Questionnairs may be updated in one of two methods:
+        - Either, a
+          completely new questionnaire can be established, completely
+          abandoning the previous questionnaire, along with its results
+          and evaluations.
+        - Alternatively, a questionnare can be updated
+          only cosmetically, thereby keeping the existing evaluations in
+          place and their votes valid. A cosmetic update thus may only
+          change wordings, and should not change the meaning of
+          questions or answers.
+        Patching the current questionnaire counts as a cosmetic update, and
+        is bound by the above restrictions.
+      tags:
+        - Questionnaires
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - cookieSession: []
       parameters:
         - name: questionnaire
-          description:
+          description: |
             The body of this request must contain the updated questionnaire.
+
+            Please make sure that the update deviates from the previously
+            current questionnaire only in minor aspects. In detail, this means
+            that the following parts must not change:
+            - Number of questions
+            - Number of answers per question
+            - Weight of answers
           in: body
           schema:
             $ref: '#/definitions/Questionnaire'
