@@ -28,46 +28,73 @@
         http
     </div>
     
-        <h2 id="swagger--summary-no-tags">Summary</h2>
+        
+        <h2 id="swagger--summary-tags">Summary</h2>
+            <h3 id="tag-Authentication" class="swagger-summary-tag">Tag: Authentication</h3>
+            <p></p>
         
             <div class="panel">
               <div class="panel-body">
         
-        <table class="table table-condensed swagger--summary">
-            <thead>
-            <tr>
-                <th>Path</th>
-                <th>Operation</th>
-                <th>Description</th>
-            </tr>
-            </thead>
-            <tbody>
+            <table class="table table-responsive table-condensed swagger--summary">
+                <thead>
+                <tr>
+                    <th>Operation</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
                     <tr>
-                            <td class="swagger--summary-path" rowspan="2">
-                                <a href="#path--questionnaire">/questionnaire</a>
-                            </td>
-                        <td>
-                            <a href="#operation--questionnaire-get">GET</a>
-                        </td>
-                        <td>
-                            <p>Returns the currently active questionnaire, or a list of all questionnaires if requested.</p>
-        
-                        </td>
+                        <td><a href="#operation--currentUser-get">GET /currentUser</a></td>
+                        <td><p>Returns information about the current user</p>
+        </td>
                     </tr>
                     <tr>
-                        <td>
-                            <a href="#operation--questionnaire-patch">PATCH</a>
-                        </td>
-                        <td>
-                            <p>Updates the questionnaire. Only used for cosmetic updates.</p>
-        
-                        </td>
+                        <td><a href="#operation--local-login-get">GET /local-login</a></td>
+                        <td><p>Local login with user/password credentials</p>
+        </td>
                     </tr>
-            </tbody>
-        </table>
+                    <tr>
+                        <td><a href="#operation--logout-get">GET /logout</a></td>
+                        <td><p>Logs the current user out</p>
+        </td>
+                    </tr>
+                </tbody>
+            </table>
         
               </div>
             </div>
+        
+            <h3 id="tag-Questionnaires" class="swagger-summary-tag">Tag: Questionnaires</h3>
+            <p></p>
+        
+            <div class="panel">
+              <div class="panel-body">
+        
+            <table class="table table-responsive table-condensed swagger--summary">
+                <thead>
+                <tr>
+                    <th>Operation</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="#operation--questionnaire-get">GET /questionnaire</a></td>
+                        <td><p>Returns the currently active questionnaire, or a list of all questionnaires if requested.</p>
+        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="#operation--questionnaire-patch">PATCH /questionnaire</a></td>
+                        <td><p>Updates the questionnaire. Only used for cosmetic updates.</p>
+        </td>
+                    </tr>
+                </tbody>
+            </table>
+        
+              </div>
+            </div>
+        
     
     
         <h2>Security</h2>
@@ -104,6 +131,316 @@
     <h2>Paths</h2>
     
         
+        <span id="path--currentUser"></span>
+            <div id="operation--currentUser-get" class="swagger--panel-operation-get panel">
+                <div class="panel-heading">
+                    <div class="operation-summary">Returns information about the current user</div>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/currentUser</strong></h3>
+                        Tags:
+                            <a href="#tag-Authentication">Authentication</a>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-operation-description">
+                        <p>Returns the user record of the currently logged in user. If
+            the current request does not provide authentication
+            information, a forbidden-error is returned.</p>
+            
+                    </section>
+                    
+                    
+                      <section class="sw-responses">
+                          <p><span class="label label-default">application/json</span> 
+                    </p>
+                    
+                        <dl>
+                            <dt class="sw-response-200">
+                              200 OK
+                    
+                            </dt>
+                            <dd class="sw-response-200">
+                                
+                                
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <p>If the currently logged in user is a valid user, the
+                                record as stored in the database is returned.</p>
+                                
+                                  </div>
+                                </div>
+                                <div class="row">
+                                </div>
+                                
+                                  <div class="row body-content">
+                                    <div class="col-md-6 sw-response-model">
+                                    <div  class="panel panel-definition">
+                                        <div class="panel-body">
+                                                    See full description: <a class="json-schema-ref" href="#/definitions/User">User</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                  </div>
+                                
+                            </dd>
+                            <dt class="sw-response-403">
+                              403 Forbidden
+                    
+                            </dt>
+                            <dd class="sw-response-403">
+                                
+                                
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <p>If the request does not provide login information, reading
+                                user information is not allowed.</p>
+                                
+                                  </div>
+                                </div>
+                                <div class="row">
+                                </div>
+                                
+                                
+                            </dd>
+                        </dl>
+                      </section>
+                        <section class="sw-request-security">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="sw-request-security-schema"></th>
+                                    <th class="sw-request-security-scopes"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                        <tr>
+                                            <td><a href="#security-definition-cookieSession">cookieSession</a></td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </section>
+                </div>
+            </div>    
+        <span id="path--local-login"></span>
+            <div id="operation--local-login-get" class="swagger--panel-operation-get panel">
+                <div class="panel-heading">
+                    <div class="operation-summary">Local login with user/password credentials</div>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/local-login</strong></h3>
+                        Tags:
+                            <a href="#tag-Authentication">Authentication</a>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-operation-description">
+                        <p>This API can be used by locally registered users to log in, thereby
+            setting the cookie for cookie session access control.</p>
+            <p>Please note: This does not apply to user&#39;s registered via
+            OAuth. These should use any of the <code>auth/{provider}</code>
+            interfaces.</p>
+            
+                    </section>
+                        
+                          <section class="sw-request-body">
+                            
+                              <p><span class="label label-default">application/json</span> 
+                        </p>
+                               <p><p>A record containing the email address and passwort to log in with.</p>
+                        </p>
+                                <div class="row body-content">
+                                 <div class="col-md-6 sw-request-model">
+                                  
+                                      <div  class="panel panel-definition">
+                                          <div class="panel-body">
+                                                      <section class="json-schema-example">
+                                                          <pre><code class="lang-json">{<br>    &quot;<span class="hljs-attribute">email</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;buether@itm.uni-luebeck.de&quot;</span></span>,<br>    &quot;<span class="hljs-attribute">password</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;correcthorsebatterystaple&quot;</span><br></span>}
+                                                  </code></pre>
+                                                  
+                                                      </section>
+                                                  
+                                                          <section class="json-schema-properties">
+                                                              <dl>
+                                                                      <dt data-property-name="email">
+                                                                          <span class="json-property-name">email:</span>
+                                                                          <span class="json-property-type">string</span>    <span class="json-property-format">(email)</span>
+                                                                          <span class="json-property-range" title="Value limits"></span>
+                                                                          
+                                                                      </dt>
+                                                                      <dd>
+                                                                          <p>The email address the user is registered with.</p>
+                                                          
+                                                                          <div class="json-inner-schema">
+                                                                              
+                                                                          </div>
+                                                                      </dd>
+                                                                      <dt data-property-name="password">
+                                                                          <span class="json-property-name">password:</span>
+                                                                          <span class="json-property-type">string</span>
+                                                                          <span class="json-property-range" title="Value limits"></span>
+                                                                          
+                                                                      </dt>
+                                                                      <dd>
+                                                                          <p>The user&#39;s password.</p>
+                                                          
+                                                                          <div class="json-inner-schema">
+                                                                              
+                                                                          </div>
+                                                                      </dd>
+                                                              </dl>
+                                                          </section>
+                                          </div>
+                                      </div>
+                                 </div>
+                                </div>
+                          </section>
+                    
+                    
+                      <section class="sw-responses">
+                          <p><span class="label label-default">application/json</span> 
+                    </p>
+                    
+                        <dl>
+                            <dt class="sw-response-200">
+                              200 OK
+                    
+                            </dt>
+                            <dd class="sw-response-200">
+                                
+                                
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <p>If the login is performed successfully, this returns the
+                                currentUser.</p>
+                                
+                                  </div>
+                                </div>
+                                <div class="row">
+                                </div>
+                                
+                                  <div class="row body-content">
+                                    <div class="col-md-6 sw-response-model">
+                                    <div  class="panel panel-definition">
+                                        <div class="panel-body">
+                                                    See full description: <a class="json-schema-ref" href="#/definitions/User">User</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                  </div>
+                                
+                            </dd>
+                            <dt class="sw-response-400">
+                              400 Bad Request
+                    
+                            </dt>
+                            <dd class="sw-response-400">
+                                
+                                
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <p>Bad Request is returned if the request body is malformed.</p>
+                                
+                                  </div>
+                                </div>
+                                <div class="row">
+                                </div>
+                                
+                                
+                            </dd>
+                            <dt class="sw-response-422">
+                              422 Unprocessable Entity
+                    
+                            </dt>
+                            <dd class="sw-response-422">
+                                
+                                
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <p>This return code signifies that the given email address and/or the password is not known.</p>
+                                
+                                  </div>
+                                </div>
+                                <div class="row">
+                                </div>
+                                
+                                
+                            </dd>
+                            <dt class="sw-response-500">
+                              500 Internal Server Error
+                    
+                            </dt>
+                            <dd class="sw-response-500">
+                                
+                                
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <p>This is returned if an internal error occurs during access checking.</p>
+                                
+                                  </div>
+                                </div>
+                                <div class="row">
+                                </div>
+                                
+                                
+                            </dd>
+                        </dl>
+                      </section>
+                </div>
+            </div>    
+        <span id="path--logout"></span>
+            <div id="operation--logout-get" class="swagger--panel-operation-get panel">
+                <div class="panel-heading">
+                    <div class="operation-summary">Logs the current user out</div>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/logout</strong></h3>
+                        Tags:
+                            <a href="#tag-Authentication">Authentication</a>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-operation-description">
+                        <p>This terminates the session of the cookie session access control.</p>
+            
+                    </section>
+                    
+                    
+                      <section class="sw-responses">
+                    
+                        <dl>
+                            <dt class="sw-response-204">
+                              204 No Content
+                    
+                            </dt>
+                            <dd class="sw-response-204">
+                                
+                                
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <p>Returned if the user is logged out successfully.</p>
+                                
+                                  </div>
+                                </div>
+                                <div class="row">
+                                </div>
+                                
+                                
+                            </dd>
+                        </dl>
+                      </section>
+                        <section class="sw-request-security">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="sw-request-security-schema"></th>
+                                    <th class="sw-request-security-scopes"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                        <tr>
+                                            <td><a href="#security-definition-cookieSession">cookieSession</a></td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </section>
+                </div>
+            </div>    
         <span id="path--questionnaire"></span>
             <div id="operation--questionnaire-get" class="swagger--panel-operation-get panel">
                 <div class="panel-heading">
@@ -554,6 +891,119 @@
                                                                                 
                                                                             </div>
                                                                         </section>                </div>
+                                                </dd>
+                                        </dl>
+                                    </section>
+                    </div>
+                </div>
+            
+                <div id="definition-User" class="panel panel-definition">
+                        <div class="panel-heading">
+                                <h3 class="panel-title"><a name="/definitions/User"></a>User:
+                                    <span class="json-property-type"><span class="json-property-type">object</span>
+                <span class="json-property-range" title="Value limits"></span>
+                
+                </span>
+                                </h3>
+                        </div>
+                    <div class="panel-body">
+                                <section class="json-schema-description">
+                                    <p>A registered user.</p>
+                            
+                                </section>
+                            
+                                    <section class="json-schema-properties">
+                                        <dl>
+                                                <dt data-property-name="uuid">
+                                                    <span class="json-property-name">uuid:</span>
+                                                    <span class="json-property-type">string</span>    <span class="json-property-format">(uuid)</span>
+                                                    <span class="json-property-range" title="Value limits"></span>
+                                                    
+                                                </dt>
+                                                <dd>
+                                                    <p>The UUID of this user.</p>
+                                    
+                                                    <div class="json-inner-schema">
+                                                        
+                                                    </div>
+                                                </dd>
+                                                <dt data-property-name="name">
+                                                    <span class="json-property-name">name:</span>
+                                                    <span class="json-property-type">string</span>
+                                                    <span class="json-property-range" title="Value limits"></span>
+                                                    
+                                                </dt>
+                                                <dd>
+                                                    <p>The user&#39;s name, by which she is refered to in the Gui.</p>
+                                    
+                                                    <div class="json-inner-schema">
+                                                        
+                                                    </div>
+                                                </dd>
+                                                <dt data-property-name="roles">
+                                                    <span class="json-property-name">roles:</span>
+                                                    <span class="json-property-type">object[]</span>
+                                                    <span class="json-property-range" title="Value limits"></span>
+                                                    
+                                                </dt>
+                                                <dd>
+                                                    <p>A list of roles that this user is assigned. These roles form
+                                    the basis for access control, and should thusly be treated
+                                    carefully.</p>
+                                    
+                                                    <div class="json-inner-schema">
+                                                        
+                                                                        <section class="json-schema-array-items">
+                                                                            <span class="json-property-type">object</span>
+                                                                            <span class="json-property-range" title="Value limits"></span>
+                                                                            
+                                                                            <div class="json-inner-schema">
+                                                                                
+                                                                            </div>
+                                                                        </section>                </div>
+                                                </dd>
+                                                <dt data-property-name="gender">
+                                                    <span class="json-property-name">gender:</span>
+                                                    <span class="json-property-type">string</span>    <span class="json-property-format">(m or f)</span>
+                                                    <span class="json-property-range" title="Value limits"></span>
+                                                    
+                                                </dt>
+                                                <dd>
+                                                    <p>The user&#39;s gender. This might be <code>m</code> or <code>f</code>.</p>
+                                    
+                                                    <div class="json-inner-schema">
+                                                        
+                                                    </div>
+                                                </dd>
+                                                <dt data-property-name="local">
+                                                    <span class="json-property-name">local:</span>
+                                                    <span class="json-property-type">object</span>
+                                                    <span class="json-property-range" title="Value limits"></span>
+                                                    
+                                                </dt>
+                                                <dd>
+                                                    <p>Information about the local-login authentication scheme for this user.</p>
+                                    
+                                                    <div class="json-inner-schema">
+                                                        
+                                                                <section class="json-schema-properties">
+                                                                    <dl>
+                                                                            <dt data-property-name="email">
+                                                                                <span class="json-property-name">email:</span>
+                                                                                <span class="json-property-type">string</span>    <span class="json-property-format">(email)</span>
+                                                                                <span class="json-property-range" title="Value limits"></span>
+                                                                                
+                                                                            </dt>
+                                                                            <dd>
+                                                                                <p>The email address that this user uses to log in via local login.</p>
+                                                                
+                                                                                <div class="json-inner-schema">
+                                                                                    
+                                                                                </div>
+                                                                            </dd>
+                                                                    </dl>
+                                                                </section>
+                                                    </div>
                                                 </dd>
                                         </dl>
                                     </section>

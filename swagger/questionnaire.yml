@@ -31,6 +31,41 @@ externalDocs:
   description: More information can be found on the OrganiCity website.
   url: http://www.organicity.eu/
 definitions:
+  User:
+    type: object
+    description: A registered user.
+    properties:
+      uuid:
+        description: The UUID of this user.
+        type: string
+        format: uuid
+        required: true
+      name:
+        description: 'The user''s name, by which she is refered to in the Gui.'
+        type: string
+      roles:
+        description: |
+          A list of roles that this user is assigned. These roles form
+          the basis for access control, and should thusly be treated
+          carefully.
+        type: array
+        items:
+          schema: string
+      gender:
+        description: |
+          The user's gender. This might be `m` or `f`.
+        type: string
+        format: m or f
+      local:
+        description: |
+          Information about the local-login authentication scheme for this user.
+        type: object
+        properties:
+          email:
+            description: |
+              The email address that this user uses to log in via local login.
+            type: string
+            format: email
   Questionnaire:
     type: object
     description: A single questionnaire.
@@ -159,6 +194,104 @@ definitions:
 
 
 paths:
+  /currentUser:
+    get:
+      summary: Returns information about the current user
+      description: |
+        Returns the user record of the currently logged in user. If
+        the current request does not provide authentication
+        information, a forbidden-error is returned.
+      tags:
+        - Authentication
+      produces:
+        - application/json
+      security:
+        - cookieSession: []
+      responses:
+        200:
+          description: |
+            If the currently logged in user is a valid user, the
+            record as stored in the database is returned.
+          schema:
+            $ref: '#/definitions/User'
+        403:
+          description: |
+            If the request does not provide login information, reading
+            user information is not allowed.
+
+  /local-login:
+    get:
+      summary: Local login with user/password credentials
+      description: |
+        This API can be used by locally registered users to log in, thereby
+        setting the cookie for cookie session access control.
+
+        Please note: This does not apply to user's registered via
+        OAuth. These should use any of the `auth/{provider}`
+        interfaces.
+
+      tags:
+        - Authentication
+
+      consumes:
+        - application/json
+      produces:
+        - application/json
+
+      parameters:
+        - name: login-data
+          description: |
+            A record containing the email address and passwort to log in with.
+          in: body
+          schema:
+            type: object
+            properties:
+              email:
+                description: The email address the user is registered with.
+                type: string
+                format: email
+                required: true
+              password:
+                description: 'The user''s password.'
+                type: string
+                required: true
+            example: {
+              "email": "buether@itm.uni-luebeck.de",
+              "password": "correcthorsebatterystaple"
+            }
+      responses:
+        200:
+          description: |
+            If the login is performed successfully, this returns the
+            currentUser.
+          schema:
+            $ref: '#/definitions/User'
+        400:
+          description:
+            Bad Request is returned if the request body is malformed.
+        422:
+          description:
+            This return code signifies that the given email address and/or the
+            password is not known.
+        500:
+          description:
+            This is returned if an internal error occurs during access checking.
+
+  /logout:
+    get:
+      summary: Logs the current user out
+      description: |
+        This terminates the session of the cookie session access control.
+      tags:
+        - Authentication
+      security:
+        - cookieSession: []
+      responses:
+        204:
+          description: Returned if the user is logged out successfully.
+
+
+
   /questionnaire:
     get:
       summary:
