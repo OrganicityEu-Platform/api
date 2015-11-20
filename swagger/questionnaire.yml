@@ -178,7 +178,7 @@ paths:
       parameters:
         - name: questionnaire
           description:
-            The body of this request must contain the update questionnaire.
+            The body of this request must contain the updated questionnaire.
           in: body
           schema:
             $ref: '#/definitions/Questionnaire'
