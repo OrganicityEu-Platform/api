@@ -1,0 +1,40 @@
+@import "oc_colors.less";
+
+.oc-button {
+  border-radius: 2px;
+  border: 0;
+  background-color: @oc-magenta;
+  color: @oc-white;
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding-top: 13px;
+  padding-bottom: 13px;
+  width:100%;
+}
+
+.oc-button:hover {
+  background-color: @oc-hover-black;
+  color: @oc-white;
+}
+
+.oc-button:disabled {
+  background-color: #F8B2C5;
+}
+
+.oc-ghost-white {
+  border: 1px solid @oc-white;
+  border-radius: 1px;
+  background: none;
+  font-weight: bold;
+  color: @oc-white;
+}
+
+.oc-ghost-white:hover {
+  background-color: @oc-white;
+  color: @oc-magenta;
+  border: 1px solid @oc-white;
+}
+
+.oc-ghost-white > div {
+  padding-top: 5px;
+}

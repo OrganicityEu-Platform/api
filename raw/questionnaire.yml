@@ -1,0 +1,380 @@
+swagger: '2.0'
+info:
+  title: OrganiCity Scenarios
+  description: |
+    This API specifies the API of the OrganiCity Scenario Tool.
+
+    It comprises functionality for the following parts:
+    - Authentication and authorisation
+    - Querying and managing scenarios
+    - Reviewing and evaluating scenarios
+    - Administrative tasks like updating questionnaires
+
+  version: 0.1.0-testing
+hostname: dev.itm.uni-luebeck.de
+basepath: /organicity-scenario-tool/api/v1
+schemes:
+  - http
+
+securityDefinitions:
+  cookieSession:
+    type: apiKey
+    in: header
+    name: cookie
+    description: |
+      The Scenario Tool requires setting up a session prior to
+      performing actions that require authorisation. This session is
+      kept in a cookie of name `connect.sid`. This cookie can be
+      acquired via the various login endpoints described in this
+      document.
+externalDocs:
+  description: More information can be found on the OrganiCity website.
+  url: http://www.organicity.eu/
+definitions:
+  User:
+    type: object
+    description: A registered user.
+    properties:
+      uuid:
+        description: The UUID of this user.
+        type: string
+        format: uuid
+        required: true
+      name:
+        description: 'The user''s name, by which she is refered to in the Gui.'
+        type: string
+      roles:
+        description: |
+          A list of roles that this user is assigned. These roles form
+          the basis for access control, and should thusly be treated
+          carefully.
+        type: array
+        items:
+          schema: string
+      gender:
+        description: |
+          The user's gender. This might be `m` or `f`.
+        type: string
+        format: m or f
+      local:
+        description: |
+          Information about the local-login authentication scheme for this user.
+        type: object
+        properties:
+          email:
+            description: |
+              The email address that this user uses to log in via local login.
+            type: string
+            format: email
+  Questionnaire:
+    type: object
+    description: A single questionnaire.
+    properties:
+      version:
+        description:
+          The version name of this questionnaire. The version is assigned by
+          the server, where it is incremented by one for each new version
+          posted.
+        type: integer
+        required: true
+      author:
+        description:
+          The UUID of the user that created this version of the questionnaire.
+        type: string
+        format: uuid
+        required: true
+      description:
+        description:
+          A description of this questionnaire for internal use. This text is
+          not displayed to the front end users.
+        type: string
+      explanation:
+        description:
+          An explanatory text that is shown to users at the top of the
+          questionnaire.
+        type: string
+        required: true
+      questions:
+        description: |
+          The list of questions this questionnaire asks. These might
+          be classified as technical or non-technical, and usually
+          only the subset matching the user's choice should be
+          displayed.
+        type: array
+        items:
+          $ref: '#/definitions/Question'
+    example: {
+      "questions": [
+        {
+          "values": [
+            {
+              "weight": -1,
+              "value": "This does not affect me."
+            },
+            {
+              "weight": 0,
+              "value": "Don't really know, maybe?"
+            },
+            {
+              "weight": 1,
+              "value": "Yes, I can use that."
+            }
+          ],
+          "text": "Does this idea apply to your daily life?",
+          "tech": false
+        },
+        {
+          "values": [
+            {
+              "weight": -1,
+              "value": "No"
+            },
+            {
+              "weight": 1,
+              "value": "Yes"
+            }
+          ],
+          "text": "Is this scenario plausible?",
+          "tech": true
+        }
+      ],
+      "explanation":
+        "Please rate the scenario provided from your personal perspective.",
+      "description": "Second revision of initial questionnaire, fixed typos.",
+      "version": 2
+    }
+
+  Question:
+    type: object
+    description: A single question belonging to a questionnaire.
+    properties:
+      tech:
+        description:
+          true if this question is a question is a technical question
+        type: boolean
+        required: true
+      text:
+        description:
+          The question description that is shown to the user
+        type: string
+        required: true
+      value:
+        description: The possible answers the user can choose from
+        type: array
+        items:
+          type: object
+          properties:
+            value:
+              description:
+                A textual description of the answer that is shown to the user
+              type: string
+              required: true
+            weight:
+              description:
+                The weight that this answer applies to the overall rating.
+                Higher values will have a larger effect.
+              type: integer
+              required: true
+        required: true
+    example:
+      {
+        "text": "Are existing technologies capable of handling this scenario?",
+        "tech": true,
+        "values": [
+          {
+            "weight": 1,
+            "value": "Yes"
+          },
+          {
+            "weight": -1,
+            "value": "No"
+          }
+        ]
+      }
+
+
+paths:
+  /currentUser:
+    get:
+      summary: Retrieves information about the current user
+      description: |
+        Returns the user record of the currently logged in user. If
+        the current request does not provide authentication
+        information, a forbidden-error is returned.
+      tags:
+        - Authentication
+      produces:
+        - application/json
+      security:
+        - cookieSession: []
+      responses:
+        200:
+          description: |
+            If the currently logged in user is a valid user, the
+            record as stored in the database is returned.
+          schema:
+            $ref: '#/definitions/User'
+        403:
+          description: |
+            If the request does not provide login information, reading
+            user information is not allowed.
+
+  /local-login:
+    get:
+      summary: Local login with user/password credentials
+      description: |
+        This API can be used by locally registered users to log in, thereby
+        setting the cookie for cookie session access control.
+
+        Please note: This does not apply to user's registered via
+        OAuth. These should use any of the `auth/{provider}`
+        interfaces.
+
+      tags:
+        - Authentication
+
+      consumes:
+        - application/json
+      produces:
+        - application/json
+
+      parameters:
+        - name: login-data
+          description: |
+            A record containing the email address and passwort to log in with.
+          in: body
+          schema:
+            type: object
+            properties:
+              email:
+                description: The email address the user is registered with.
+                type: string
+                format: email
+                required: true
+              password:
+                description: 'The user''s password.'
+                type: string
+                required: true
+            example: {
+              "email": "buether@itm.uni-luebeck.de",
+              "password": "correcthorsebatterystaple"
+            }
+      responses:
+        200:
+          description: |
+            If the login is performed successfully, this returns the
+            currentUser.
+          schema:
+            $ref: '#/definitions/User'
+        400:
+          description:
+            Bad Request is returned if the request body is malformed.
+        422:
+          description:
+            This return code signifies that the given email address and/or the
+            password is not known.
+        500:
+          description:
+            This is returned if an internal error occurs during access checking.
+
+  /logout:
+    get:
+      summary: Logs the current user out
+      description: |
+        This terminates the session of the cookie session access control.
+      tags:
+        - Authentication
+      security:
+        - cookieSession: []
+      responses:
+        204:
+          description: Returned if the user is logged out successfully.
+
+
+
+  /questionnaire:
+    get:
+      summary:
+        Returns the currently active questionnaire, or a list of all
+        questionnaires if requested.
+      description: If no version is supplied, this will return the current
+        questionnaire. Usually, questionnaires are versioned in increasing
+        numbers, so if the current questionnaire has version number 7,
+        the previous versions can be requested by passing version as 6, 5,
+        and so on.
+      tags:
+        - Questionnaires
+      produces:
+        - application/json
+      parameters:
+        - name: version
+          in: query
+          required: false
+          description:
+            The requested version, or 'all' if all versions should be returned.
+          type: string
+          format: Either 'all' or a version number.
+      responses:
+        200:
+          description: |
+            - If successful, this returns the current questionnaire if no
+              version was specificed, or the questionnaire of the specified
+              version.
+            - If all versions are requested, this returns a list of
+              questionnaire objects.
+          schema:
+            $ref: '#/definitions/Questionnaire'
+        404:
+          description:
+            Returned if no questionnaire with the given version number exists.
+
+    patch:
+      summary: Updates the questionnaire. Only used for cosmetic updates.
+      description: |
+        Questionnairs may be updated in one of two methods:
+        - Either, a
+          completely new questionnaire can be established, completely
+          abandoning the previous questionnaire, along with its results
+          and evaluations.
+        - Alternatively, a questionnare can be updated
+          only cosmetically, thereby keeping the existing evaluations in
+          place and their votes valid. A cosmetic update thus may only
+          change wordings, and should not change the meaning of
+          questions or answers.
+        Patching the current questionnaire counts as a cosmetic update, and
+        is bound by the above restrictions.
+      tags:
+        - Questionnaires
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - cookieSession: []
+      parameters:
+        - name: questionnaire
+          description: |
+            The body of this request must contain the updated questionnaire.
+
+            Please make sure that the update deviates from the previously
+            current questionnaire only in minor aspects. In detail, this means
+            that the following parts must not change:
+            - Number of questions
+            - Number of answers per question
+            - Weight of answers
+          in: body
+          schema:
+            $ref: '#/definitions/Questionnaire'
+      responses:
+        200:
+          description:
+            The questionnaire has been updated. Returns the new questionnaire,
+            including the updated version number.
+          schema:
+            $ref: '#/definitions/Questionnaire'
+        401:
+          description: The user is not authenticated.
+        403:
+          description:
+            The authenticated user is not authorised, usually because he does
+            not have an administrator role.

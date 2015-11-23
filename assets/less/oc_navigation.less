@@ -1,0 +1,63 @@
+/* Navigation */
+
+@import "oc_colors.less";
+
+.navbar-right {
+  width: auto;
+}
+
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+  color: @oc-magenta;
+  background: @oc-white;
+}
+
+.navbar-default {
+  margin-bottom: 0;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: @oc-white;
+}
+
+.navbar-default .navbar-toggle:hover {
+  background-color: @oc-white;
+  .icon-bar {
+    background-color: @oc-magenta;
+  }
+}
+
+.navbar-toggle:active {
+  background-color: @oc-white !important;
+}
+
+.navbar {
+  background-color: @oc-magenta;
+  border: 0;
+  border-radius: 0;
+}
+
+.navbar-default .navbar-nav>li>a, .navbar-default .navbar-text {
+    color: @oc-grey;
+}
+
+.navbar-default .navbar-brand {
+    color: @oc-grey;
+}
+
+.navbar-brand img {
+  width: 90px;
+  position: relative;
+  top: -10px;
+}
+
+.navbar-default, .navbar-collapse {
+    border-top: none;
+    box-shadow: none;
+    text-align: center;
+}
+
+.navbar-toggle {
+  border: none;
+}

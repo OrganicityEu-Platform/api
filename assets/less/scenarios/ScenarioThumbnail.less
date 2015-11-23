@@ -1,0 +1,116 @@
+/* HALLO */
+
+@import "../oc_colors.less";
+@import "../oc_fonts.less";
+
+.scenario-thumbnails {
+ -moz-column-width: 21em;
+ -webkit-column-width: 21em;
+ -moz-column-gap: 1.5em;
+ -webkit-column-gap:1.5em;
+}
+
+.scenario-thumbnail-image-wrapper {
+  margin-bottom: 0 !important;
+}
+
+.scenario-thumbnail-header {
+  padding: 16px 15px 5px;
+}
+
+.scenario-thumbnail-image-wrapper > img {
+  display:inline-block;
+  opacity: 0.5;
+}
+
+.scenario-thumbnail-marker-score {
+  font-size: 22px;
+  font-weight: bold;
+  color: @oc-white;
+  float: right;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.scenario-thumbnails > .col-md-4 {
+ display: inline-block;
+ padding: .33rem;
+ width: 100%;
+ float: none;
+ color: #444;
+}
+
+.scenario-thumbnail {
+  position:relative;
+  display: block;
+  margin-bottom: 8px;
+  border-radius: 2px;
+  background-color: @oc-white;
+  text-align: left;
+  padding: 0;
+  border: 0;
+}
+
+.scenario-thumbnail a {
+  text-decoration: none;
+}
+
+.scenario-thumbnail-location {
+  margin-left: 30px;
+}
+
+.scenario-thumbnail-timestamp,
+.scenario-thumbnail-sat-wrapper,
+.scenario-thumbnail-publisher-wrapper {
+  color: @oc-meta-grey;
+  font-family: 'Cooper Hewitt Semibold';
+  font-size: 12px;
+}
+
+.scenario-thumbnail-summary {
+  padding: 0px 15px 0px 15px;
+  color: @oc-dark-grey;
+  font-family: 'Vollkorn-Regular';
+}
+
+.scenario-thumbnail-image-wrapper,
+.scenario-thumbnail-image-wrapper > img {
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.scenario-thumbnail-publisher-wrapper {
+  display: block;
+  margin: 10px 0px 7px 0px;
+}
+
+.scenario-thumbnail-sat-wrapper > span {
+  display: block;
+  margin-left: 15px;
+}
+
+.scenario-thumbnail-sat-wrapper {
+  display: block;
+  margin-bottom: 15px;
+  margin-top: 0px;
+}
+
+.scenario-thumbnail-marker {
+  width: 80px;
+  height: 80px;
+  background-color: @oc-magenta;
+  float: right;
+  border-bottom-left-radius: 100%;
+  border-top-right-radius: 2px;
+}
+
+.scenario-thumbnail-title {
+  font-family: 'Cooper Hewitt Semibold';
+  font-size: 24px;
+  color: @oc-dark-grey;
+}
+
+.scenario-thumbnail-publisher {
+  font-family: 'Cooper Hewitt Book' !important;
+  color: @oc-magenta;
+}

@@ -1,0 +1,110 @@
+/* DESKTOP SPECIFIC CSS */
+
+@import "../../node_modules/bootstrap/less/bootstrap.less";
+@import "oc_colors.less";
+
+@media (min-width: 768px) {
+  ul.nav.navbar-nav {
+    float: none;
+    display: inline-block;
+  }
+  /* SCENARIO CREATE/EDIT VIEW*/
+  .oc-form-group {
+    padding-right: 45px !important;
+  }
+
+  .oc-form-group > label {
+    font-size: 20px;
+  }
+
+  .scenario-article-widget {
+    float: right;
+    margin-right: 100px;
+    margin-top: 30px;
+    margin-left: 10px;
+  }
+  .navbar-header {
+    margin-right: 50px !important;
+  }
+  .oc-left-links-wrapper {
+    display: inline-block;
+    margin-top: 5px;
+  }
+  .navbar-explore-btn {
+
+  }
+  .navbar-create-btn {
+
+  }
+  .navbar-default {
+    height: 75px;
+  }
+  .navbar-default .container {
+    margin-top: 12px;
+  }
+  .myclass {
+    border: 1px solid yellow;
+  }
+  .navbar-explore-btn > a, .navbar-create-btn > a {
+    border: 1px solid rgb(254,254,250);
+    border-radius: 1px;
+    box-shadow: 0px 0px 6px 3px rgba(254,254,250, 0.2);
+    -webkit-box-shadow: 0px 0px 6px 3px rgba(254,254,250,0.2);
+  }
+  .navbar-explore-btn > a {
+    margin-right: 7px;
+    padding: 10px 40px !important;
+  }
+  .btn-toolbar > span {
+    border-radius: 50%;
+    box-shadow: 0px 0px 15px 3px rgba(254, 254, 250, 0.3);
+    background-color: rgba(254, 254, 250, 0.2);
+  }
+  .navbar-create-btn > a {
+    margin-left: 7px;
+    padding: 10px 40px !important;
+  }
+  .navbar-create-btn > a:hover, .navbar-explore-btn > a:hover {
+    background-color: @oc-white !important;
+    color: @oc-magenta !important;
+  }
+  .scenario-list,
+  .scenario-article,
+  .oc-scenario-controls,
+  .oc-disqus-wrapper
+    {
+      //.container;
+    }
+  #oc-search-form {
+    float: right;
+  }
+  .scenario-article-image {
+    margin-left: 25px;
+    margin-right: 25px;
+  }
+  .scenario-article-image > img {
+    opacity: 0.5;
+  }
+  .scenario-article-narrative {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+    float: right;
+  }
+  .scenario-article-timestamp {
+    padding-top: 5px;
+  }
+  #disqus_thread {
+    padding: 5px 55px 0px 55px;
+  }
+  .nav-login-btn > a {
+    padding: 0px !important;
+    margin-top: 15px;
+    margin-right: 25px;
+    margin-left: 65px;
+  }
+  .nav-signup-btn > a {
+    padding: 0px !important;
+    margin-top: 15px;
+  }
+}
