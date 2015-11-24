@@ -2,7 +2,19 @@
 <html>
 <head>
   <title>OrganiCity API</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="oc.css">
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js">
+  </script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js">
+  </script>
+  <![endif]-->
 </head>
 <body>
   <div id="top" class="container oc-page-wrapper">
@@ -75,17 +87,17 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><a href="#operation--currentUser-get">GET /currentUser</a></td>
+                        <td><a href="#operation--auth-currentUser-get">GET /auth/currentUser</a></td>
                         <td><p>Retrieves information about the current user</p>
         </td>
                     </tr>
                     <tr>
-                        <td><a href="#operation--local-login-get">GET /local-login</a></td>
+                        <td><a href="#operation--auth-local-login-get">GET /auth/local-login</a></td>
                         <td><p>Local login with user/password credentials</p>
         </td>
                     </tr>
                     <tr>
-                        <td><a href="#operation--logout-get">GET /logout</a></td>
+                        <td><a href="#operation--auth-logout-get">GET /auth/logout</a></td>
                         <td><p>Logs the current user out</p>
         </td>
                     </tr>
@@ -133,6 +145,35 @@
               </div>
             </div>
         
+            <h3 id="tag-Scenarios" class="swagger-summary-tag">Tag: Scenarios</h3>
+            <p><p>Handling of scenarios involves several different ways of fetching
+        lists of scenarios, fetching a single scenario and a multiple ways
+        of editing them. Also, a set of operations to evaluate scenarios
+        are included.</p>
+        </p>
+        
+            <div class="panel panel-tags">
+              <div class="panel-body">
+        
+            <table class="table table-responsive table-condensed swagger--summary">
+                <thead>
+                <tr>
+                    <th>Operation</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="#operation--scenarios-get">GET /scenarios</a></td>
+                        <td><p>Request a filtered, sorted list of scenarios</p>
+        </td>
+                    </tr>
+                </tbody>
+            </table>
+        
+              </div>
+            </div>
+        
     
     
         <h2>Security</h2>
@@ -171,11 +212,11 @@
     <h2>Paths</h2>
     
         
-        <span id="path--currentUser"></span>
-            <div id="operation--currentUser-get" class="swagger--panel-operation-get panel">
+        <span id="path--auth-currentUser"></span>
+            <div id="operation--auth-currentUser-get" class="swagger--panel-operation-get panel">
                 <div class="panel-heading">
                     <div class="operation-summary">Retrieves information about the current user</div>
-                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/currentUser</strong></h3>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/auth/currentUser</strong></h3>
                         Tags:
                             <a href="#tag-Authentication">Authentication</a>
                 </div>
@@ -262,11 +303,11 @@
                         </section>
                 </div>
             </div>    
-        <span id="path--local-login"></span>
-            <div id="operation--local-login-get" class="swagger--panel-operation-get panel">
+        <span id="path--auth-local-login"></span>
+            <div id="operation--auth-local-login-get" class="swagger--panel-operation-get panel">
                 <div class="panel-heading">
                     <div class="operation-summary">Local login with user/password credentials</div>
-                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/local-login</strong></h3>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/auth/local-login</strong></h3>
                         Tags:
                             <a href="#tag-Authentication">Authentication</a>
                 </div>
@@ -437,11 +478,11 @@
                       </section>
                 </div>
             </div>    
-        <span id="path--logout"></span>
-            <div id="operation--logout-get" class="swagger--panel-operation-get panel">
+        <span id="path--auth-logout"></span>
+            <div id="operation--auth-logout-get" class="swagger--panel-operation-get panel">
                 <div class="panel-heading">
                     <div class="operation-summary">Logs the current user out</div>
-                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/logout</strong></h3>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/auth/logout</strong></h3>
                         Tags:
                             <a href="#tag-Authentication">Authentication</a>
                 </div>
@@ -828,12 +869,284 @@
                         </dl>
                       </section>
                 </div>
+            </div>    
+        <span id="path--scenarios"></span>
+            <div id="operation--scenarios-get" class="swagger--panel-operation-get panel">
+                <div class="panel-heading">
+                    <div class="operation-summary">Request a filtered, sorted list of scenarios</div>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/scenarios</strong></h3>
+                        Tags:
+                            <a href="#tag-Scenarios">Scenarios</a>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-operation-description">
+                        <p>This endpoint is the default access to request a list of
+            current scenarios according to various filters. It will always
+            return the most current versions of a scenario; older versions
+            can be requested through the appropriate other endpoints.</p>
+            <p>This endpoint allows a couple of different filtering and sorting
+            methods.
+            These are in detail:</p>
+            <ul>
+            <li>sortBy</li>
+            <li>sortDir</li>
+            <li>skip</li>
+            <li>limit</li>
+            </ul>
+            
+                    </section>
+                    
+                        <section class="sw-request-params">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="sw-param-name"></th>
+                                    <th class="sw-param-description"></th>
+                                    <th class="sw-param-type"></th>
+                                    <th class="sw-param-data-type"></th>
+                                    <th class="sw-param-annotation"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                        <tr>
+                                            <td>
+                                                keyword
+                                            <td><p>This allows a sort of full text search.</p>
+                                        <p><strong>TODO:</strong> describe correct name and behaviour.</p>
+                                        </td>
+                                            <td>query</td>
+                                            <td><span class="json-property-type">string</span>
+                                        <span class="json-property-range" title="Value limits"></span>
+                                        
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                sortBy
+                                            <td><p>The field that the selected list of scenarios should be
+                                        sorted by. The sorting is applied before <code>skip</code> and
+                                        <code>limit</code> are evaulated.</p>
+                                        </td>
+                                            <td>query</td>
+                                            <td><span class="json-property-type">string</span>    <span class="json-property-format">(fieldname)</span>    <span class="json-property-enum" title="Possible values">, x &isin; {
+                                                        <span class="json-property-enum-item">title</span>
+                                                    ,
+                                                        <span class="json-property-enum-item">summary</span>
+                                                    ,
+                                                        <span class="json-property-enum-item">narrative</span>
+                                                    ,
+                                                        <span class="json-property-enum-item">creator</span>
+                                                    ,
+                                                        <span class="json-property-enum-item">timestamp</span>
+                                                        (default)
+                                                    ,
+                                                        <span class="json-property-enum-item">thumbnail</span>
+                                                    ,
+                                                        <span class="json-property-enum-item">actors</span>
+                                                    ,
+                                                        <span class="json-property-enum-item">sectors</span>
+                                                    ,
+                                                        <span class="json-property-enum-item">devices</span>
+                                                    ,
+                                                        <span class="json-property-enum-item">dataSources</span>
+                                                    
+                                                }
+                                                </span>
+                                        <span class="json-property-range" title="Value limits"></span>
+                                        
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                sortDir
+                                            <td><p>Specifies if the sorted field selected by <code>sortBy</code> is sorted
+                                        in ascending (<code>asc</code>) or descending (<code>desc</code>) order.</p>
+                                        </td>
+                                            <td>query</td>
+                                            <td><span class="json-property-type">string</span>    <span class="json-property-enum" title="Possible values">, x &isin; {
+                                                        <span class="json-property-enum-item">asc</span>
+                                                        (default)
+                                                    ,
+                                                        <span class="json-property-enum-item">desc</span>
+                                                    
+                                                }
+                                                </span>
+                                        <span class="json-property-range" title="Value limits"></span>
+                                        
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                skip
+                                            <td><p>In collaboration with <code>limit</code>, this parameter facilitates
+                                        paging the returned scenarios. The value supplied for
+                                        <code>skip</code> denotes the number of scenarios to skip after
+                                        sorting.</p>
+                                        </td>
+                                            <td>query</td>
+                                            <td><span class="json-property-type">integer</span>
+                                        <span class="json-property-range" title="Value limits">, { x ∈ ℤ | x ≥ 0 }</span>
+                                        
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                limit
+                                            <td><p>Denotes the maximum number of scenarios to return. After
+                                        the list of scenarios is filtered and sorted and <code>skip</code>
+                                        scenarios have been discarded, this returns the first <code>n</code>
+                                        remaining scenarios.</p>
+                                        </td>
+                                            <td>query</td>
+                                            <td><span class="json-property-type">integer</span>
+                                        <span class="json-property-range" title="Value limits">, { x ∈ ℤ | 1 ≤ x ≤ 100 }</span>
+                                        
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </section>
+                    
+                      <section class="sw-responses">
+                          <p><span class="label label-default">application/json</span> 
+                    </p>
+                    
+                        <dl>
+                            <dt class="sw-response-200">
+                              200 OK
+                    
+                            </dt>
+                            <dd class="sw-response-200">
+                                
+                                
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <p>The list of scenarios was successfully determined and extracted,
+                                and is returned in the body.</p>
+                                
+                                  </div>
+                                </div>
+                                <div class="row">
+                                </div>
+                                
+                                  <div class="row body-content">
+                                    <div class="col-md-6 sw-response-model">
+                                        
+                                            <div id="definition-Scenarios" class="panel panel-definition">
+                                                <div class="panel-heading">
+                                                  <h3 class="panel-title">
+                                                      Scenarios:
+                                                      <span class="json-property-type"><span class="json-property-type">object[]</span>
+                                            <span class="json-property-range" title="Value limits"></span>
+                                            
+                                            </span>
+                                                  </h3>
+                                                </div>
+                                              <div class="panel-body">
+                                                      <section class="json-schema-description">
+                                                          <p>The list of scenarios filtered, sorted and paginated
+                                                  according to the requests&#39; parameters.</p>
+                                                  
+                                                      </section>
+                                                  
+                                                                  <section class="json-schema-array-items">
+                                                                      <span class="json-property-type">    Reference: <a class="json-schema-ref" href="#/definitions/Scenario">Scenario</a>
+                                                                      </span>
+                                                                      <span class="json-property-range" title="Value limits"></span>
+                                                                      
+                                                                      <div class="json-inner-schema">
+                                                                          
+                                                                      </div>
+                                                                  </section>  </div>
+                                            </div>
+                                    </div>
+                                  </div>
+                                
+                            </dd>
+                        </dl>
+                      </section>
+                </div>
             </div>
      
     
                        
         <h2>Schema definitions</h2>
     
+            
+                <div id="definition-DataSource" class="panel panel-definition">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">
+                          <a name="/definitions/DataSource"></a>
+                          DataSource:
+                          <span class="json-property-type"><span class="json-property-type">object</span>
+                <span class="json-property-range" title="Value limits"></span>
+                
+                </span>
+                      </h3>
+                    </div>
+                  <div class="panel-body">
+                          <section class="json-schema-description">
+                              <p>A data source object is an descriptor of a source of data.</p>
+                      
+                          </section>
+                      
+                              <section class="json-schema-properties">
+                                  <dl>
+                                          <dt data-property-name="uuid">
+                                              <span class="json-property-name">uuid:</span>
+                                              <span class="json-property-type">string</span>    <span class="json-property-format">(uuid)</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                                  <span class="json-property-required"></span>
+                                          </dt>
+                                          <dd>
+                                              <p>A unique uuid identifying this data source.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                              </div>
+                                          </dd>
+                                          <dt data-property-name="href">
+                                              <span class="json-property-name">href:</span>
+                                              <span class="json-property-type">string</span>    <span class="json-property-format">(url)</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                                  <span class="json-property-required"></span>
+                                          </dt>
+                                          <dd>
+                                              <p>A link to or url identifying the original data source.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                              </div>
+                                          </dd>
+                                          <dt data-property-name="description">
+                                              <span class="json-property-name">description:</span>
+                                              <span class="json-property-type">string</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                          </dt>
+                                          <dd>
+                                              <p>A textual description of this data source, which may contain markdown formatting.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                              </div>
+                                          </dd>
+                                  </dl>
+                              </section>
+                  </div>
+                </div>
             
                 <div id="definition-Question" class="panel panel-definition">
                     <div class="panel-heading">
@@ -972,9 +1285,10 @@
                                           <dt data-property-name="version">
                                               <span class="json-property-name">version:</span>
                                               <span class="json-property-type">integer</span>
-                                              <span class="json-property-range" title="Value limits"></span>
+                                              <span class="json-property-range" title="Value limits">, { x ∈ ℤ | x ≥ 1 }</span>
                                               
                                                   <span class="json-property-required"></span>
+                                                  <span class="json-property-read-only"></span>
                                           </dt>
                                           <dd>
                                               <p>The version name of this questionnaire. The version is assigned by the server, where it is incremented by one for each new version posted.</p>
@@ -1041,6 +1355,228 @@
                                                                   <section class="json-schema-array-items">
                                                                       <span class="json-property-type">    Reference: <a class="json-schema-ref" href="#/definitions/Question">Question</a>
                                                                       </span>
+                                                                      <span class="json-property-range" title="Value limits"></span>
+                                                                      
+                                                                      <div class="json-inner-schema">
+                                                                          
+                                                                      </div>
+                                                                  </section>                </div>
+                                          </dd>
+                                  </dl>
+                              </section>
+                  </div>
+                </div>
+            
+                <div id="definition-Scenario" class="panel panel-definition">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">
+                          <a name="/definitions/Scenario"></a>
+                          Scenario:
+                          <span class="json-property-type"><span class="json-property-type">object</span>
+                <span class="json-property-range" title="Value limits"></span>
+                
+                </span>
+                      </h3>
+                    </div>
+                  <div class="panel-body">
+                          <section class="json-schema-description">
+                              <p>A scenario is a user story that describes a way, in which
+                      the OrganiCity data can be used to improve the user&#39;s city.</p>
+                      
+                          </section>
+                      
+                              <section class="json-schema-properties">
+                                  <dl>
+                                          <dt data-property-name="uuid">
+                                              <span class="json-property-name">uuid:</span>
+                                              <span class="json-property-type">string</span>    <span class="json-property-format">(uuid)</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                                  <span class="json-property-required"></span>
+                                                  <span class="json-property-read-only"></span>
+                                          </dt>
+                                          <dd>
+                                              <p>A unique uuid identifying this scenario.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                              </div>
+                                          </dd>
+                                          <dt data-property-name="version">
+                                              <span class="json-property-name">version:</span>
+                                              <span class="json-property-type">integer</span>
+                                              <span class="json-property-range" title="Value limits">, { x ∈ ℤ | x ≥ 1 }</span>
+                                              
+                                                  <span class="json-property-required"></span>
+                                                  <span class="json-property-read-only"></span>
+                                          </dt>
+                                          <dd>
+                                              <p>This scenarios&#39; version, used for identifying changes. This field
+                              is incremented by the server.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                              </div>
+                                          </dd>
+                                          <dt data-property-name="title">
+                                              <span class="json-property-name">title:</span>
+                                              <span class="json-property-type">string</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                                  <span class="json-property-required"></span>
+                                          </dt>
+                                          <dd>
+                                              <p>The title of this scenario as plain text.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                              </div>
+                                          </dd>
+                                          <dt data-property-name="summary">
+                                              <span class="json-property-name">summary:</span>
+                                              <span class="json-property-type">string</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                                  <span class="json-property-required"></span>
+                                          </dt>
+                                          <dd>
+                                              <p>The summary of this scenario as plain text.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                              </div>
+                                          </dd>
+                                          <dt data-property-name="narrative">
+                                              <span class="json-property-name">narrative:</span>
+                                              <span class="json-property-type">string</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                                  <span class="json-property-required"></span>
+                                          </dt>
+                                          <dd>
+                                              <p>The narrative of this scenario, which may contain markdown formatting.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                              </div>
+                                          </dd>
+                                          <dt data-property-name="creator">
+                                              <span class="json-property-name">creator:</span>
+                                              <span class="json-property-type">string</span>    <span class="json-property-format">(uuid)</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                                  <span class="json-property-required"></span>
+                                                  <span class="json-property-read-only"></span>
+                                          </dt>
+                                          <dd>
+                                              <p>The uuid of the user that initially created this scenario.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                              </div>
+                                          </dd>
+                                          <dt data-property-name="timestamp">
+                                              <span class="json-property-name">timestamp:</span>
+                                              <span class="json-property-type">string</span>    <span class="json-property-format">(date-time)</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                                  <span class="json-property-read-only"></span>
+                                          </dt>
+                                          <dd>
+                                              <p>The creation time of this scenario. If no time is given, this
+                              defaults to the current time.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                              </div>
+                                          </dd>
+                                          <dt data-property-name="thumbnail">
+                                              <span class="json-property-name">thumbnail:</span>
+                                              <span class="json-property-type">string</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                                  <span class="json-property-read-only"></span>
+                                          </dt>
+                                          <dd>
+                                              <p>The name of the file containing the thumbnail of this scenario.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                              </div>
+                                          </dd>
+                                          <dt data-property-name="actors">
+                                              <span class="json-property-name">actors:</span>
+                                              <span class="json-property-type">string[]</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                          </dt>
+                                          <dd>
+                                              <p>The list of actors that are involved with this scenario.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                                                  <section class="json-schema-array-items">
+                                                                      <span class="json-property-type">string</span>
+                                                                      <span class="json-property-range" title="Value limits"></span>
+                                                                      
+                                                                      <div class="json-inner-schema">
+                                                                          
+                                                                      </div>
+                                                                  </section>                </div>
+                                          </dd>
+                                          <dt data-property-name="sectors">
+                                              <span class="json-property-name">sectors:</span>
+                                              <span class="json-property-type">string[]</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                          </dt>
+                                          <dd>
+                                              <p>The list of sectors that this scenario belongs to.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                                                  <section class="json-schema-array-items">
+                                                                      <span class="json-property-type">string</span>
+                                                                      <span class="json-property-range" title="Value limits"></span>
+                                                                      
+                                                                      <div class="json-inner-schema">
+                                                                          
+                                                                      </div>
+                                                                  </section>                </div>
+                                          </dd>
+                                          <dt data-property-name="devices">
+                                              <span class="json-property-name">devices:</span>
+                                              <span class="json-property-type">string[]</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                          </dt>
+                                          <dd>
+                                              <p>The list of devices that this scenario employs.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                                                  <section class="json-schema-array-items">
+                                                                      <span class="json-property-type">string</span>
+                                                                      <span class="json-property-range" title="Value limits"></span>
+                                                                      
+                                                                      <div class="json-inner-schema">
+                                                                          
+                                                                      </div>
+                                                                  </section>                </div>
+                                          </dd>
+                                          <dt data-property-name="dataSources">
+                                              <span class="json-property-name">dataSources:</span>
+                                              <span class="json-property-type">string[]</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                          </dt>
+                                          <dd>
+                                              <p>The list of data sources that this scenario employs.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                                                  <section class="json-schema-array-items">
+                                                                      <span class="json-property-type">string</span>
                                                                       <span class="json-property-range" title="Value limits"></span>
                                                                       
                                                                       <div class="json-inner-schema">
@@ -1188,7 +1724,7 @@
       <img class="oc-footer-large-eu-logo" src="static/img/logo_eu.png">
       </div>
       <div class="row oc-footer-small">
-        <div class="col-md-2">© OrganiCity 2015
+        <div class="col-md-2">&copy; OrganiCity 2015
         </div>
         <div class="col-md-1">
         </div>
@@ -1200,7 +1736,7 @@
           <div>
             <h4>Contact Us
             </h4>
-            <a href="mailto:scenarios@organicity.eu">scenarios@organicity.eu
+              <a href="mailto:info@organicity.eu">info@organicity.eu
             </a>
           </div>
         </div>

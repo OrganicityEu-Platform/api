@@ -2,11 +2,11 @@
 
 
 
-full: static/questionnaire.html static/oc.css
+full: static/OrganiCityScenarios.html static/oc.css
 
 
 
-static/questionnaire.html: raw/questionnaire.yml $(shell find templates) $(shell find partials)
+static/OrganiCityScenarios.html: raw/OrganiCityScenarios.yaml $(shell find templates) $(shell find partials)
 	./node_modules/.bin/swagger-tools validate $<
 	./node_modules/.bin/js-yaml $< > .tmp.json
 	./node_modules/.bin/bootprint swagger -f bootprint.cfg.js .tmp.json static
@@ -22,5 +22,5 @@ static/oc.css: assets/less/oc.less $(shell find assets/less)
 clean:
 	-rm static/*.html
 	-rm static/oc.css
+	-rm static/main.css*
 	-rm .tmp.json
-

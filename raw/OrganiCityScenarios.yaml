@@ -42,6 +42,12 @@ tags:
       Handling of questionnaires. These revolve around the
       [Questionnaire Objects](#/definitions/Questionnaire), and allow
       to review and update them.
+  - name: Scenarios
+    description: |
+      Handling of scenarios involves several different ways of fetching
+      lists of scenarios, fetching a single scenario and a multiple ways
+      of editing them. Also, a set of operations to evaluate scenarios
+      are included.
 
 definitions:
   User:
@@ -90,6 +96,8 @@ definitions:
           the server, where it is incremented by one for each new version
           posted.
         type: integer
+        minimum: 1
+        readOnly: true
       author:
         description:
           The UUID of the user that created this version of the questionnaire.
@@ -157,7 +165,7 @@ definitions:
 
   Question:
     type: object
-    title: Question Title
+    title: Question
     description: A single question belonging to a questionnaire.
     required: ['tech', 'text', 'value']
     properties:
@@ -201,9 +209,97 @@ definitions:
         ]
       }
 
+  Scenario:
+    type: object
+    title: Scenario
+    description: |
+      A scenario is a user story that describes a way, in which
+      the OrganiCity data can be used to improve the user's city.
+    required: ['uuid', 'version', 'title', 'summary', 'narrative', 'creator']
+    properties:
+      uuid:
+        description: A unique uuid identifying this scenario.
+        type: string
+        format: uuid
+        readOnly: true
+      version:
+        description: |
+          This scenarios' version, used for identifying changes. This field
+          is incremented by the server.
+        readOnly: true
+        type: integer
+        minimum: 1
+      title:
+        description: The title of this scenario as plain text.
+        type: string
+      summary:
+        description: The summary of this scenario as plain text.
+        type: string
+      narrative:
+        description: |
+          The narrative of this scenario, which may contain markdown formatting.
+        type: string
+      creator:
+        description: The uuid of the user that initially created this scenario.
+        type: string
+        format: uuid
+        readOnly: true
+      timestamp:
+        description: |
+          The creation time of this scenario. If no time is given, this
+          defaults to the current time.
+        type: string
+        format: date-time
+        readOnly: true
+      thumbnail:
+        description:
+          The name of the file containing the thumbnail of this scenario.
+        type: string
+        readOnly: true
+      actors:
+        description: The list of actors that are involved with this scenario.
+        type: array
+        items:
+          type: string
+      sectors:
+        description: The list of sectors that this scenario belongs to.
+        type: array
+        items:
+          type: string
+      devices:
+        description: The list of devices that this scenario employs.
+        type: array
+        items:
+          type: string
+      dataSources:
+        description: The list of data sources that this scenario employs.
+        type: array
+        items:
+          type: string
+
+  DataSource:
+    type: object
+    title: Data Source
+    description: A data source object is an descriptor of a source of data.
+    required: ['uuid', 'href']
+    properties:
+      uuid:
+        description: A unique uuid identifying this data source.
+        type: string
+        format: uuid
+      href:
+        description: A link to or url identifying the original data source.
+        type: string
+        format: url
+      description:
+        description:
+          A textual description of this data source, which may contain
+          markdown formatting.
+        type: string
+
 
 paths:
-  /currentUser:
+  /auth/currentUser:
     get:
       summary: Retrieves information about the current user
       description: |
@@ -228,7 +324,7 @@ paths:
             If the request does not provide login information, reading
             user information is not allowed.
 
-  /local-login:
+  /auth/local-login:
     get:
       summary: Local login with user/password credentials
       description: |
@@ -286,7 +382,140 @@ paths:
           description:
             This is returned if an internal error occurs during access checking.
 
-  /logout:
+  # /auth/signup:
+
+  # /auth/facebook:
+  # /auth/facebook/callback:
+  # /auth/twitter:
+  # /auth/twitter/callback:
+  # /auth/google:
+  # /auth/google/callback:
+  # /auth/disqus:
+  # /auth/disqus/callback:
+  # /auth/github:
+  # /auth/github/callback:
+  # /auth/local:
+  # /auth/login:
+
+  # /users:
+  # /users/info/:uuid:
+  # /users/:uuid:
+  # /users/:uuid/info:
+  # /users/:uuid/thumbnail:
+  # /users/:uuid/unlink/local:
+  # /users/:uuid/unlink/facebook:
+  # /users/:uuid/unlink/twitter:
+  # /users/:uuid/unlink/google:
+  # /users/:uuid/unlink/github:
+  # /users/:uuid/unlink/disqus:
+  # /users/forgot-password:
+  # /users/update-password:
+
+  # /upload/thumbnail:
+
+  /scenarios:
+    get:
+      summary: Request a filtered, sorted list of scenarios
+      description: |
+        This endpoint is the default access to request a list of
+        current scenarios according to various filters. It will always
+        return the most current versions of a scenario; older versions
+        can be requested through the appropriate other endpoints.
+
+        This endpoint allows a couple of different filtering and sorting
+        methods.
+        These are in detail:
+        - sortBy
+        - sortDir
+        - skip
+        - limit
+      tags:
+        - Scenarios
+      produces:
+        - application/json
+      parameters:
+        # These parameters filter the scenario set.
+        - name: keyword
+          in: query
+          description: |
+            This allows a sort of full text search.
+
+            <strong>TODO:</strong> describe correct name and behaviour.
+          type: string
+
+        # These are the various parameters to sort and paginate the results.
+        - name: sortBy
+          in: query
+          description: |
+            The field that the selected list of scenarios should be
+            sorted by. The sorting is applied before `skip` and
+            `limit` are evaulated.
+          type: string
+          format: fieldname
+          enum: ['title', 'summary', 'narrative', 'creator', 'timestamp',
+            'thumbnail', 'actors', 'sectors', 'devices', 'dataSources']
+          default: timestamp
+        - name: sortDir
+          in: query
+          description: |
+            Specifies if the sorted field selected by `sortBy` is sorted
+            in ascending (`asc`) or descending (`desc`) order.
+          type: string
+          enum: ['asc', 'desc']
+          default: asc
+        - name: skip
+          in: query
+          description: |
+            In collaboration with `limit`, this parameter facilitates
+            paging the returned scenarios. The value supplied for
+            `skip` denotes the number of scenarios to skip after
+            sorting.
+          type: integer
+          minimum: 0
+        - name: limit
+          in: query
+          description: |
+            Denotes the maximum number of scenarios to return. After
+            the list of scenarios is filtered and sorted and `skip`
+            scenarios have been discarded, this returns the first `n`
+            remaining scenarios.
+          type: integer
+          minimum: 1
+          maximum: 100
+
+      responses:
+        200:
+          description: |
+            The list of scenarios was successfully determined and extracted,
+            and is returned in the body.
+          schema:
+            type: array
+            title: Scenarios
+            description: |
+              The list of scenarios filtered, sorted and paginated
+              according to the requests' parameters.
+            items:
+              $ref: '#/definitions/Scenario'
+
+
+  # /scenarios/:uuid:
+  # /scenarios/:uuid/thumbnail:
+  # /actors:
+  # /sectors:
+  # /devices:
+  # /scenarios/related/:uuid:
+  # /scenarios/discus_statistics/:uuid:
+
+  # /counter/:scope/:id:
+
+  # /evaluations:
+  # /evaluations/:uuid:
+  # /evaluations/evaluations_score/:uuid:
+
+  # /contactUs:
+
+
+  /auth/logout:
     get:
       summary: Logs the current user out
       description: |
