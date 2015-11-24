@@ -11,8 +11,8 @@ info:
     - Administrative tasks like updating questionnaires
 
   version: 0.1.0-testing
-hostname: dev.itm.uni-luebeck.de
-basepath: /organicity-scenario-tool/api/v1
+host: dev.itm.uni-luebeck.de
+basePath: /organicity-scenario-tool/api/v1
 schemes:
   - http
 
@@ -34,12 +34,12 @@ definitions:
   User:
     type: object
     description: A registered user.
+    required: ['uuid']
     properties:
       uuid:
         description: The UUID of this user.
         type: string
         format: uuid
-        required: true
       name:
         description: 'The user''s name, by which she is refered to in the Gui.'
         type: string
@@ -66,9 +66,16 @@ definitions:
               The email address that this user uses to log in via local login.
             type: string
             format: email
+  Questionnaires:
+    type: array
+    title: Questionnaires Title
+    description: A list of questionnaires.
+    items:
+      $ref: '#/definitions/Questionnaire'
   Questionnaire:
     type: object
     description: A single questionnaire.
+    required: ['version', 'author', 'explanation']
     properties:
       version:
         description:
@@ -76,13 +83,11 @@ definitions:
           the server, where it is incremented by one for each new version
           posted.
         type: integer
-        required: true
       author:
         description:
           The UUID of the user that created this version of the questionnaire.
         type: string
         format: uuid
-        required: true
       description:
         description:
           A description of this questionnaire for internal use. This text is
@@ -93,7 +98,6 @@ definitions:
           An explanatory text that is shown to users at the top of the
           questionnaire.
         type: string
-        required: true
       questions:
         description: |
           The list of questions this questionnaire asks. These might
@@ -147,35 +151,32 @@ definitions:
   Question:
     type: object
     description: A single question belonging to a questionnaire.
+    required: ['tech', 'text', 'value']
     properties:
       tech:
         description:
           true if this question is a question is a technical question
         type: boolean
-        required: true
       text:
         description:
           The question description that is shown to the user
         type: string
-        required: true
       value:
         description: The possible answers the user can choose from
         type: array
         items:
           type: object
+          required: ['value', 'weight']
           properties:
             value:
               description:
                 A textual description of the answer that is shown to the user
               type: string
-              required: true
             weight:
               description:
                 The weight that this answer applies to the overall rating.
                 Higher values will have a larger effect.
               type: integer
-              required: true
-        required: true
     example:
       {
         "text": "Are existing technologies capable of handling this scenario?",
@@ -245,16 +246,15 @@ paths:
           in: body
           schema:
             type: object
+            required: ['email', 'password']
             properties:
               email:
                 description: The email address the user is registered with.
                 type: string
                 format: email
-                required: true
               password:
                 description: 'The user''s password.'
                 type: string
-                required: true
             example: {
               "email": "buether@itm.uni-luebeck.de",
               "password": "correcthorsebatterystaple"
@@ -292,6 +292,33 @@ paths:
 
 
 
+  /questionnaire?version=all:
+    get:
+      summary:
+        Returns all questionnaire versions.
+      description: |
+        This is a special variant of [the
+        `/questionnaire` request](#operation--questionnaire-get), but
+        requests not a specific version, but all existing
+        questionnaires.  Consequently, it returns a list of all
+        available questionnaires, as opposed to one specific element.
+      tags:
+        - Questionnaires
+      produces:
+        - application/json
+      responses:
+        200:
+          description: |
+            If the request was successful, this returns a list of all
+            questionnaires.
+          schema:
+            type: array
+            title: Questionnaires
+            items:
+              # type:
+
+              $ref: '#/definitions/Questionnaires'
+
   /questionnaire:
     get:
       summary:
@@ -323,6 +350,7 @@ paths:
             - If all versions are requested, this returns a list of
               questionnaire objects.
           schema:
+            title: foobar
             $ref: '#/definitions/Questionnaire'
         404:
           description:

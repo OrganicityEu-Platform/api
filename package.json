@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "bootstrap": "^3.3.5",
-    "less": "^2.5.3"
+    "less": "^2.5.3",
+    "swagger-tools": "^0.9.9"
   }
 }
