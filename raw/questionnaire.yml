@@ -66,12 +66,6 @@ definitions:
               The email address that this user uses to log in via local login.
             type: string
             format: email
-  Questionnaires:
-    type: array
-    title: Questionnaires Title
-    description: A list of questionnaires.
-    items:
-      $ref: '#/definitions/Questionnaire'
   Questionnaire:
     type: object
     description: A single questionnaire.
@@ -150,6 +144,7 @@ definitions:
 
   Question:
     type: object
+    title: Question Title
     description: A single question belonging to a questionnaire.
     required: ['tech', 'text', 'value']
     properties:
@@ -246,6 +241,7 @@ paths:
           in: body
           schema:
             type: object
+            title: LoginInfo
             required: ['email', 'password']
             properties:
               email:
@@ -314,10 +310,10 @@ paths:
           schema:
             type: array
             title: Questionnaires
+            description: |
+              A list of [questionnaire](#/definitions/Questionnaire) objects.
             items:
-              # type:
-
-              $ref: '#/definitions/Questionnaires'
+              $ref: '#/definitions/Questionnaire'
 
   /questionnaire:
     get:
@@ -350,7 +346,6 @@ paths:
             - If all versions are requested, this returns a list of
               questionnaire objects.
           schema:
-            title: foobar
             $ref: '#/definitions/Questionnaire'
         404:
           description:
@@ -380,13 +375,14 @@ paths:
       security:
         - cookieSession: []
       parameters:
-        - name: questionnaire
+        - name: Questionnaire
           description: |
             The body of this request must contain the updated questionnaire.
 
             Please make sure that the update deviates from the previously
             current questionnaire only in minor aspects. In detail, this means
-            that the following parts must not change:
+            that the following parts must not differ from the currently
+            active questionnaire:
             - Number of questions
             - Number of answers per question
             - Weight of answers
@@ -399,6 +395,7 @@ paths:
             The questionnaire has been updated. Returns the new questionnaire,
             including the updated version number.
           schema:
+            title: Questionnaire
             $ref: '#/definitions/Questionnaire'
         401:
           description: The user is not authenticated.

@@ -5,23 +5,23 @@
   @api public
 --}}
 
-  <section class="sw-request-body">
-    {{json $root}}
-    {{#if consumes}}
-      <p>{{>swagger/list-of-labels values=consumes}}</p>
-    {{else if @root.consumes}}
-      <p><a href="#sw-default-consumes">Uses default content-types: </a>
-      {{>swagger/list-of-labels values=@root.consumes}}
-      </p>
-    {{/if}}
-    {{#if body}}
-      {{#with body}}
-       <p>{{md description}}</p>
-        <div class="row body-content">
-         <div class="col-md-6 sw-request-model">
-          {{>swagger/model model=schema}}
-         </div>
-        </div>
-      {{/with}}
-    {{/if}}
-  </section>
+<section class="sw-request-body">
+  {{json $root}}
+  {{#if consumes}}
+    <p>{{>swagger/list-of-labels values=consumes}}</p>
+  {{else if @root.consumes}}
+    <p><a href="#sw-default-consumes">Uses default content-types: </a>
+    {{>swagger/list-of-labels values=@root.consumes}}
+    </p>
+  {{/if}}
+  {{#if body}}
+    {{#with body}}
+     <p>{{md description}}</p>
+      <div class="row body-content">
+       <div class="col-md-6 sw-request-model">
+        {{>swagger/model model=schema title=name}}
+       </div>
+      </div>
+    {{/with}}
+  {{/if}}
+</section>

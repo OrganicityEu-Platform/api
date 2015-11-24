@@ -21,7 +21,17 @@
 
 {{#if response.schema}}
   <div class="row body-content">
-    <div class="col-md-6 sw-response-model">{{>swagger/model model=response.schema}}</div>
+    <div class="col-md-6 sw-response-model">
+      {{#if response.schema.title}}
+        {{>swagger/model model=response.schema title=response.schema.title}}
+      {{else}}
+        {{#if response.schema.$ref}}
+          {{>swagger/model model=response.schema}}
+        {{else}}
+          {{>swagger/model model=response.schema title='Body Schema'}}
+        {{/if}}
+      {{/if}}
+    </div>
   </div>
 {{/if}}
 

@@ -204,16 +204,19 @@
                                 
                                   <div class="row body-content">
                                 
-                                      $ref: #/definitions/User<br/>
+                                    <!--  -->
+                                    <!--   $ref: #/definitions/User<br/> -->
+                                    <!--  -->
                                 
                                 
                                     <div class="col-md-6 sw-response-model">
-                                    <div  class="panel panel-definition">
-                                        <div class="panel-body">
-                                                    See full description: <a class="json-schema-ref" href="#/definitions/User">User</a>
-                                        </div>
+                                          
+                                              <div  class="panel panel-definition">
+                                                <div class="panel-body">
+                                                        Reference: <a class="json-schema-ref" href="#/definitions/User">User</a>
+                                                </div>
+                                              </div>
                                     </div>
-                                </div>
                                   </div>
                                 
                             </dd>
@@ -275,60 +278,69 @@
             
                     </section>
                         
-                          <section class="sw-request-body">
-                            
-                              <p><span class="label label-default">application/json</span> 
+                        <section class="sw-request-body">
+                          
+                            <p><span class="label label-default">application/json</span> 
                         </p>
-                               <p><p>A record containing the email address and passwort to log in with.</p>
+                             <p><p>A record containing the email address and passwort to log in with.</p>
                         </p>
-                                <div class="row body-content">
-                                 <div class="col-md-6 sw-request-model">
-                                  
-                                      <div  class="panel panel-definition">
-                                          <div class="panel-body">
-                                                      <section class="json-schema-example">
-                                                          <pre><code class="lang-json">{<br>    &quot;<span class="hljs-attribute">email</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;buether@itm.uni-luebeck.de&quot;</span></span>,<br>    &quot;<span class="hljs-attribute">password</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;correcthorsebatterystaple&quot;</span><br></span>}
-                                                  </code></pre>
+                              <div class="row body-content">
+                               <div class="col-md-6 sw-request-model">
+                                
+                                    <div id="definition-login-data" class="panel panel-definition">
+                                        <div class="panel-heading">
+                                          <h3 class="panel-title">
+                                              login-data:
+                                              <span class="json-property-type"><span class="json-property-type">object</span>
+                                    <span class="json-property-range" title="Value limits"></span>
+                                    
+                                    </span>
+                                          </h3>
+                                        </div>
+                                      <div class="panel-body">
+                                              <section class="json-schema-example">
+                                                  <pre><code class="lang-json">{<br>    &quot;<span class="hljs-attribute">email</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;buether@itm.uni-luebeck.de&quot;</span></span>,<br>    &quot;<span class="hljs-attribute">password</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;correcthorsebatterystaple&quot;</span><br></span>}
+                                          </code></pre>
+                                          
+                                              </section>
+                                          
+                                                  <section class="json-schema-properties">
+                                                      <dl>
+                                                              <dt data-property-name="email">
+                                                                  <span class="json-property-name">email:</span>
+                                                                  <span class="json-property-type">string</span>    <span class="json-property-format">(email)</span>
+                                                                  <span class="json-property-range" title="Value limits"></span>
+                                                                  
+                                                                      <span class="json-property-required"></span>
+                                                              </dt>
+                                                              <dd>
+                                                                  <p>The email address the user is registered with.</p>
                                                   
-                                                      </section>
+                                                                  <div class="json-inner-schema">
+                                                                      
+                                                                  </div>
+                                                              </dd>
+                                                              <dt data-property-name="password">
+                                                                  <span class="json-property-name">password:</span>
+                                                                  <span class="json-property-type">string</span>
+                                                                  <span class="json-property-range" title="Value limits"></span>
+                                                                  
+                                                                      <span class="json-property-required"></span>
+                                                              </dt>
+                                                              <dd>
+                                                                  <p>The user&#39;s password.</p>
                                                   
-                                                          <section class="json-schema-properties">
-                                                              <dl>
-                                                                      <dt data-property-name="email">
-                                                                          <span class="json-property-name">email:</span>
-                                                                          <span class="json-property-type">string</span>    <span class="json-property-format">(email)</span>
-                                                                          <span class="json-property-range" title="Value limits"></span>
-                                                                          
-                                                                              <span class="json-property-required"></span>
-                                                                      </dt>
-                                                                      <dd>
-                                                                          <p>The email address the user is registered with.</p>
-                                                          
-                                                                          <div class="json-inner-schema">
-                                                                              
-                                                                          </div>
-                                                                      </dd>
-                                                                      <dt data-property-name="password">
-                                                                          <span class="json-property-name">password:</span>
-                                                                          <span class="json-property-type">string</span>
-                                                                          <span class="json-property-range" title="Value limits"></span>
-                                                                          
-                                                                              <span class="json-property-required"></span>
-                                                                      </dt>
-                                                                      <dd>
-                                                                          <p>The user&#39;s password.</p>
-                                                          
-                                                                          <div class="json-inner-schema">
-                                                                              
-                                                                          </div>
-                                                                      </dd>
-                                                              </dl>
-                                                          </section>
-                                          </div>
+                                                                  <div class="json-inner-schema">
+                                                                      
+                                                                  </div>
+                                                              </dd>
+                                                      </dl>
+                                                  </section>
                                       </div>
-                                 </div>
-                                </div>
-                          </section>
+                                    </div>
+                               </div>
+                              </div>
+                        </section>
                     
                     
                       <section class="sw-responses">
@@ -355,16 +367,19 @@
                                 
                                   <div class="row body-content">
                                 
-                                      $ref: #/definitions/User<br/>
+                                    <!--  -->
+                                    <!--   $ref: #/definitions/User<br/> -->
+                                    <!--  -->
                                 
                                 
                                     <div class="col-md-6 sw-response-model">
-                                    <div  class="panel panel-definition">
-                                        <div class="panel-body">
-                                                    See full description: <a class="json-schema-ref" href="#/definitions/User">User</a>
-                                        </div>
+                                          
+                                              <div  class="panel panel-definition">
+                                                <div class="panel-body">
+                                                        Reference: <a class="json-schema-ref" href="#/definitions/User">User</a>
+                                                </div>
+                                              </div>
                                     </div>
-                                </div>
                                   </div>
                                 
                             </dd>
@@ -555,17 +570,19 @@
                                 
                                   <div class="row body-content">
                                 
-                                      title: foobar<br/>
-                                      $ref: #/definitions/Questionnaire<br/>
+                                    <!--  -->
+                                    <!--   $ref: #/definitions/Questionnaire<br/> -->
+                                    <!--  -->
                                 
                                 
                                     <div class="col-md-6 sw-response-model">
-                                    <div  class="panel panel-definition">
-                                        <div class="panel-body">
-                                                    See full description: <a class="json-schema-ref" href="#/definitions/Questionnaire">Questionnaire</a>
-                                        </div>
+                                          
+                                              <div  class="panel panel-definition">
+                                                <div class="panel-body">
+                                                        Reference: <a class="json-schema-ref" href="#/definitions/Questionnaire">Questionnaire</a>
+                                                </div>
+                                              </div>
                                     </div>
-                                </div>
                                   </div>
                                 
                             </dd>
@@ -616,31 +633,37 @@
             
                     </section>
                         
-                          <section class="sw-request-body">
-                            
-                              <p><span class="label label-default">application/json</span> 
+                        <section class="sw-request-body">
+                          
+                            <p><span class="label label-default">application/json</span> 
                         </p>
-                               <p><p>The body of this request must contain the updated questionnaire.</p>
+                             <p><p>The body of this request must contain the updated questionnaire.</p>
                         <p>Please make sure that the update deviates from the previously
                         current questionnaire only in minor aspects. In detail, this means
-                        that the following parts must not change:</p>
+                        that the following parts must not differ from the currently
+                        active questionnaire:</p>
                         <ul>
                         <li>Number of questions</li>
                         <li>Number of answers per question</li>
                         <li>Weight of answers</li>
                         </ul>
                         </p>
-                                <div class="row body-content">
-                                 <div class="col-md-6 sw-request-model">
-                                  
-                                      <div  class="panel panel-definition">
-                                          <div class="panel-body">
-                                                      See full description: <a class="json-schema-ref" href="#/definitions/Questionnaire">Questionnaire</a>
-                                          </div>
+                              <div class="row body-content">
+                               <div class="col-md-6 sw-request-model">
+                                
+                                    <div id="definition-Questionnaire" class="panel panel-definition">
+                                        <div class="panel-heading">
+                                          <h3 class="panel-title">
+                                              Questionnaire
+                                          </h3>
+                                        </div>
+                                      <div class="panel-body">
+                                              Reference: <a class="json-schema-ref" href="#/definitions/Questionnaire">Questionnaire</a>
                                       </div>
-                                 </div>
-                                </div>
-                          </section>
+                                    </div>
+                               </div>
+                              </div>
+                        </section>
                     
                     
                       <section class="sw-responses">
@@ -666,16 +689,26 @@
                                 
                                   <div class="row body-content">
                                 
-                                      $ref: #/definitions/Questionnaire<br/>
+                                    <!--  -->
+                                    <!--   title: Questionnaire<br/> -->
+                                    <!--  -->
+                                    <!--   $ref: #/definitions/Questionnaire<br/> -->
+                                    <!--  -->
                                 
                                 
                                     <div class="col-md-6 sw-response-model">
-                                    <div  class="panel panel-definition">
-                                        <div class="panel-body">
-                                                    See full description: <a class="json-schema-ref" href="#/definitions/Questionnaire">Questionnaire</a>
-                                        </div>
+                                        
+                                            <div id="definition-Questionnaire" class="panel panel-definition">
+                                                <div class="panel-heading">
+                                                  <h3 class="panel-title">
+                                                      Questionnaire
+                                                  </h3>
+                                                </div>
+                                              <div class="panel-body">
+                                                      Reference: <a class="json-schema-ref" href="#/definitions/Questionnaire">Questionnaire</a>
+                                              </div>
+                                            </div>
                                     </div>
-                                </div>
                                   </div>
                                 
                             </dd>
@@ -779,26 +812,46 @@
                                 
                                   <div class="row body-content">
                                 
-                                      type: array<br/>
-                                      title: Questionnaires<br/>
-                                      items.$ref: #/definitions/Questionnaires<br/>
+                                    <!--  -->
+                                    <!--   type: array<br/> -->
+                                    <!--  -->
+                                    <!--   title: Questionnaires<br/> -->
+                                    <!--  -->
+                                    <!--   description: A list of [questionnaire](#/definitions/Questionnaire) objects.<br/> -->
+                                    <!--  -->
+                                    <!--   items.$ref: #/definitions/Questionnaire<br/> -->
+                                    <!--  -->
                                 
                                 
                                     <div class="col-md-6 sw-response-model">
-                                    <div  class="panel panel-definition">
-                                        <div class="panel-body">
-                                                
-                                                                <section class="json-schema-array-items">
-                                                                    <span class="json-property-type">    See full description: <a class="json-schema-ref" href="#/definitions/Questionnaires">Questionnaires</a>
-                                                                    </span>
-                                                                    <span class="json-property-range" title="Value limits"></span>
-                                                                    
-                                                                    <div class="json-inner-schema">
-                                                                        
-                                                                    </div>
-                                                                </section>    </div>
+                                        
+                                            <div id="definition-Questionnaires" class="panel panel-definition">
+                                                <div class="panel-heading">
+                                                  <h3 class="panel-title">
+                                                      Questionnaires:
+                                                      <span class="json-property-type"><span class="json-property-type">object[]</span>
+                                            <span class="json-property-range" title="Value limits"></span>
+                                            
+                                            </span>
+                                                  </h3>
+                                                </div>
+                                              <div class="panel-body">
+                                                      <section class="json-schema-description">
+                                                          <p>A list of <a href="#/definitions/Questionnaire">questionnaire</a> objects.</p>
+                                                  
+                                                      </section>
+                                                  
+                                                                  <section class="json-schema-array-items">
+                                                                      <span class="json-property-type">    Reference: <a class="json-schema-ref" href="#/definitions/Questionnaire">Questionnaire</a>
+                                                                      </span>
+                                                                      <span class="json-property-range" title="Value limits"></span>
+                                                                      
+                                                                      <div class="json-inner-schema">
+                                                                          
+                                                                      </div>
+                                                                  </section>  </div>
+                                            </div>
                                     </div>
-                                </div>
                                   </div>
                                 
                             </dd>
@@ -813,357 +866,337 @@
     
             
                 <div id="definition-Question" class="panel panel-definition">
-                        <div class="panel-heading">
-                                <h3 class="panel-title"><a name="/definitions/Question"></a>Question:
-                                    <span class="json-property-type"><span class="json-property-type">object</span>
+                    <div class="panel-heading">
+                      <h3 class="panel-title">
+                          <a name="/definitions/Question"></a>
+                          Question:
+                          <span class="json-property-type"><span class="json-property-type">object</span>
                 <span class="json-property-range" title="Value limits"></span>
                 
                 </span>
-                                </h3>
-                        </div>
-                    <div class="panel-body">
-                                <section class="json-schema-description">
-                                    <p>A single question belonging to a questionnaire.</p>
-                            
-                                </section>
-                                <section class="json-schema-example">
-                                    <pre><code class="lang-json">{<br>    &quot;<span class="hljs-attribute">tech</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,<br>    &quot;<span class="hljs-attribute">text</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;Are existing technologies capable of handling this scenario?&quot;</span></span>,<br>    &quot;<span class="hljs-attribute">values</span>&quot;: <span class="hljs-value">[<br>        {<br>            &quot;<span class="hljs-attribute">value</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;Yes&quot;</span></span>,<br>            &quot;<span class="hljs-attribute">weight</span>&quot;: <span class="hljs-value"><span class="hljs-number">1</span><br>        </span>},<br>        {<br>            &quot;<span class="hljs-attribute">value</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;No&quot;</span></span>,<br>            &quot;<span class="hljs-attribute">weight</span>&quot;: <span class="hljs-value">-<span class="hljs-number">1</span><br>        </span>}<br>    ]<br></span>}
-                            </code></pre>
-                            
-                                </section>
-                            
-                                    <section class="json-schema-properties">
-                                        <dl>
-                                                <dt data-property-name="tech">
-                                                    <span class="json-property-name">tech:</span>
-                                                    <span class="json-property-type">boolean</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                        <span class="json-property-required"></span>
-                                                </dt>
-                                                <dd>
-                                                    <p>true if this question is a question is a technical question</p>
-                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                                <dt data-property-name="text">
-                                                    <span class="json-property-name">text:</span>
-                                                    <span class="json-property-type">string</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                        <span class="json-property-required"></span>
-                                                </dt>
-                                                <dd>
-                                                    <p>The question description that is shown to the user</p>
-                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                                <dt data-property-name="value">
-                                                    <span class="json-property-name">value:</span>
-                                                    <span class="json-property-type">object[]</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                        <span class="json-property-required"></span>
-                                                </dt>
-                                                <dd>
-                                                    <p>The possible answers the user can choose from</p>
-                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                                        <section class="json-schema-array-items">
-                                                                            <span class="json-property-type">object</span>
-                                                                            <span class="json-property-range" title="Value limits"></span>
-                                                                            
-                                                                            <div class="json-inner-schema">
-                                                                                
-                                                                                        <section class="json-schema-properties">
-                                                                                            <dl>
-                                                                                                    <dt data-property-name="value">
-                                                                                                        <span class="json-property-name">value:</span>
-                                                                                                        <span class="json-property-type">string</span>
-                                                                                                        <span class="json-property-range" title="Value limits"></span>
-                                                                                                        
-                                                                                                            <span class="json-property-required"></span>
-                                                                                                    </dt>
-                                                                                                    <dd>
-                                                                                                        <p>A textual description of the answer that is shown to the user</p>
-                                                                                        
-                                                                                                        <div class="json-inner-schema">
-                                                                                                            
-                                                                                                        </div>
-                                                                                                    </dd>
-                                                                                                    <dt data-property-name="weight">
-                                                                                                        <span class="json-property-name">weight:</span>
-                                                                                                        <span class="json-property-type">integer</span>
-                                                                                                        <span class="json-property-range" title="Value limits"></span>
-                                                                                                        
-                                                                                                            <span class="json-property-required"></span>
-                                                                                                    </dt>
-                                                                                                    <dd>
-                                                                                                        <p>The weight that this answer applies to the overall rating. Higher values will have a larger effect.</p>
-                                                                                        
-                                                                                                        <div class="json-inner-schema">
-                                                                                                            
-                                                                                                        </div>
-                                                                                                    </dd>
-                                                                                            </dl>
-                                                                                        </section>
-                                                                            </div>
-                                                                        </section>                </div>
-                                                </dd>
-                                        </dl>
-                                    </section>
+                      </h3>
                     </div>
+                  <div class="panel-body">
+                          <section class="json-schema-description">
+                              <p>A single question belonging to a questionnaire.</p>
+                      
+                          </section>
+                          <section class="json-schema-example">
+                              <pre><code class="lang-json">{<br>    &quot;<span class="hljs-attribute">tech</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,<br>    &quot;<span class="hljs-attribute">text</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;Are existing technologies capable of handling this scenario?&quot;</span></span>,<br>    &quot;<span class="hljs-attribute">values</span>&quot;: <span class="hljs-value">[<br>        {<br>            &quot;<span class="hljs-attribute">value</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;Yes&quot;</span></span>,<br>            &quot;<span class="hljs-attribute">weight</span>&quot;: <span class="hljs-value"><span class="hljs-number">1</span><br>        </span>},<br>        {<br>            &quot;<span class="hljs-attribute">value</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;No&quot;</span></span>,<br>            &quot;<span class="hljs-attribute">weight</span>&quot;: <span class="hljs-value">-<span class="hljs-number">1</span><br>        </span>}<br>    ]<br></span>}
+                      </code></pre>
+                      
+                          </section>
+                      
+                              <section class="json-schema-properties">
+                                  <dl>
+                                          <dt data-property-name="tech">
+                                              <span class="json-property-name">tech:</span>
+                                              <span class="json-property-type">boolean</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                                  <span class="json-property-required"></span>
+                                          </dt>
+                                          <dd>
+                                              <p>true if this question is a question is a technical question</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                              </div>
+                                          </dd>
+                                          <dt data-property-name="text">
+                                              <span class="json-property-name">text:</span>
+                                              <span class="json-property-type">string</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                                  <span class="json-property-required"></span>
+                                          </dt>
+                                          <dd>
+                                              <p>The question description that is shown to the user</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                              </div>
+                                          </dd>
+                                          <dt data-property-name="value">
+                                              <span class="json-property-name">value:</span>
+                                              <span class="json-property-type">object[]</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                                  <span class="json-property-required"></span>
+                                          </dt>
+                                          <dd>
+                                              <p>The possible answers the user can choose from</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                                                  <section class="json-schema-array-items">
+                                                                      <span class="json-property-type">object</span>
+                                                                      <span class="json-property-range" title="Value limits"></span>
+                                                                      
+                                                                      <div class="json-inner-schema">
+                                                                          
+                                                                                  <section class="json-schema-properties">
+                                                                                      <dl>
+                                                                                              <dt data-property-name="value">
+                                                                                                  <span class="json-property-name">value:</span>
+                                                                                                  <span class="json-property-type">string</span>
+                                                                                                  <span class="json-property-range" title="Value limits"></span>
+                                                                                                  
+                                                                                                      <span class="json-property-required"></span>
+                                                                                              </dt>
+                                                                                              <dd>
+                                                                                                  <p>A textual description of the answer that is shown to the user</p>
+                                                                                  
+                                                                                                  <div class="json-inner-schema">
+                                                                                                      
+                                                                                                  </div>
+                                                                                              </dd>
+                                                                                              <dt data-property-name="weight">
+                                                                                                  <span class="json-property-name">weight:</span>
+                                                                                                  <span class="json-property-type">integer</span>
+                                                                                                  <span class="json-property-range" title="Value limits"></span>
+                                                                                                  
+                                                                                                      <span class="json-property-required"></span>
+                                                                                              </dt>
+                                                                                              <dd>
+                                                                                                  <p>The weight that this answer applies to the overall rating. Higher values will have a larger effect.</p>
+                                                                                  
+                                                                                                  <div class="json-inner-schema">
+                                                                                                      
+                                                                                                  </div>
+                                                                                              </dd>
+                                                                                      </dl>
+                                                                                  </section>
+                                                                      </div>
+                                                                  </section>                </div>
+                                          </dd>
+                                  </dl>
+                              </section>
+                  </div>
                 </div>
             
                 <div id="definition-Questionnaire" class="panel panel-definition">
-                        <div class="panel-heading">
-                                <h3 class="panel-title"><a name="/definitions/Questionnaire"></a>Questionnaire:
-                                    <span class="json-property-type"><span class="json-property-type">object</span>
+                    <div class="panel-heading">
+                      <h3 class="panel-title">
+                          <a name="/definitions/Questionnaire"></a>
+                          Questionnaire:
+                          <span class="json-property-type"><span class="json-property-type">object</span>
                 <span class="json-property-range" title="Value limits"></span>
                 
                 </span>
-                                </h3>
-                        </div>
-                    <div class="panel-body">
-                                <section class="json-schema-description">
-                                    <p>A single questionnaire.</p>
-                            
-                                </section>
-                                <section class="json-schema-example">
-                                    <pre><code class="lang-json">{<br>    &quot;<span class="hljs-attribute">description</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;Second revision of initial questionnaire, fixed typos.&quot;</span></span>,<br>    &quot;<span class="hljs-attribute">explanation</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;Please rate the scenario provided from your personal perspective.&quot;</span></span>,<br>    &quot;<span class="hljs-attribute">questions</span>&quot;: <span class="hljs-value">[<br>        {<br>            &quot;<span class="hljs-attribute">tech</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,<br>            &quot;<span class="hljs-attribute">text</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;Does this idea apply to your daily life?&quot;</span></span>,<br>            &quot;<span class="hljs-attribute">values</span>&quot;: <span class="hljs-value">[<br>                {<br>                    &quot;<span class="hljs-attribute">value</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;This does not affect me.&quot;</span></span>,<br>                    &quot;<span class="hljs-attribute">weight</span>&quot;: <span class="hljs-value">-<span class="hljs-number">1</span><br>                </span>},<br>                {<br>                    &quot;<span class="hljs-attribute">value</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;Don&apos;t really know, maybe?&quot;</span></span>,<br>                    &quot;<span class="hljs-attribute">weight</span>&quot;: <span class="hljs-value"><span class="hljs-number">0</span><br>                </span>},<br>                {<br>                    &quot;<span class="hljs-attribute">value</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;Yes, I can use that.&quot;</span></span>,<br>                    &quot;<span class="hljs-attribute">weight</span>&quot;: <span class="hljs-value"><span class="hljs-number">1</span><br>                </span>}<br>            ]<br>        </span>},<br>        {<br>            &quot;<span class="hljs-attribute">tech</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,<br>            &quot;<span class="hljs-attribute">text</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;Is this scenario plausible?&quot;</span></span>,<br>            &quot;<span class="hljs-attribute">values</span>&quot;: <span class="hljs-value">[<br>                {<br>                    &quot;<span class="hljs-attribute">value</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;No&quot;</span></span>,<br>                    &quot;<span class="hljs-attribute">weight</span>&quot;: <span class="hljs-value">-<span class="hljs-number">1</span><br>                </span>},<br>                {<br>                    &quot;<span class="hljs-attribute">value</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;Yes&quot;</span></span>,<br>                    &quot;<span class="hljs-attribute">weight</span>&quot;: <span class="hljs-value"><span class="hljs-number">1</span><br>                </span>}<br>            ]<br>        </span>}<br>    ]</span>,<br>    &quot;<span class="hljs-attribute">version</span>&quot;: <span class="hljs-value"><span class="hljs-number">2</span><br></span>}
-                            </code></pre>
-                            
-                                </section>
-                            
-                                    <section class="json-schema-properties">
-                                        <dl>
-                                                <dt data-property-name="version">
-                                                    <span class="json-property-name">version:</span>
-                                                    <span class="json-property-type">integer</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                        <span class="json-property-required"></span>
-                                                </dt>
-                                                <dd>
-                                                    <p>The version name of this questionnaire. The version is assigned by the server, where it is incremented by one for each new version posted.</p>
-                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                                <dt data-property-name="author">
-                                                    <span class="json-property-name">author:</span>
-                                                    <span class="json-property-type">string</span>    <span class="json-property-format">(uuid)</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                        <span class="json-property-required"></span>
-                                                </dt>
-                                                <dd>
-                                                    <p>The UUID of the user that created this version of the questionnaire.</p>
-                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                                <dt data-property-name="description">
-                                                    <span class="json-property-name">description:</span>
-                                                    <span class="json-property-type">string</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                </dt>
-                                                <dd>
-                                                    <p>A description of this questionnaire for internal use. This text is not displayed to the front end users.</p>
-                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                                <dt data-property-name="explanation">
-                                                    <span class="json-property-name">explanation:</span>
-                                                    <span class="json-property-type">string</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                        <span class="json-property-required"></span>
-                                                </dt>
-                                                <dd>
-                                                    <p>An explanatory text that is shown to users at the top of the questionnaire.</p>
-                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                                <dt data-property-name="questions">
-                                                    <span class="json-property-name">questions:</span>
-                                                    <span class="json-property-type">object[]</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                </dt>
-                                                <dd>
-                                                    <p>The list of questions this questionnaire asks. These might
-                                    be classified as technical or non-technical, and usually
-                                    only the subset matching the user&#39;s choice should be
-                                    displayed.</p>
-                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                                        <section class="json-schema-array-items">
-                                                                            <span class="json-property-type">    See full description: <a class="json-schema-ref" href="#/definitions/Question">Question</a>
-                                                                            </span>
-                                                                            <span class="json-property-range" title="Value limits"></span>
-                                                                            
-                                                                            <div class="json-inner-schema">
-                                                                                
-                                                                            </div>
-                                                                        </section>                </div>
-                                                </dd>
-                                        </dl>
-                                    </section>
+                      </h3>
                     </div>
-                </div>
-            
-                <div id="definition-Questionnaires" class="panel panel-definition">
-                        <div class="panel-heading">
-                                <h3 class="panel-title"><a name="/definitions/Questionnaires"></a>Questionnaires:
-                                    <span class="json-property-type"><span class="json-property-type">object[]</span>
-                <span class="json-property-range" title="Value limits"></span>
-                
-                </span>
-                                </h3>
-                        </div>
-                    <div class="panel-body">
-                                <section class="json-schema-description">
-                                    <p>A list of questionnaires.</p>
-                            
-                                </section>
-                            
-                                            <section class="json-schema-array-items">
-                                                <span class="json-property-type">    See full description: <a class="json-schema-ref" href="#/definitions/Questionnaire">Questionnaire</a>
-                                                </span>
-                                                <span class="json-property-range" title="Value limits"></span>
-                                                
-                                                <div class="json-inner-schema">
-                                                    
-                                                </div>
-                                            </section>    </div>
+                  <div class="panel-body">
+                          <section class="json-schema-description">
+                              <p>A single questionnaire.</p>
+                      
+                          </section>
+                          <section class="json-schema-example">
+                              <pre><code class="lang-json">{<br>    &quot;<span class="hljs-attribute">description</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;Second revision of initial questionnaire, fixed typos.&quot;</span></span>,<br>    &quot;<span class="hljs-attribute">explanation</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;Please rate the scenario provided from your personal perspective.&quot;</span></span>,<br>    &quot;<span class="hljs-attribute">questions</span>&quot;: <span class="hljs-value">[<br>        {<br>            &quot;<span class="hljs-attribute">tech</span>&quot;: <span class="hljs-value"><span class="hljs-literal">false</span></span>,<br>            &quot;<span class="hljs-attribute">text</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;Does this idea apply to your daily life?&quot;</span></span>,<br>            &quot;<span class="hljs-attribute">values</span>&quot;: <span class="hljs-value">[<br>                {<br>                    &quot;<span class="hljs-attribute">value</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;This does not affect me.&quot;</span></span>,<br>                    &quot;<span class="hljs-attribute">weight</span>&quot;: <span class="hljs-value">-<span class="hljs-number">1</span><br>                </span>},<br>                {<br>                    &quot;<span class="hljs-attribute">value</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;Don&apos;t really know, maybe?&quot;</span></span>,<br>                    &quot;<span class="hljs-attribute">weight</span>&quot;: <span class="hljs-value"><span class="hljs-number">0</span><br>                </span>},<br>                {<br>                    &quot;<span class="hljs-attribute">value</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;Yes, I can use that.&quot;</span></span>,<br>                    &quot;<span class="hljs-attribute">weight</span>&quot;: <span class="hljs-value"><span class="hljs-number">1</span><br>                </span>}<br>            ]<br>        </span>},<br>        {<br>            &quot;<span class="hljs-attribute">tech</span>&quot;: <span class="hljs-value"><span class="hljs-literal">true</span></span>,<br>            &quot;<span class="hljs-attribute">text</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;Is this scenario plausible?&quot;</span></span>,<br>            &quot;<span class="hljs-attribute">values</span>&quot;: <span class="hljs-value">[<br>                {<br>                    &quot;<span class="hljs-attribute">value</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;No&quot;</span></span>,<br>                    &quot;<span class="hljs-attribute">weight</span>&quot;: <span class="hljs-value">-<span class="hljs-number">1</span><br>                </span>},<br>                {<br>                    &quot;<span class="hljs-attribute">value</span>&quot;: <span class="hljs-value"><span class="hljs-string">&quot;Yes&quot;</span></span>,<br>                    &quot;<span class="hljs-attribute">weight</span>&quot;: <span class="hljs-value"><span class="hljs-number">1</span><br>                </span>}<br>            ]<br>        </span>}<br>    ]</span>,<br>    &quot;<span class="hljs-attribute">version</span>&quot;: <span class="hljs-value"><span class="hljs-number">2</span><br></span>}
+                      </code></pre>
+                      
+                          </section>
+                      
+                              <section class="json-schema-properties">
+                                  <dl>
+                                          <dt data-property-name="version">
+                                              <span class="json-property-name">version:</span>
+                                              <span class="json-property-type">integer</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                                  <span class="json-property-required"></span>
+                                          </dt>
+                                          <dd>
+                                              <p>The version name of this questionnaire. The version is assigned by the server, where it is incremented by one for each new version posted.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                              </div>
+                                          </dd>
+                                          <dt data-property-name="author">
+                                              <span class="json-property-name">author:</span>
+                                              <span class="json-property-type">string</span>    <span class="json-property-format">(uuid)</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                                  <span class="json-property-required"></span>
+                                          </dt>
+                                          <dd>
+                                              <p>The UUID of the user that created this version of the questionnaire.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                              </div>
+                                          </dd>
+                                          <dt data-property-name="description">
+                                              <span class="json-property-name">description:</span>
+                                              <span class="json-property-type">string</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                          </dt>
+                                          <dd>
+                                              <p>A description of this questionnaire for internal use. This text is not displayed to the front end users.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                              </div>
+                                          </dd>
+                                          <dt data-property-name="explanation">
+                                              <span class="json-property-name">explanation:</span>
+                                              <span class="json-property-type">string</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                                  <span class="json-property-required"></span>
+                                          </dt>
+                                          <dd>
+                                              <p>An explanatory text that is shown to users at the top of the questionnaire.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                              </div>
+                                          </dd>
+                                          <dt data-property-name="questions">
+                                              <span class="json-property-name">questions:</span>
+                                              <span class="json-property-type">object[]</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                          </dt>
+                                          <dd>
+                                              <p>The list of questions this questionnaire asks. These might
+                              be classified as technical or non-technical, and usually
+                              only the subset matching the user&#39;s choice should be
+                              displayed.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                                                  <section class="json-schema-array-items">
+                                                                      <span class="json-property-type">    Reference: <a class="json-schema-ref" href="#/definitions/Question">Question</a>
+                                                                      </span>
+                                                                      <span class="json-property-range" title="Value limits"></span>
+                                                                      
+                                                                      <div class="json-inner-schema">
+                                                                          
+                                                                      </div>
+                                                                  </section>                </div>
+                                          </dd>
+                                  </dl>
+                              </section>
+                  </div>
                 </div>
             
                 <div id="definition-User" class="panel panel-definition">
-                        <div class="panel-heading">
-                                <h3 class="panel-title"><a name="/definitions/User"></a>User:
-                                    <span class="json-property-type"><span class="json-property-type">object</span>
+                    <div class="panel-heading">
+                      <h3 class="panel-title">
+                          <a name="/definitions/User"></a>
+                          User:
+                          <span class="json-property-type"><span class="json-property-type">object</span>
                 <span class="json-property-range" title="Value limits"></span>
                 
                 </span>
-                                </h3>
-                        </div>
-                    <div class="panel-body">
-                                <section class="json-schema-description">
-                                    <p>A registered user.</p>
-                            
-                                </section>
-                            
-                                    <section class="json-schema-properties">
-                                        <dl>
-                                                <dt data-property-name="uuid">
-                                                    <span class="json-property-name">uuid:</span>
-                                                    <span class="json-property-type">string</span>    <span class="json-property-format">(uuid)</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                        <span class="json-property-required"></span>
-                                                </dt>
-                                                <dd>
-                                                    <p>The UUID of this user.</p>
-                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                                <dt data-property-name="name">
-                                                    <span class="json-property-name">name:</span>
-                                                    <span class="json-property-type">string</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                </dt>
-                                                <dd>
-                                                    <p>The user&#39;s name, by which she is refered to in the Gui.</p>
-                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                                <dt data-property-name="roles">
-                                                    <span class="json-property-name">roles:</span>
-                                                    <span class="json-property-type">string[]</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                </dt>
-                                                <dd>
-                                                    <p>A list of roles that this user is assigned. These roles form
-                                    the basis for access control, and should thusly be treated
-                                    carefully.</p>
-                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                                        <section class="json-schema-array-items">
-                                                                            <span class="json-property-type">string</span>
-                                                                            <span class="json-property-range" title="Value limits"></span>
-                                                                            
-                                                                            <div class="json-inner-schema">
-                                                                                
-                                                                            </div>
-                                                                        </section>                </div>
-                                                </dd>
-                                                <dt data-property-name="gender">
-                                                    <span class="json-property-name">gender:</span>
-                                                    <span class="json-property-type">string</span>    <span class="json-property-format">(m or f)</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                </dt>
-                                                <dd>
-                                                    <p>The user&#39;s gender. This might be <code>m</code> or <code>f</code>.</p>
-                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                                <dt data-property-name="local">
-                                                    <span class="json-property-name">local:</span>
-                                                    <span class="json-property-type">object</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                </dt>
-                                                <dd>
-                                                    <p>Information about the local-login authentication scheme for this user.</p>
-                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                                <section class="json-schema-properties">
-                                                                    <dl>
-                                                                            <dt data-property-name="email">
-                                                                                <span class="json-property-name">email:</span>
-                                                                                <span class="json-property-type">string</span>    <span class="json-property-format">(email)</span>
-                                                                                <span class="json-property-range" title="Value limits"></span>
-                                                                                
-                                                                            </dt>
-                                                                            <dd>
-                                                                                <p>The email address that this user uses to log in via local login.</p>
-                                                                
-                                                                                <div class="json-inner-schema">
-                                                                                    
-                                                                                </div>
-                                                                            </dd>
-                                                                    </dl>
-                                                                </section>
-                                                    </div>
-                                                </dd>
-                                        </dl>
-                                    </section>
+                      </h3>
                     </div>
+                  <div class="panel-body">
+                          <section class="json-schema-description">
+                              <p>A registered user.</p>
+                      
+                          </section>
+                      
+                              <section class="json-schema-properties">
+                                  <dl>
+                                          <dt data-property-name="uuid">
+                                              <span class="json-property-name">uuid:</span>
+                                              <span class="json-property-type">string</span>    <span class="json-property-format">(uuid)</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                                  <span class="json-property-required"></span>
+                                          </dt>
+                                          <dd>
+                                              <p>The UUID of this user.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                              </div>
+                                          </dd>
+                                          <dt data-property-name="name">
+                                              <span class="json-property-name">name:</span>
+                                              <span class="json-property-type">string</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                          </dt>
+                                          <dd>
+                                              <p>The user&#39;s name, by which she is refered to in the Gui.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                              </div>
+                                          </dd>
+                                          <dt data-property-name="roles">
+                                              <span class="json-property-name">roles:</span>
+                                              <span class="json-property-type">string[]</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                          </dt>
+                                          <dd>
+                                              <p>A list of roles that this user is assigned. These roles form
+                              the basis for access control, and should thusly be treated
+                              carefully.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                                                  <section class="json-schema-array-items">
+                                                                      <span class="json-property-type">string</span>
+                                                                      <span class="json-property-range" title="Value limits"></span>
+                                                                      
+                                                                      <div class="json-inner-schema">
+                                                                          
+                                                                      </div>
+                                                                  </section>                </div>
+                                          </dd>
+                                          <dt data-property-name="gender">
+                                              <span class="json-property-name">gender:</span>
+                                              <span class="json-property-type">string</span>    <span class="json-property-format">(m or f)</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                          </dt>
+                                          <dd>
+                                              <p>The user&#39;s gender. This might be <code>m</code> or <code>f</code>.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                              </div>
+                                          </dd>
+                                          <dt data-property-name="local">
+                                              <span class="json-property-name">local:</span>
+                                              <span class="json-property-type">object</span>
+                                              <span class="json-property-range" title="Value limits"></span>
+                                              
+                                          </dt>
+                                          <dd>
+                                              <p>Information about the local-login authentication scheme for this user.</p>
+                              
+                                              <div class="json-inner-schema">
+                                                  
+                                                          <section class="json-schema-properties">
+                                                              <dl>
+                                                                      <dt data-property-name="email">
+                                                                          <span class="json-property-name">email:</span>
+                                                                          <span class="json-property-type">string</span>    <span class="json-property-format">(email)</span>
+                                                                          <span class="json-property-range" title="Value limits"></span>
+                                                                          
+                                                                      </dt>
+                                                                      <dd>
+                                                                          <p>The email address that this user uses to log in via local login.</p>
+                                                          
+                                                                          <div class="json-inner-schema">
+                                                                              
+                                                                          </div>
+                                                                      </dd>
+                                                              </dl>
+                                                          </section>
+                                              </div>
+                                          </dd>
+                                  </dl>
+                              </section>
+                  </div>
                 </div>
     
   </div>
