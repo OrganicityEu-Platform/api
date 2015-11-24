@@ -50,7 +50,7 @@ definitions:
           carefully.
         type: array
         items:
-          schema: string
+          type: string
       gender:
         description: |
           The user's gender. This might be `m` or `f`.

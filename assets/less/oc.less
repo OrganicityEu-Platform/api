@@ -328,43 +328,6 @@ input[type="submit"] {
 /* The following is specific to API. */
 
 
+@import 'bootprint-swagger.less';
+@import 'bootprint-custom.less';
 
-.panel {
-  &.panel-summary-tag {
-    border-color: @oc-dark-grey;
-
-    & > .panel-heading {
-      color: @oc-dark-grey;
-      background-color: #eee;
-      border-color: @oc-dark-grey;
-    }
-  }
-}
-
-
-
-table.table.swagger--summary {
-  margin-bottom: 0;
-}
-
-dl {
-  dd {
-    margin-left: 6%;
-  }
-}
-
-ul {
-  padding-left: 3%;
-}
-
-.body-content::before {
-  /* font-weight: bold; */
-  color: #555;
-  text-transform: uppercase;
-  content: "Body Schema";
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-bottom: 0.4em;
-  display: block;
-  font-size: 0.95em;
-}
