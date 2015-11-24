@@ -30,6 +30,19 @@ securityDefinitions:
 externalDocs:
   description: More information can be found on the OrganiCity website.
   url: http://www.organicity.eu/
+
+tags:
+  - name: Authentication
+    description: |
+      All endpoints that relate to authentication. These allow for
+      registration, requesting authentication cookies via login (see
+      Security) and invalidating those (via logout).
+  - name: Questionnaires
+    description: |
+      Handling of questionnaires. These revolve around the
+      [Questionnaire Objects](#/definitions/Questionnaire), and allow
+      to review and update them.
+
 definitions:
   User:
     type: object

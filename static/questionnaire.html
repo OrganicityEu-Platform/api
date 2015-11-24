@@ -58,7 +58,10 @@
         
         <h2 id="swagger--summary-tags">Summary</h2>
             <h3 id="tag-Authentication" class="swagger-summary-tag">Tag: Authentication</h3>
-            <p></p>
+            <p><p>All endpoints that relate to authentication. These allow for
+        registration, requesting authentication cookies via login (see
+        Security) and invalidating those (via logout).</p>
+        </p>
         
             <div class="panel panel-tags">
               <div class="panel-body">
@@ -93,7 +96,10 @@
             </div>
         
             <h3 id="tag-Questionnaires" class="swagger-summary-tag">Tag: Questionnaires</h3>
-            <p></p>
+            <p><p>Handling of questionnaires. These revolve around the
+        <a href="#/definitions/Questionnaire">Questionnaire Objects</a>, and allow
+        to review and update them.</p>
+        </p>
         
             <div class="panel panel-tags">
               <div class="panel-body">
@@ -141,19 +147,21 @@
                             </dt>
                            <dl>
                                 <dt class="security-property-name">in:</dt>
-                                <dd class="security-property-type">header</dd>
+                                <dd class="security-property-type"><p>header</p>
+    </dd>
                             </dt>
                            <dl>
                                 <dt class="security-property-name">name:</dt>
-                                <dd class="security-property-type">cookie</dd>
+                                <dd class="security-property-type"><p>cookie</p>
+    </dd>
                             </dt>
                            <dl>
                                 <dt class="security-property-name">description:</dt>
-                                <dd class="security-property-type">The Scenario Tool requires setting up a session prior to
+                                <dd class="security-property-type"><p>The Scenario Tool requires setting up a session prior to
     performing actions that require authorisation. This session is
-    kept in a cookie of name &#x60;connect.sid&#x60;. This cookie can be
+    kept in a cookie of name <code>connect.sid</code>. This cookie can be
     acquired via the various login endpoints described in this
-    document.
+    document.</p>
     </dd>
                             </dt>
                     </section>
@@ -203,12 +211,6 @@
                                 </div>
                                 
                                   <div class="row body-content">
-                                
-                                    <!--  -->
-                                    <!--   $ref: #/definitions/User<br/> -->
-                                    <!--  -->
-                                
-                                
                                     <div class="col-md-6 sw-response-model">
                                           
                                               <div  class="panel panel-definition">
@@ -366,12 +368,6 @@
                                 </div>
                                 
                                   <div class="row body-content">
-                                
-                                    <!--  -->
-                                    <!--   $ref: #/definitions/User<br/> -->
-                                    <!--  -->
-                                
-                                
                                     <div class="col-md-6 sw-response-model">
                                           
                                               <div  class="panel panel-definition">
@@ -569,12 +565,6 @@
                                 </div>
                                 
                                   <div class="row body-content">
-                                
-                                    <!--  -->
-                                    <!--   $ref: #/definitions/Questionnaire<br/> -->
-                                    <!--  -->
-                                
-                                
                                     <div class="col-md-6 sw-response-model">
                                           
                                               <div  class="panel panel-definition">
@@ -688,14 +678,6 @@
                                 </div>
                                 
                                   <div class="row body-content">
-                                
-                                    <!--  -->
-                                    <!--   title: Questionnaire<br/> -->
-                                    <!--  -->
-                                    <!--   $ref: #/definitions/Questionnaire<br/> -->
-                                    <!--  -->
-                                
-                                
                                     <div class="col-md-6 sw-response-model">
                                         
                                             <div id="definition-Questionnaire" class="panel panel-definition">
@@ -811,18 +793,6 @@
                                 </div>
                                 
                                   <div class="row body-content">
-                                
-                                    <!--  -->
-                                    <!--   type: array<br/> -->
-                                    <!--  -->
-                                    <!--   title: Questionnaires<br/> -->
-                                    <!--  -->
-                                    <!--   description: A list of [questionnaire](#/definitions/Questionnaire) objects.<br/> -->
-                                    <!--  -->
-                                    <!--   items.$ref: #/definitions/Questionnaire<br/> -->
-                                    <!--  -->
-                                
-                                
                                     <div class="col-md-6 sw-response-model">
                                         
                                             <div id="definition-Questionnaires" class="panel panel-definition">
