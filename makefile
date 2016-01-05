@@ -2,7 +2,7 @@
 
 
 
-full: static/OrganiCityScenarios.html static/oc.css
+full: static/OrganiCityScenarios.html static/oc.css static/index.html
 
 
 
@@ -17,10 +17,10 @@ static/OrganiCityScenarios.html: raw/OrganiCityScenarios.yaml $(shell find templ
 static/oc.css: assets/less/oc.less $(shell find assets/less)
 	./node_modules/.bin/lessc --source-map=$<.css.map $< $@
 
-
+static/index.html: $(shell find assets/html)
+	cat assets/html/index-header.html partials/base/header.hbs assets/html/index-body.html partials/base/footer.hbs assets/html/index-footer.html > static/index.html
 
 clean:
 	-rm static/*.html
 	-rm static/oc.css
 	-rm static/main.css*
-	-rm .tmp.json
