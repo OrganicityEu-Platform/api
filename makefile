@@ -1,12 +1,16 @@
 
 
+apiFiles=$(shell find raw/ -type f)
+htmlFiles=$(subst raw/,static/,$(apiFiles:.yaml=.html))
 
 
-full: static/OrganiCityScenarios.html static/oc.css static/index.html
+
+doc: static/oc.css static/index.html $(htmlFiles)
 
 
 
-static/OrganiCityScenarios.html: raw/OrganiCityScenarios.yaml $(shell find templates) $(shell find partials)
+
+static/%.html: raw/%.yaml $(shell find templates) $(shell find partials)
 	./node_modules/.bin/swagger-tools validate $<
 	./node_modules/.bin/js-yaml $< > .tmp.json
 	./node_modules/.bin/bootprint swagger -f bootprint.cfg.js .tmp.json static
@@ -24,3 +28,4 @@ clean:
 	-rm static/*.html
 	-rm static/oc.css
 	-rm static/main.css*
+
