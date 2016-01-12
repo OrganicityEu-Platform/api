@@ -1,4 +1,5 @@
-
-swagger/questionnaire.json
-
-node_modules
+/node_modules
+/static/*.html
+/static/main.css*
+/static/oc.css
+/assets/less/*.map

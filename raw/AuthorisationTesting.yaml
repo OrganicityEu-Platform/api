@@ -1,0 +1,178 @@
+swagger: '2.0'
+info:
+  title: OrganiCity Authorisation Testing
+  description: |
+    As users interact with the OrganiCity facility, they need to
+    perform tasks that may not be available to any user, but only to a
+    specific set. These are restricted by access rules, which are in
+    turn enforced by an authorisation server.
+
+    This specification describes the endpoints that OC facility
+    services can use to query a users information and permissions.
+
+    ## Authentication Tokens
+
+    All users of the OrganiCity facility will authenticate to
+    OrganiCity services via an authentication token. This holds true
+    for all communication that requests a protected functionality,
+    especially, but not limited to the following:
+
+    - A human user requesting a list of available data sources,
+    - an OrganiCity site manager administering his site's settings,
+    - an experiment run on a smart phone that wants to push new data, or
+    - a OrganiCity service that wants to check if a user is allowed to
+      perform a certain action.
+
+    Usually, this authentication token corresponds to the access token
+    that a user gets issued during the OpenID Connect authentication
+    step, and is thus guaranteed to be unique. Consequently, services
+    and experiments may use this token as an identifier for the user.
+
+
+    ## General Workflow for Authorisation
+
+    We assume that a user (that is, human or technical users) has already
+    [authenticated to the authentication server](Authentication.html),
+    and has been handed an authentication token from his authentication
+    provider (e.g. Facebook).
+
+    When the user now tries to access a protected functionality, she
+    supplies this authentication token as a header of the HTTP request,
+    as specified by the API. For uniformity, we recommend calling this
+    field `Authentication`.
+
+    The functionality provider now checks if this user is authorised
+    to access its functionality by asking the authorisation server,
+    supplying the authentication token and an functionality
+    identifier. For example, if the user `fbuether` wants to read data
+    from a Santander data source, the following authorisation check
+    description may be used:
+
+    ```
+    {
+      "user": "fbuether",
+      "action": "read:Santander"
+    }```
+
+    The authorisation server may in turn ask the authentication server
+    for more detailed information about the user, e.g. to check if the
+    user has a specific role that might grant authorisation, and replies
+    to the functionality provider with a boolean value describing if
+    the user may access the functionality.
+
+
+    ## Functionality Identifiers
+
+    Functionality Identifiers are the single access permissions that a
+    user may be given, and are thus specific to the concrete
+    functionality.  Consequently, the list of permissions that a
+    service may want to check needs to be defined by the service developer
+    himself.
+
+    To the authorisation server, a functionality identifier is just a
+    string without any inherently attached meaning. While the
+    functionality provider needs to think about the meaning of such an
+    identifier, it is also free do to so: [Assignment of
+    permissions](AuthorisationManagement.html) to users is as well
+    agnostic of the permission's meaning, so that again no functional
+    knowledge is required.
+
+
+    ## Future work
+
+    - Checks specific to an object: Check if a user may read a specific
+      data source
+
+
+  version: 0.1.0-development
+schemes:
+  - http
+
+basePath: /auth/v1
+
+# securityDefinitions:
+#   organicityAuthentication:
+#     type: oauth2
+#     scopes:
+#       authorisationCheck: Query this API for authorisation information
+#     flow: accessCode
+#     authorizationUrl: http://auth.organicity.eu/TODO
+#     tokenUrl: http://auth.organicity.eu/TODO
+
+# definitions:
+
+paths:
+  /check:
+    post:
+      summary: Determines if a user is authorised to perform a specific action
+
+      produces:
+        - application/json
+
+      # security:
+      #   - organicityAuthentication:
+      #       - authorisationCheck
+
+      parameters:
+        - name: Authentication
+          in: header
+          required: true
+          description: |
+            As not everybody may check if a user has a specific
+            permission, calls to the authorisation check need to be
+            authorised as well. Usually, this is the authentication
+            token of an OrganiCity service.
+          type: string
+
+        - name: action
+          in: body
+          required: true
+          description: |
+            The request body describes the action in question. This is
+            a JSON record that contains a list of fields describing
+            the action in detail.
+          schema:
+            type: object
+            required:
+              - user
+              - action
+            properties:
+              user:
+                description: |
+                  The user authentication token, as supplied by the
+                  OrganiCity authentication server (TODO: add link).
+                type: string
+              action:
+                description: |
+                  The action that the user should be authorised against.
+
+                  This is a technical identifier of a specific list of
+                  actions available. This list may change over time, as
+                  new OrganiCity services provide new functionality that
+                  requires authorisation.
+                type: string
+
+      responses:
+        200:
+          description: |
+            The authorisation request has been processed successfully,
+            and the result is supplied within the response body as a
+            boolean value.
+
+            Please note that a reply of `200` may not mean that the
+            requested action is allowed, but only that the authorisation
+            check was performed successfully.
+          schema:
+            type: boolean
+            description: |
+              True, if the user is allowed to perform the given action,
+              false otherwise.
+        401:
+          description: |
+            The caller did not provide sufficient authentication to
+            verify that she is allowed to perform authorisation
+            checks.
+        403:
+          description: |
+            The requesting caller is not allowed to perform
+            authorisation checks.
