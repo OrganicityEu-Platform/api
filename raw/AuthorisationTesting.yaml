@@ -23,10 +23,11 @@ info:
     - a OrganiCity service that wants to check if a user is allowed to
       perform a certain action.
 
-    Usually, this authentication token corresponds to the access token
-    that a user gets issued during the OpenID Connect authentication
-    step, and is thus guaranteed to be unique. Consequently, services
-    and experiments may use this token as an identifier for the user.
+    Authentication tokens are granted by the authentication server
+    upon login, and are usually valid only for the current session. To
+    obtain a unique user identifier, a service has to query the
+    [authentication service](Authentication.html) for the user
+    profile.
 
 
     ## General Workflow for Authorisation
@@ -44,13 +45,13 @@ info:
     The functionality provider now checks if this user is authorised
     to access its functionality by asking the authorisation server,
     supplying the authentication token and an functionality
-    identifier. For example, if the user `fbuether` wants to read data
-    from a Santander data source, the following authorisation check
-    description may be used:
+    identifier. For example, if a user with authentication token
+    `Fwxfy9mXE` wants to read data from a Santander data source, the
+    following authorisation check description may be used:
 
     ```
     {
-      "user": "fbuether",
+      "user": "Fwxfy9mXE",
       "action": "read:Santander"
     }```
 
@@ -140,7 +141,7 @@ paths:
               user:
                 description: |
                   The user authentication token, as supplied by the
-                  OrganiCity authentication server (TODO: add link).
+                  OrganiCity [authentication server](Authentication.html).
                 type: string
               action:
                 description: |
