@@ -2,7 +2,7 @@ swagger: '2.0'
 info:
   title: Smartphone Experimentation API
   description: API for interacting with the Smartphone Experimentation Platform
-  version: 0.1.0-testing
+  version: 0.1.1-testing
 host: 195.220.224.231:8080
 schemes:
   - http
@@ -25,30 +25,193 @@ paths:
         - name: sensorRules
           in: query
           type: string
-      summary: Register a new smartphone to the backend.
       description: |
-        The Smartphone endpoint allows the registration of a new device to the backend.
+        Register a new smartphone to the backend.
       tags:
         - smartphone
       responses:
         '200':
-          description: An array of plugins
+          description: The Smartphone description
           schema:
             $ref: '#/definitions/Smartphone'
   /experiment:
     get:
-      summary: List all available experiments
       description: |
-        The Experiment endpoint returns information about the experiments available.
+        List all available experiments.
       tags:
         - experiment
       responses:
         '200':
-          description: An array of experiments
+          description: An list of experiments
           schema:
             type: array
             items:
               $ref: '#/definitions/Experiment'
+    post:
+      parameters:
+        - name: name
+          in: query
+          type: string
+        - name: description
+          in: query
+          type: string
+        - name: urlDescription
+          in: query
+          type: string
+        - name: filename
+          in: query
+          type: string
+        - name: sensorDependencies
+          in: query
+          type: string
+        - name: userId
+          in: query
+          type: string
+      description: |
+        Add a new experiment.
+      tags:
+        - experiment
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                value:
+                  type: object
+                  $ref: '#/definitions/Experiment'
+        '400':
+          description: there is a problem with the provided arguments
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+        '409':
+          description: an experiment with this name already exists for this user
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+  /experiment/{experiment_id}:
+    parameters:
+      - name: experiment_id
+        in: path
+        description: the id of the experiment
+        required: true
+        type: integer
+    get:
+      description: |
+        Get an existing experiment.
+      tags:
+        - experiment
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                value:
+                  type: object
+                  $ref: '#/definitions/Experiment'
+    post:
+      parameters:
+        - name: id
+          in: query
+          type: integer
+        - name: name
+          in: query
+          type: string
+        - name: description
+          in: query
+          type: string
+        - name: urlDescription
+          in: query
+          type: string
+        - name: filename
+          in: query
+          type: string
+        - name: sensorDependencies
+          in: query
+          type: string
+        - name: userId
+          in: query
+          type: string
+      description: |
+        Update an existing experiment.
+      tags:
+        - experiment
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                value:
+                  type: object
+                  $ref: '#/definitions/Experiment'
+        '400':
+          description: there is a problem with the provided arguments
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+        '404':
+          description: an experiment with this id does not exist
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+    delete:
+      description: |
+        Remove a experiment.
+      tags:
+        - experiment
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                value:
+                  type: object
+                  $ref: '#/definitions/Experiment'
+        '404':
+          description: no experiment found with this id
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
   /plugin:
     get:
       description: |
@@ -63,6 +226,25 @@ paths:
             items:
               $ref: '#/definitions/Plugin'
     post:
+      parameters:
+        - name: name
+          in: query
+          type: string
+        - name: contextType
+          in: query
+          type: string
+        - name: runtimeFactoryClass
+          in: query
+          type: string
+        - name: description
+          in: query
+          type: string
+        - name: imageUrl
+          in: query
+          type: string
+        - name: filename
+          in: query
+          type: string
       description: |
         Register a new plugin.
       tags:
@@ -109,6 +291,28 @@ paths:
                 message:
                   type: string
     post:
+      parameters:
+        - name: id
+          in: query
+          type: integer
+        - name: name
+          in: query
+          type: string
+        - name: contextType
+          in: query
+          type: string
+        - name: runtimeFactoryClass
+          in: query
+          type: string
+        - name: description
+          in: query
+          type: string
+        - name: imageUrl
+          in: query
+          type: string
+        - name: filename
+          in: query
+          type: string    
       description: |
         Update the plugin information.
       tags:
@@ -180,9 +384,9 @@ paths:
                   type: integer
                 message:
                   type: string
-  /experiment/data/{experimentId}:
+  /experiment/data/{experiment_id}:
     parameters:
-      - name: experimentId
+      - name: experiment_id
         in: path
         description: the id of the experiment
         required: true
