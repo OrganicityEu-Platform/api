@@ -10,6 +10,31 @@ basePath: /api/v1
 produces:
   - application/json
 paths:
+  /smartphone:
+    post:
+      parameters:
+        - name: deviceType
+          in: query
+          type: string
+        - name: id
+          in: query
+          type: integer
+        - name: phoneId
+          in: query
+          type: integer
+        - name: sensorRules
+          in: query
+          type: string
+      summary: Register a new smartphone to the backend.
+      description: |
+        The Smartphone endpoint allows the registration of a new device to the backend.
+      tags:
+        - smartphone
+      responses:
+        '200':
+          description: An array of plugins
+          schema:
+            $ref: '#/definitions/Smartphone'
   /experiment:
     get:
       summary: List all available experiments
@@ -24,6 +49,137 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Experiment'
+  /plugin:
+    get:
+      description: |
+        List all available plugins.
+      tags:
+        - plugin
+      responses:
+        '200':
+          description: A list of plugins
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Plugin'
+    post:
+      description: |
+        Register a new plugin.
+      tags:
+        - plugin
+      responses:
+        '200':
+          description: The plugin registered
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Plugin'
+  /plugin/{plugin_id}:
+    parameters:
+      - name: plugin_id
+        in: path
+        description: the id of the plugin
+        required: true
+        type: integer
+    get:
+      description: |
+        Get the description of a stored plugin.
+      tags:
+        - plugin
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                value:
+                  type: object
+                  $ref: '#/definitions/Plugin'        
+        '404':
+          description: no plugin found with the given id
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+    post:
+      description: |
+        Update the plugin information.
+      tags:
+        - plugin
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                value:
+                  type: object
+                  $ref: '#/definitions/Plugin'
+        '400':
+          description: there is a problem with the provided arguments
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+        '404':
+          description: a plugin with this contextType does not exist
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+        '409':
+          description: this context type is already reserved by another plugin
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+    delete:
+      description: |
+        Remove a plugin from the system.
+      tags:
+        - plugin
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+              message:
+                type: string
+              value:
+                type: object
+                $ref: '#/definitions/Plugin'
+        '404':
+          description: not found
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
   /experiment/data/{experimentId}:
     parameters:
       - name: experimentId
@@ -100,46 +256,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/ExperimentData'  
-  /plugin:
-    get:
-      summary: List all available plugins
-      description: |
-        The Plugin endpoint returns information about the plugins available.
-      tags:
-        - plugin
-      responses:
-        '200':
-          description: An array of plugins
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Plugin'
-  /smartphone:
-    post:
-      parameters:
-        - name: deviceType
-          in: query
-          type: string
-        - name: id
-          in: query
-          type: integer
-        - name: phoneId
-          in: query
-          type: integer
-        - name: sensorRules
-          in: query
-          type: string
-      summary: Register a new smartphone to the backend.
-      description: |
-        The Smartphone endpoint allows the registration of a new device to the backend.
-      tags:
-        - smartphone
-      responses:
-        '200':
-          description: An array of plugins
-          schema:
-            $ref: '#/definitions/Smartphone'
+              $ref: '#/definitions/ExperimentData'
 definitions:
   Experiment:
     type: object
