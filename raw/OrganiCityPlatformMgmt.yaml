@@ -120,7 +120,7 @@ paths:
       parameters:
         - in: path
           name: siteId
-          description: ID of site that needs to be updated. It MUST be the same id as the one in the body
+          description: ID of site that needs to be updated. It MUST be the same ID as the one in the body
           required: true
           type: string
         - in: body
@@ -156,7 +156,7 @@ paths:
       parameters:
         - in: path
           name: siteId
-          description: site id to delete
+          description: site ID to delete
           required: true
           type: string
       responses:
@@ -295,7 +295,7 @@ paths:
           type: string
         - in: path
           name: serviceId
-          description: ID of service that needs to be updated. It MUST be the same id as the one in the body
+          description: ID of service that needs to be updated. It MUST be the same ID as the one in the body
           required: true
           type: string
         - in: body
@@ -341,7 +341,7 @@ paths:
           type: string
       responses:
         "200":
-          description: serviceremoved
+          description: service removed
         401:
           description: authentication error
           schema:
@@ -396,7 +396,7 @@ definitions:
         description: urn
       since:
         type: string
-        description: site registration date, ie 2014-01-01T00:00Z
+        description: site registration date, i.e. 2014-01-01 T00:00Z
 
   service:
     type: object
@@ -414,7 +414,7 @@ definitions:
         description: implementation used to provide this service
       url:
         type: string
-        description: endpoint url
+        description: endpoint URL
       public:
         type: boolean
   servicedesc:
@@ -430,7 +430,7 @@ definitions:
       id:
         type: integer
         format: int64
-        description: a unique id
+        description: a unique ID
       type:
         type: string
         description: one of context, historic or open_dataset
@@ -439,7 +439,7 @@ definitions:
         description: implementation used to provide this service
       url:
         type: string
-        description: endpoint url
+        description: endpoint URL
       since:
         type: string
         description: service registration date, ie 2014-01-01T00:00Z
