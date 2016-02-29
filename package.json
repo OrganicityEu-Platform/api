@@ -2,9 +2,9 @@
   "name": "organicity-api",
   "version": "0.0.0",
   "dependencies": {
-    "bootprint": "^0.7.8",
+    "bootprint": "^0.8.3",
     "bootprint-swagger": "^0.13.1",
-    "js-yaml": "^3.4.3"
+    "js-yaml": "^3.5.3"
   },
   "devDependencies": {
     "bootstrap": "^3.3.5",
