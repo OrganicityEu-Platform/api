@@ -5,7 +5,7 @@ htmlFiles=$(subst raw/,static/,$(apiFiles:.yaml=.html))
 
 
 
-doc: static/oc.css static/index.html $(htmlFiles)
+doc: static/oc.css $(htmlFiles) static/index.html
 
 
 

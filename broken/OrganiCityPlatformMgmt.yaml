@@ -1,0 +1,102 @@
+swagger: "2.0"
+info:
+  title: OrganiCity Platform Management API
+  description: Connect new sites to the OrganiCity platform, as well as perform the management of its related attributes
+  version: "1.0.0"
+host: organicity.eu
+schemes:
+  - https
+basePath: /v1
+
+securityDefinitions:
+  oauth:
+    type: oauth2
+    flow: implicit
+    authorizationUrl: https://organicity.eu/oauth/authorize/?client_id=CLIENT-ID&redirect_uri=REDIRECT-URI&response_type=token
+    scopes:
+      basic: to read any and all data related to OrganiCity
+security:
+  - oauth:
+    - basic
+
+paths:
+  /sites:
+    get:
+      summary: retrieve the list of sites.
+      description: ""
+      security:
+       - oauth:
+         - basic
+      produces:
+        - application/json
+      responses:
+        200:
+          description: an array of OC sites
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/sitedesc'
+        401:
+          description: authentication error
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+definitions:
+  site:
+    type: object
+    required:
+      - id
+      - name
+      - contact
+    properties:
+      id:
+        type: string
+        description: unique identifier representing a specific OC site. Only lowercases allowed
+      name:
+        type: string
+        description: full site name
+      contact:
+        type: string
+        format: email
+        description: contact email address
+
+  sitedesc:
+    type: object
+    required:
+      - id
+      - name
+      - contact
+      - prefix
+      - since
+    properties:
+      id:
+        type: string
+        description: unique identifier representing a specific OC site. Only lowercases allowed
+      name:
+        type: string
+        description: full site name
+      contact:
+        type: string
+        format: email
+        description: contact email address
+      prefix:
+        type: string
+        description: urn
+      since:
+        type: string
+        description: site registration date, i.e. 2014-01-01 T00:00Z
+
+  Error:
+    type: object
+    required:
+      - code
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
