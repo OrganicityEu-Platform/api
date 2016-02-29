@@ -8,25 +8,11 @@ schemes:
   - https
 basePath: /v1
 
-securityDefinitions:
-  oauth:
-    type: oauth2
-    flow: implicit
-    authorizationUrl: https://organicity.eu/oauth/authorize/?client_id=CLIENT-ID&redirect_uri=REDIRECT-URI&response_type=token
-    scopes:
-      basic: to read any and all data related to OrganiCity
-security:
-  - oauth:
-    - basic
-
 paths:
   /experiments:
     get:
       summary: retrieve the list of experiments running in the OC platform
       description: ""
-      security:
-       - oauth:
-         - basic
       produces:
         - application/json
       responses:
@@ -49,9 +35,6 @@ paths:
     get:
       summary: find experiment by ID
       description: ""
-      security:
-       - oauth:
-         - basic
       operationId: getexperimentById
       produces:
         - application/json
@@ -80,9 +63,6 @@ paths:
     delete:
       summary: deletes an experiment
       description: ""
-      security:
-       - oauth:
-         - basic
       operationId: deleteexperiment
       produces:
         - application/json
@@ -110,9 +90,6 @@ paths:
     get:
       summary: retrieve the list of sources for a given experiment.
       description: ""
-      security:
-       - oauth:
-         - basic
       produces:
         - application/json
       parameters:
@@ -139,9 +116,6 @@ paths:
     post:
       summary: add new sources to a given OrganiCity experiment
       description: ""
-      security:
-       - oauth:
-         - basic
       consumes:
         - application/json
       produces:
@@ -176,9 +150,6 @@ paths:
     get:
       summary: retrieve statistics for a given experiment.
       description: ""
-      security:
-       - oauth:
-         - basic
       produces:
         - application/json
       parameters:

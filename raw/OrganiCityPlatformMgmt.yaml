@@ -8,25 +8,11 @@ schemes:
   - https
 basePath: /v1
 
-securityDefinitions:
-  oauth:
-    type: oauth2
-    flow: implicit
-    authorizationUrl: https://organicity.eu/oauth/authorize/?client_id=CLIENT-ID&redirect_uri=REDIRECT-URI&response_type=token
-    scopes:
-      basic: to read any and all data related to OrganiCity
-security:
-  - oauth:
-    - basic
-
 paths:
   /sites:
     get:
       summary: retrieve the list of sites.
       description: ""
-      security:
-       - oauth:
-         - basic
       produces:
         - application/json
       responses:
@@ -47,9 +33,6 @@ paths:
     post:
       summary: register a new OrganiCity site
       description: ""
-      security:
-       - oauth:
-         - basic
       consumes:
         - application/json
       produces:
@@ -79,9 +62,6 @@ paths:
     get:
       summary: find site by ID
       description: ""
-      security:
-       - oauth:
-         - basic
       operationId: getsiteById
       produces:
         - application/json
@@ -109,9 +89,6 @@ paths:
     post:
       summary: updates a site in the facility
       description: ""
-      security:
-       - oauth:
-         - basic
       operationId: updatesiteWithForm
       consumes:
         - application/json
@@ -147,9 +124,6 @@ paths:
     delete:
       summary: deletes a site
       description: ""
-      security:
-       - oauth:
-         - basic
       operationId: deletesite
       produces:
         - application/json
@@ -177,9 +151,6 @@ paths:
     get:
       summary: retrieve the list of services for a given site.
       description: ""
-      security:
-       - oauth:
-         - basic
       produces:
         - application/json
       parameters:
@@ -206,9 +177,6 @@ paths:
     post:
       summary: register a new OrganiCity service for a given site
       description: ""
-      security:
-       - oauth:
-         - basic
       consumes:
         - application/json
       produces:
@@ -243,9 +211,6 @@ paths:
     get:
       summary: find service by ID
       description: ""
-      security:
-       - oauth:
-         - basic
       operationId: getserviceById
       produces:
         - application/json
@@ -279,9 +244,6 @@ paths:
     post:
       summary: updates a service in the facility
       description: ""
-      security:
-       - oauth:
-         - basic
       operationId: updateserviceWithForm
       consumes:
         - application/json
@@ -322,9 +284,6 @@ paths:
     delete:
       summary: deletes a service
       description: ""
-      security:
-       - oauth:
-         - basic
       operationId: deleteservice
       produces:
         - application/json
