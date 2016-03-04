@@ -1,0 +1,15 @@
+swagger: '2.0'
+info:
+  title: OrganiCity Experimentation Management
+  description: |
+    This document specifies the API to programmatically manage experiments running on the OrganiCity platform.
+    The documentation is initially kept at [https://drive.google.com/open?id=1ozdvIMu4BoOK_CY-EH4g89e2PIiirDf2Nu_0P2ymYkc](https://drive.google.com/open?id=1ozdvIMu4BoOK_CY-EH4g89e2PIiirDf2Nu_0P2ymYkc).
+  version: 0.0.0-placeholder
+paths:
+  /placeholder:
+    get:
+      description: |
+        This is a placeholder, as a Swagger document needs at least one path.
+      responses:
+        200:
+          description: Placeholder response.
