@@ -61,6 +61,9 @@ paths:
         - name: filename
           in: query
           type: string
+        - name: url
+          in: query
+          type: string
         - name: sensorDependencies
           in: query
           type: string
@@ -142,6 +145,9 @@ paths:
           in: query
           type: string
         - name: filename
+          in: query
+          type: string
+        - name: url
           in: query
           type: string
         - name: sensorDependencies
@@ -245,6 +251,9 @@ paths:
         - name: filename
           in: query
           type: string
+        - name: installUrl
+          in: query
+          type: string
       description: |
         Register a new plugin.
       tags:
@@ -313,6 +322,9 @@ paths:
         - name: filename
           in: query
           type: string    
+        - name: installUrl
+          in: query
+          type: string
       description: |
         Update the plugin information.
       tags:
@@ -461,6 +473,28 @@ paths:
             type: array
             items:
               $ref: '#/definitions/ExperimentData'
+  /ranking:
+    parameters:
+      - name: after
+        in: query
+        description: the time to limit user contribution rankings by.
+        required: false
+        type: string
+    get:
+      summary: Retrieve rankings for users that participate in the experiments.
+      description: |
+        Retrieve rankings for users that participate in the experiments. Rankings can be limited by date and experiment.
+        Date can be provided in two formats: "yyyy-MM-dd" and "yyyy-MM-dd'T'HH:mm".
+      tags:
+        - ranking
+        - data
+      responses:
+        '200':
+          description: A sorted array of ranked users.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RankedUserData'
 definitions:
   Experiment:
     type: object
@@ -555,3 +589,10 @@ definitions:
         type: integer
       sensorRules:
         type: string
+  RankedUserData:
+    type: object
+    properties:
+      phoneId:
+        type: integer
+      count:
+        type: integer
