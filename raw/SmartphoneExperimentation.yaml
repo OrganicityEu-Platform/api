@@ -480,10 +480,15 @@ paths:
         description: the time to limit user contribution rankings by.
         required: false
         type: string
+      - name: experimentId
+        in: query
+        description: the id of an existing experiment.
+        required: false
+        type: string
     get:
       summary: Retrieve rankings for users that participate in the experiments.
       description: |
-        Retrieve rankings for users that participate in the experiments. Rankings can be limited by date and experiment.
+        Retrieve rankings for users that participate in the experiments. Rankings can be limited by date and experiment id.
         Date can be provided in two formats: "yyyy-MM-dd" and "yyyy-MM-dd'T'HH:mm".
       tags:
         - ranking
