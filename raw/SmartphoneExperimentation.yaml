@@ -500,6 +500,57 @@ paths:
             type: array
             items:
               $ref: '#/definitions/RankedUserData'
+  /smartphone/{smartphone_id}/badge:
+    parameters:
+      - name: smartphone_id
+        in: path
+        description: the id of the smartphone
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: Retrieve badges gained by the specific smartphone in all experiments.
+      description: |
+        Retrieve the badges for a specific smartphone that participated in any experiment.
+      tags:
+        - badge
+        - smartphone
+      responses:
+        '200':
+          description: A sorted array of badges.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BadgeData'
+  /smartphone/{smartphone_id}/badge/{experiment_id}:
+    parameters:
+      - name: smartphone_id
+        in: path
+        description: the id of the smartphone
+        required: true
+        type: integer
+        format: int32
+      - name: experiment_id
+        in: path
+        description: the id of the experiment
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: Retrieve badges gained by the specific smartphone in a specific experiment.
+      description: |
+        Retrieve the badges for a specific smartphone that participated in a specific experiment.
+      tags:
+        - badge
+        - smartphone
+        - experiment
+      responses:
+        '200':
+          description: A sorted array of ranked users.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BadgeData'
 definitions:
   Experiment:
     type: object
@@ -601,3 +652,16 @@ definitions:
         type: integer
       count:
         type: integer
+  BadgeData:
+    type: object
+    properties:
+      id:
+        type: integer
+      timestamp:
+        type: integer
+      experimentId:
+        type: integer
+      deviceId:
+        type: integer
+      message:
+        type: string
