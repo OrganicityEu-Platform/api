@@ -1,0 +1,667 @@
+swagger: '2.0'
+info:
+  title: Smartphone Experimentation API
+  description: API for interacting with the Smartphone Experimentation Platform
+  version: 0.1.1-testing
+host: 195.220.224.231:8080
+schemes:
+  - http
+basePath: /api/v1
+produces:
+  - application/json
+paths:
+  /smartphone:
+    post:
+      parameters:
+        - name: deviceType
+          in: query
+          type: string
+        - name: id
+          in: query
+          type: integer
+        - name: phoneId
+          in: query
+          type: integer
+        - name: sensorRules
+          in: query
+          type: string
+      description: |
+        Register a new smartphone to the backend.
+      tags:
+        - smartphone
+      responses:
+        '200':
+          description: The Smartphone description
+          schema:
+            $ref: '#/definitions/Smartphone'
+  /experiment:
+    get:
+      description: |
+        List all available experiments.
+      tags:
+        - experiment
+      responses:
+        '200':
+          description: An list of experiments
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Experiment'
+    post:
+      parameters:
+        - name: name
+          in: query
+          type: string
+        - name: description
+          in: query
+          type: string
+        - name: urlDescription
+          in: query
+          type: string
+        - name: filename
+          in: query
+          type: string
+        - name: url
+          in: query
+          type: string
+        - name: sensorDependencies
+          in: query
+          type: string
+        - name: userId
+          in: query
+          type: string
+      description: |
+        Add a new experiment.
+      tags:
+        - experiment
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                value:
+                  type: object
+                  $ref: '#/definitions/Experiment'
+        '400':
+          description: there is a problem with the provided arguments
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+        '409':
+          description: an experiment with this name already exists for this user
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+  /experiment/{experiment_id}:
+    parameters:
+      - name: experiment_id
+        in: path
+        description: the id of the experiment
+        required: true
+        type: integer
+    get:
+      description: |
+        Get an existing experiment.
+      tags:
+        - experiment
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                value:
+                  type: object
+                  $ref: '#/definitions/Experiment'
+    post:
+      parameters:
+        - name: id
+          in: query
+          type: integer
+        - name: name
+          in: query
+          type: string
+        - name: description
+          in: query
+          type: string
+        - name: urlDescription
+          in: query
+          type: string
+        - name: filename
+          in: query
+          type: string
+        - name: url
+          in: query
+          type: string
+        - name: sensorDependencies
+          in: query
+          type: string
+        - name: userId
+          in: query
+          type: string
+      description: |
+        Update an existing experiment.
+      tags:
+        - experiment
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                value:
+                  type: object
+                  $ref: '#/definitions/Experiment'
+        '400':
+          description: there is a problem with the provided arguments
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+        '404':
+          description: an experiment with this id does not exist
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+    delete:
+      description: |
+        Remove a experiment.
+      tags:
+        - experiment
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                value:
+                  type: object
+                  $ref: '#/definitions/Experiment'
+        '404':
+          description: no experiment found with this id
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+  /plugin:
+    get:
+      description: |
+        List all available plugins.
+      tags:
+        - plugin
+      responses:
+        '200':
+          description: A list of plugins
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Plugin'
+    post:
+      parameters:
+        - name: name
+          in: query
+          type: string
+        - name: contextType
+          in: query
+          type: string
+        - name: runtimeFactoryClass
+          in: query
+          type: string
+        - name: description
+          in: query
+          type: string
+        - name: imageUrl
+          in: query
+          type: string
+        - name: filename
+          in: query
+          type: string
+        - name: installUrl
+          in: query
+          type: string
+      description: |
+        Register a new plugin.
+      tags:
+        - plugin
+      responses:
+        '200':
+          description: The plugin registered
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Plugin'
+  /plugin/{plugin_id}:
+    parameters:
+      - name: plugin_id
+        in: path
+        description: the id of the plugin
+        required: true
+        type: integer
+    get:
+      description: |
+        Get the description of a stored plugin.
+      tags:
+        - plugin
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                value:
+                  type: object
+                  $ref: '#/definitions/Plugin'        
+        '404':
+          description: no plugin found with the given id
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+    post:
+      parameters:
+        - name: id
+          in: query
+          type: integer
+        - name: name
+          in: query
+          type: string
+        - name: contextType
+          in: query
+          type: string
+        - name: runtimeFactoryClass
+          in: query
+          type: string
+        - name: description
+          in: query
+          type: string
+        - name: imageUrl
+          in: query
+          type: string
+        - name: filename
+          in: query
+          type: string    
+        - name: installUrl
+          in: query
+          type: string
+      description: |
+        Update the plugin information.
+      tags:
+        - plugin
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+                value:
+                  type: object
+                  $ref: '#/definitions/Plugin'
+        '400':
+          description: there is a problem with the provided arguments
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+        '404':
+          description: a plugin with this contextType does not exist
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+        '409':
+          description: this context type is already reserved by another plugin
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+    delete:
+      description: |
+        Remove a plugin from the system.
+      tags:
+        - plugin
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+              message:
+                type: string
+              value:
+                type: object
+                $ref: '#/definitions/Plugin'
+        '404':
+          description: not found
+          schema:
+            type: object
+            properties:
+                status:
+                  type: integer
+                message:
+                  type: string
+  /experiment/data/{experiment_id}:
+    parameters:
+      - name: experiment_id
+        in: path
+        description: the id of the experiment
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: Retrieve location-aggregated data produced by the experiment.
+      description: |
+        The Experiment Data endpoint returns data generated by the experiment for all the locations covered by the experiment.
+      tags:
+        - experiment
+        - data
+      responses:
+        '200':
+          description: An array of plugins
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ExperimentData'    
+  /entities/{entity_id}/readings:
+    parameters:
+      - name: entity_id
+        in: path
+        description: the uuid of the entity to query for.
+        required: true
+        type: string
+        format: uuid
+      - name: attribute_id
+        in: query
+        description: the observed property of the entity to query for.
+        required: true
+        type: string
+      - name: from
+        in: query
+        description: the starting point in time for the data to be returned.
+        required: true
+        type: string
+      - name: to
+        in: query
+        description: the end point in time for the data to be returned.
+        required: true
+        type: string
+      - name: all_intervals
+        in: query
+        description: fill missing data points.
+        required: false
+        type: boolean
+        enum: [ "true", "false"]
+      - name: rollup
+        in: query
+        description: time-based aggregation of data.
+        required: false
+        type: string
+        enum: [ "1h","1d","1m"]
+      - name: function
+        in: query
+        description: the type of aggregation to perform on the data.
+        required: false
+        type: string
+        enum: [ "avg"]
+    get:
+      summary: Retrieve historical data produced by the entity during its participation in the experiment.
+      description: |
+        The Experiment Data endpoint returns data generated by the experiment for all the locations covered by the experiment.
+      tags:
+        - experiment
+        - data
+      responses:
+        '200':
+          description: An array of plugins
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ExperimentData'
+  /ranking:
+    parameters:
+      - name: after
+        in: query
+        description: the time to limit user contribution rankings by.
+        required: false
+        type: string
+      - name: experimentId
+        in: query
+        description: the id of an existing experiment.
+        required: false
+        type: string
+    get:
+      summary: Retrieve rankings for users that participate in the experiments.
+      description: |
+        Retrieve rankings for users that participate in the experiments. Rankings can be limited by date and experiment id.
+        Date can be provided in two formats: "yyyy-MM-dd" and "yyyy-MM-dd'T'HH:mm".
+      tags:
+        - ranking
+        - data
+      responses:
+        '200':
+          description: A sorted array of ranked users.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RankedUserData'
+  /smartphone/{smartphone_id}/badge:
+    parameters:
+      - name: smartphone_id
+        in: path
+        description: the id of the smartphone
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: Retrieve badges gained by the specific smartphone in all experiments.
+      description: |
+        Retrieve the badges for a specific smartphone that participated in any experiment.
+      tags:
+        - badge
+        - smartphone
+      responses:
+        '200':
+          description: A sorted array of badges.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BadgeData'
+  /smartphone/{smartphone_id}/badge/{experiment_id}:
+    parameters:
+      - name: smartphone_id
+        in: path
+        description: the id of the smartphone
+        required: true
+        type: integer
+        format: int32
+      - name: experiment_id
+        in: path
+        description: the id of the experiment
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: Retrieve badges gained by the specific smartphone in a specific experiment.
+      description: |
+        Retrieve the badges for a specific smartphone that participated in a specific experiment.
+      tags:
+        - badge
+        - smartphone
+        - experiment
+      responses:
+        '200':
+          description: A sorted array of ranked users.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BadgeData'
+definitions:
+  Experiment:
+    type: object
+    properties:
+      id:
+        type: integer
+      description:
+        type: string
+        description: Description of the experiment.
+      urlDescripton:
+        type: string
+        description: A url to the description of the experiment in markdown.
+      timestamp:
+        type: integer
+        description: The time the experiment was added.
+      name:
+        type: string
+        description: The name of the Experiment.
+      contextType:
+        type: string
+        description: The contextType of the experiment.
+      sensorDependencies:
+        type: string
+        description: A comma seperated list of all the required sensor plugins in order to run the experiment.
+      fromTime:
+        type: integer
+      toTime: 
+        type: integer
+      status:
+        type: string
+      userId:
+        type: integer
+        description: The id of the user that deployed the experiment.
+      url:
+        type: string
+        description: The url to download the executable of the experiment.
+      filename: 
+        type: string
+        description: The name of the Expeirment file.
+  Plugin:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+        description: The name of the Plugin.
+      contextType:
+        type: string
+        description: The contextType of the plugin.
+      runtimeFactoryClass:
+        type: string
+        description: The class used to start the execution of the plugin.
+      description:
+        type: string
+        description: Description of the plugin.
+      installUrl:
+        type: string
+        description: The url that can be used to download the plugin.
+      imageUrl:
+        type: string
+        description: A url to an image that describes the plugin.
+      filename: 
+        type: string
+        description: The name of the Expeirment file.
+  ExperimentData:
+    type: object
+    properties:
+      longitude:
+        type: integer
+      latitude:
+        type: integer
+      count:
+        type: integer
+      measurements:
+        type: array
+        items:
+          $ref: '#/definitions/ExperimentDataItem'
+  ExperimentDataItem:
+    type: object
+    properties:
+      value:
+        type: number
+  Smartphone:
+    type: object
+    properties:
+      id:
+        type: integer
+      deviceType:
+        type: string
+      phoneId:
+        type: integer
+      sensorRules:
+        type: string
+  RankedUserData:
+    type: object
+    properties:
+      phoneId:
+        type: integer
+      count:
+        type: integer
+  BadgeData:
+    type: object
+    properties:
+      id:
+        type: integer
+      timestamp:
+        type: integer
+      experimentId:
+        type: integer
+      deviceId:
+        type: integer
+      message:
+        type: string
