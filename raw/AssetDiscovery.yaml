@@ -1,0 +1,53 @@
+swagger: '2.0'
+info:
+  version: 0.0.1
+  title: 'AssetDiscovery'
+host: platform.organicity.eu:9999
+basePath: /v1
+paths:
+  /discovery/{type}:
+    get:
+      description: |
+        Searchs for assets by type...
+      produces: 
+        - application/json
+      parameters:
+        - name: type 
+          in: path
+          description: The type of the asset
+          required: true
+          type: string
+          format: string
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: AssetDiscovery
+            type: object
+            properties:
+              type:
+                type: string
+              reading:
+                type: string
+              score:
+                type: string
+        '404':
+          description: Not Found Response
+          schema:
+            title: AssetDiscovery
+            type: object
+            properties:
+              type:
+                type: string
+              reading:
+                type: string
+        '400':
+          description: Bad Request Response
+          schema:
+            title: AssetDiscovery
+            type: object
+            properties:
+              type:
+                type: string
+              reading:
+                type: string
