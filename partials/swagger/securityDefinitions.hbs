@@ -1,30 +1,40 @@
 {{!--
- Renders the security-section of the HTML-page
- TODO: Parameters
- @api public
+Renders the security-section of the HTML-page
+TODO: Parameters
+@api public
 --}}
 
 {{#if securityDefinitions}}
-    <h2>Security</h2>
+<h2>Security</h2>
 
-    {{#each securityDefinitions}}
-        <div id="security-definition-{{@key}}" class="panel panel-security-definition panel-security-definition-{{type}}">
-            <div class="panel-heading">
-                <h3 class="panel-title"><span class="security-name">{{@key}}</span> <strong><span class="sw-security-definition-{{type}}"></span></strong></h3>
-            </div>
-            <div class="panel-body">
-                <section class="sw-security-properties">
-                    {{#each this}}
-                       <dl>
-                            {{#ifeq @key 'type'}}
-                            {{else}}
-                            <dt class="security-property-name">{{@key}}:</dt>
-                            <dd class="security-property-type">{{md this}}</dd>
-                            {{/ifeq}}
-                        </dt>
-                    {{/each}}
-                </section>
-            </div>
-        </div>
-    {{/each}}
+{{#each securityDefinitions}}
+<div id="security-definition-{{@key}}" class="panel panel-security-definition panel-security-definition-{{type}}">
+  <div class="panel-heading">
+    <h3 class="panel-title"><span class="security-name">{{@key}}</span> <strong><span class="sw-security-definition-{{type}}"></span></strong></h3>
+  </div>
+  <div class="panel-body">
+    <section class="sw-security-properties">
+      {{#each this}}
+      <dl>
+        {{#ifeq @key 'type'}}
+        {{else}}
+        <dt class="security-property-name">{{@key}}:</dt>
+        <dd class="security-property-type">
+          {{#ifeq @key 'scopes'}}
+          <ul>
+            {{#each this}}
+            <li><p><strong>{{@key}}</strong>: {{this}}</p></li>
+            {{/each}}
+          </ul>
+          {{else}}
+          {{this}}
+          {{/ifeq}}
+        </dd>
+        {{/ifeq}}
+      </dt>
+      {{/each}}
+    </section>
+  </div>
+</div>
+{{/each}}
 {{/if}}
