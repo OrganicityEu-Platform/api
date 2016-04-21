@@ -6,7 +6,6 @@ info:
   termsOfService: 'http://www.organicity.eu'
   contact:
     name: Organicity Helpdesk
-  license: {}
 host: 'localhost:12345'
 basePath: /
 tags:
