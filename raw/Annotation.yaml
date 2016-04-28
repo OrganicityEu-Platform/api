@@ -1,0 +1,331 @@
+swagger: '2.0'
+info:
+  description: Organicity Annotation API
+  version: '0.1'
+  title: Organicity Annotation API
+  termsOfService: 'http://www.organicity.eu'
+host: 'localhost:9999'
+basePath: /
+tags:
+  - name: tag-controller
+    description: Tag Controller
+paths:
+  /tagDomains:
+    get:
+      tags:
+        - tag-controller
+      summary: domainFindAll
+      operationId: domainFindAllUsingGET
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TagDomain'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    post:
+      tags:
+        - tag-controller
+      summary: domainCreate
+      operationId: domainCreateUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: domain
+          description: domain
+          required: false
+          schema:
+            $ref: '#/definitions/TagDomain'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/TagDomain'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/tagDomains/{tagDomainUrn}':
+    get:
+      tags:
+        - tag-controller
+      summary: domainFindByUrn
+      operationId: domainFindByUrnUsingGET
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: tagDomainUrn
+          in: path
+          description: tagDomainUrn
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/TagDomain'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    post:
+      tags:
+        - tag-controller
+      summary: domainUpdate
+      operationId: domainUpdateUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: tagDomainUrn
+          in: path
+          description: tagDomainUrn
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/TagDomain'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - tag-controller
+      summary: domainDelete
+      operationId: domainDeleteUsingDELETE
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: tagDomainUrn
+          in: path
+          description: tagDomainUrn
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  '/tagDomains/{tagDomainUrn}/tags':
+    get:
+      tags:
+        - tag-controller
+      summary: domainGetTags
+      operationId: domainGetTagsUsingGET
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: tagDomainUrn
+          in: path
+          description: tagDomainUrn
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Tag'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    post:
+      tags:
+        - tag-controller
+      summary: domainCreateTag
+      operationId: domainCreateTagUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: tagDomainUrn
+          in: path
+          description: tagDomainUrn
+          required: true
+          type: string
+        - in: body
+          name: tag
+          description: tag
+          required: false
+          schema:
+            $ref: '#/definitions/Tag'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/TagDomain'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - tag-controller
+      summary: domainRemoveTag
+      operationId: domainRemoveTagUsingDELETE
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: tagDomainUrn
+          in: path
+          description: tagDomainUrn
+          required: true
+          type: string
+        - in: body
+          name: tagUrn
+          description: tagUrn
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  /tags:
+    get:
+      tags:
+        - tag-controller
+      summary: tags
+      operationId: tagsUsingGET_1
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Tag'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/tags/{tagUrn}':
+    get:
+      tags:
+        - tag-controller
+      summary: tags
+      operationId: tagsUsingGET
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: tagUrn
+          in: path
+          description: tagUrn
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Tag'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+definitions:
+  Service:
+    type: object
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+        format: int64
+      tagDomains:
+        type: array
+        items:
+          $ref: '#/definitions/TagDomain'
+      urn:
+        type: string
+  Tag:
+    type: object
+    properties:
+      domain:
+        $ref: '#/definitions/TagDomain'
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      urn:
+        type: string
+  TagDomain:
+    type: object
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+        format: int64
+      services:
+        type: array
+        items:
+          $ref: '#/definitions/Service'
+      tags:
+        type: array
+        items:
+          $ref: '#/definitions/Tag'
+      urn:
+        type: string
