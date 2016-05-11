@@ -3,7 +3,7 @@ info:
   title: Smartphone Experimentation API
   description: API for interacting with the Smartphone Experimentation Platform
   version: 0.1.1-testing
-host: 195.220.224.231:8080
+host: api.smartphone-experimentation.eu
 schemes:
   - http
 basePath: /api/v1
@@ -218,6 +218,33 @@ paths:
                   type: integer
                 message:
                   type: string
+  /experiment/message:
+    post:
+      parameters:
+        - name: experimentId
+          in: query
+          description: the id of the experiment
+          required: true
+          type: integer
+        - name: message
+          in: query
+          description: the message to send to OC users
+          required: true
+          type: integer
+      description: |
+        Send a message to OC users running the experiment specified.
+      tags:
+        - experiment
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+                status:
+                  status: string
+                code:
+                  type: integer
   /plugin:
     get:
       description: |
@@ -500,6 +527,33 @@ paths:
             type: array
             items:
               $ref: '#/definitions/RankedUserData'
+  /smartphone/message:
+    post:
+      parameters:
+        - name: smartphoneId
+          in: query
+          description: the id of the smartphone
+          required: true
+          type: integer
+        - name: message
+          in: query
+          description: the message to send to OC user
+          required: true
+          type: integer
+      description: |
+        Send a message to the OC user that owns the smartphone specified.
+      tags:
+        - smartphone
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+                status:
+                  type: string
+                code:
+                  type: integer
   /smartphone/{smartphone_id}/badge:
     parameters:
       - name: smartphone_id
