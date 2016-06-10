@@ -1,0 +1,17 @@
+{{#inThrees .}}
+  <div class="row">
+    {{#each .}}
+      <div class="col-sm-6 col-md-4">
+        <div class="apiBlock">
+          <h2>
+            <a href="{{linkTo @key}}">{{name}}</a>
+          </h2>
+
+          <p>
+            {{description}}
+          </p>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+{{/inThrees}}

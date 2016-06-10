@@ -236,13 +236,13 @@ paths:
       tags:
         - experiment
       responses:
-        '200':
+        200:
           description: OK
           schema:
             type: object
             properties:
                 status:
-                  status: string
+                  type: string
                 code:
                   type: integer
   /plugin:

@@ -1,0 +1,84 @@
+swagger: '2.0'
+info:
+  title: OrganiCity Authorisation
+  description: |
+    As users interact with the OrganiCity facility, they need to
+    perform tasks that may not be available to any user, but only to a
+    specific set. These are restricted by access rules, which are in
+    turn enforced by an authorisation server.
+
+    This specification describes the endpoints that OC facility
+    services can use to query a users information and permissions.
+  version: 0.1.0-development
+schemes:
+  - http
+
+# securityDefinitions:
+
+# definitions:
+
+paths:
+  /user/findUser:
+    get:
+      summary: Returns information about a specific user
+      description: |
+        This endpoint provides all known information about a specific
+        user account. This provides more human-readable information
+        about a user as far as it is available, which depends on the
+        user registration source.
+
+        To find a user, this endpoints requires at least one of the
+        possible arguments to uniquely identify the given user.
+
+      produces:
+        - application/json
+
+      parameters:
+        - name: id
+          in: query
+          description: |
+            A valid user identifier, that denotes the user whose
+            information is requested.
+          type: string
+        - name: token
+          in: query
+          description: |
+            When a user signs into OrganiCity, she is handed a
+            authentication token, using which the user preforms calls
+            to other services. This token can be used here.
+          type: string
+        - name: email
+          in: query
+          description: |
+            A valid email address a user signed up with, or has been
+            supplied by its authorisation provider. As this field is
+            not required to be provided, this might not find a user.
+          type: string
+          format: email
+      responses:
+        200:
+          description: |
+            Information for a user with id `id` was found, and is
+            returned in the body.
+          schema:
+            type: object
+            required:
+              - email
+            properties:
+              email:
+                description: |
+                  A user's email address. This is unique among
+                  registered users.
+                type: string
+                format: email
+              username:
+                description: |
+                  A name this user supplied for himself. This can be
+                  used as a display name wherever this user is
+                  referenced.
+                type: string
+        404:
+          description: |
+            Not exactly one user with the given information was not
+            found. This might mean that no or multiple users were
+            found.

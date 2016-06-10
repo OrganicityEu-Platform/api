@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "dependencies": {
     "bootprint": "^0.8.3",
+    "bootprint-base": "^0.7.2",
     "bootprint-swagger": "^0.13.1",
     "js-yaml": "^3.5.3"
   },

@@ -3,3 +3,4 @@
 /static/main.css*
 /static/oc.css
 /assets/less/*.map
+/.tmp.json

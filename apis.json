@@ -1,0 +1,52 @@
+{
+  "Annotation.yaml":
+  {
+    name: "Data Annotations",
+    description: "Data Annotations expand assets and single data points with reliability and trustworthiness information."
+  },
+  "AssetDiscovery.yaml":
+  {
+    name: "Asset Discovery",
+    description: "The Asset Discovery API facilitates exploration and inspection of available assets."
+  },
+  "Authentication.yaml":
+  {
+    name: "Authentication",
+    description: "Provides the mechanism for a tool or experiment to acquire authentication from a user."
+  },
+  "Authorisation.html":
+  {
+    name: "Authorisation",
+    description: "Authorisation enables applications to restrict actions only to permitted users."
+  },
+  "DataSource.yaml":
+  {
+    name: "Data Source",
+    description: "The Data Source API provides access to the data stored in Organicity."
+  },
+  "ExperimentationManagement.yaml":
+  {
+    name: "Experimentation Management",
+    description: "This document specifies the API to programmatically manage experiments running on the OrganiCity platform."
+  },
+  "ExperimentationMonitoring.yaml":
+  {
+    name: "Experimentation Monitoring",
+    description: "Monitorisation of experiments taking place in OrganiCity platform."
+  },
+  "PlatformManagement.yaml":
+  {
+    name: "Platform Management",
+    description: "Connect new sites to the OrganiCity platform, as well as perform the management of its related attributes."
+  },
+  "Scenarios.yaml":
+  {
+    name: "Organicity Scenarios",
+    description: "Interact with Organicity Scenarios to create, update and rate ideas."
+  },
+  "SmartphoneExperimentation.yaml":
+  {
+    name: "Smartphone Experimentation",
+    description: "The API for interacting with the Smartphone Experimentation Platform."
+  }
+}
