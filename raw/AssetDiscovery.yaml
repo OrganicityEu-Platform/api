@@ -18,7 +18,13 @@ info:
     name: Organicity Helpdesk
 host: api.organicity.eu
 basePath: /discovery/v0
-securityDefinitions: {}
+securityDefinitions:
+  oAuth:
+    type: oauth2
+    authorizationUrl: https://accounts.organicity.eu/
+    flow: implicit
+    description: |
+      The Scenario Tool requires setting up an oAuth prior to performing actions that require authorisation.
 paths:
   '/assets?{asset_urn}&{last_updated}&{type}&{sort}&{filter}&{order}&{offset}&{page}&{per}&{sample}&{query}':
     get:
@@ -98,11 +104,15 @@ paths:
         x-is-map: false
         type: string
         description: Return a list of assets based on metadatadatatata search
+      security:
+        - oAuth: []
       responses:
         '200':
           description: ''
           schema:
-            type: object
+            type: array
+            items: 
+              $ref: '#/definitions/Asset'
   '/assets/services':
     get:
       description: 'Return the services the assets belong to'
@@ -114,7 +124,9 @@ paths:
         '200':
           description: ''
           schema:
-            $ref: '#/definitions/ListAssetsServiceresponse'
+            type: array
+            items: 
+              $ref: '#/definitions/Service'
   '/assets/services/{service}':
     get:
       description: 'Return a specific service'
@@ -132,7 +144,7 @@ paths:
         '200':
           description: ''
           schema:
-            $ref: '#/definitions/ListAssetsServiceresponse'
+            $ref: '#/definitions/Service'
   '/assets/sites':
     get:
       description: 'Return the sites the assets belong to'
@@ -144,7 +156,9 @@ paths:
         '200':
           description: ''
           schema:
-            $ref: '#/definitions/ListAssetsSiteresponse'
+            type: array
+            items: 
+              $ref: '#/definitions/Site'
   '/assets/sites/{site}':
     get:
       description: 'Return a specific site'
@@ -162,7 +176,7 @@ paths:
         '200':
           description: ''
           schema:
-            $ref: '#/definitions/ListAssetsSiteresponse'
+            $ref: '#/definitions/Site'
   '/assets/providers':
     get:
       description: 'Return the providers the assets belong to'
@@ -176,7 +190,9 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/ListAllAssetsProvidersresponse'
+              type: array
+              items:
+                $ref: '#/definitions/Provider'
   '/assets/providers/{provider}':
     get:
       description: 'Return a specific provider'
@@ -194,7 +210,7 @@ paths:
         '200':
           description: ''
           schema:
-            $ref: '#/definitions/ListAssetsProviderresponse'
+            $ref: '#/definitions/Provider'
   '/assets/geo/search?{lat}&{long}&{radius}&{query}&{points}&{ip}&{city}':
     get:
       description: 'Return a list of assets filtered by geolocation'
@@ -248,7 +264,9 @@ paths:
         '200':
           description: ''
           schema:
-            $ref: '#/definitions/ListAssetsProviderresponse'
+            type: array
+            items: 
+              $ref: '#/definitions/Asset'
   '/assets/metadata?{query}':
     get:
       description: 'Return a list of assets filtered by specific metadata'
@@ -266,7 +284,9 @@ paths:
         '200':
           description: ''
           schema:
-            $ref: '#/definitions/RetrieveAssetbyURNresponse'
+            type: array
+            items:
+              $ref: '#/definitions/Asset'
   '/assets/{asset_urn}':
     get:
       description: 'Return an assets by URN'
@@ -284,7 +304,7 @@ paths:
         '200':
           description: ''
           schema:
-            $ref: '#/definitions/RetrieveAssetbyURNresponse'
+            $ref: '#/definitions/Asset'
   '/assets/{asset_urn}/data':
     get:
       description: The data model follows NGSI 9/10 model defined in Organicity Assets Directory.
@@ -302,7 +322,7 @@ paths:
         '200':
           description: ''
           schema:
-            $ref: '#/definitions/RetrieveAssetbyURNresponse'
+            $ref: '#/definitions/Asset'
   '/assets/{asset_urn}/data/v2':
     get:
       description: The data model follows NGSI v2 approach removing the original XML legacy. It also groups the data based on the Assets structure defined in D2.1 Section 4.5.1, this improve performance on data parsing and presentation.
@@ -320,7 +340,7 @@ paths:
         '200':
           description: ''
           schema:
-            $ref: '#/definitions/RetrieveAssetbyURNresponse'
+            $ref: '#/definitions/Asset'
   '/assets/{asset_urn}/nearby?{radius}&{city}&{query}&{points}':
     get:
       description: 'Retrieve assets geograpically close to other assets'
@@ -363,10 +383,23 @@ paths:
           description: ''
           schema:
             type: object
+  '/experiments/':
+    get:
+      description: 'Retrieve all the experiments'
+      operationId: List All Experiments_
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Experiment'
   '/experiments/{experiment_id}':
     get:
       description: 'Retrieve an experiment by the experiment id'
-      operationId: List All Experiments_
+      operationId: Retrieve an Experiments_
       produces:
       - application/json
       parameters:
@@ -380,10 +413,10 @@ paths:
         '200':
           description: ''
           schema:
-            $ref: '#/definitions/RetrieveAssetbyExperiment'
+            $ref: '#/definitions/Experiment'
 definitions:
-  ListAssetsServiceresponse:
-    title: List Assets Service response
+  Service:
+    title: Assets Service response
     type: object
     properties:
       id:
@@ -396,8 +429,37 @@ definitions:
     - id
     - type
     - related
-  ListAssetsSiteresponse:
-    title: List Assets Site response
+    example: {
+            "id": "1",
+            "type": "Environmental",
+            "related":
+                {
+                    "cities": 
+                        [
+                            { 
+                                "type": "city",
+                                "id": "1",
+                                "metadata":
+                                    {
+                                        "name": "Barcelona",
+                                        "position": 
+                                        {
+                                            "latitude": 41.3851,
+                                            "longitude": 2.1734
+                                        },
+                                    },
+                                "attributes":
+                                    {
+                                        "assets": 254,
+                                        "online": 135,
+                                        "offline": 119
+                                    }
+                            }   
+                        ]
+                }
+            }
+  Site:
+    title: Assets Site response
     type: object
     properties:
       id:
@@ -416,8 +478,39 @@ definitions:
     - context
     - attributes
     - links
-  ListAllAssetsProvidersresponse:
-    title: List All Assets Providers response
+    example: {
+                "id":"urn:oc:entity:barcelona",
+                "type": "city",
+                "context":
+                    {
+                        "name": "Barcelona",
+                        "position": 
+                            {
+                                "latitude": 41.3851,
+                                "longitude": 2.1734
+                            },
+                    },
+                "attributes":
+                    {
+                        "assets": 254,
+                        "online": 135,
+                        "offline": 119
+                    },
+                "links": 
+                    {
+                        "self": "/assets/sites/urn:oc:entity:barcelona",
+                        "related": 
+                            {
+                                "href": "https://en.wikipedia.org/wiki/Barcelona"
+                            },
+                        "avatar": 
+                            {
+                                "href": "http://cliparts.co/cliparts/LTd/jL4/LTdjL4djc.jpg",
+                            }
+                    },
+            } 
+  Provider:
+    title: Assets Provider response
     type: object
     properties:
       id:
@@ -433,25 +526,45 @@ definitions:
     - type
     - links
     - related
-  ListAssetsProviderresponse:
-    title: List Assets Provider response
-    type: object
-    properties:
-      id:
-        type: string
-      type:
-        type: string
-      links:
-        type: object
-      related:
-        type: object
-    required:
-    - id
-    - type
-    - links
-    - related
-  RetrieveAssetbyURNresponse:
-    title: Retrieve Asset by URN response
+    example: {
+              "id": "135aa31",
+              "type": "phone",
+              "links": 
+                  {
+                      "related": 
+                          {
+                              "href": "http://en.wikipedia.com/wiki/phone"
+                          }
+                  },
+              "related":
+                  {
+                      "cities": 
+                          [
+                              { 
+                                  "type": "city",
+                                  "id": "1",
+                                  "metadata":
+                                      {
+                                          "name": "Barcelona",
+                                          "position": 
+                                              {
+                                                  "latitude": 41.3851,
+                                                  "longitude": 2.1734
+                                              },
+                                      },
+                                  "attributes":
+                                      {
+                                          "assets": 254,
+                                          "online": 135,
+                                          "offline": 119                                            
+                                      }
+                              }   
+                          ]
+                  }
+
+              }
+  Asset:
+    title: Assets response
     type: object
     properties:
       id:
@@ -467,8 +580,69 @@ definitions:
     - type
     - context
     - related
-  RetrieveAssetbyExperiment:
-    title: Retrieve Asset by Experiment response
+    example:  {
+              "id": "urn:oc:entity:london:smartphone:phone:9",
+              "type": "smartphone",
+              "context": {
+                "service": "smartphone",
+                "provider": "phone",
+                "group": null,
+                "name": "9",
+                "last_reading_at": "2016-03-10T18:03:05.000Z",
+                "experiment": "56991853005557f52f277a88",
+                "position": {
+                  "latitude": 51.522096410000003175,
+                  "longitude": -0.10705950999999999662,
+                  "city": "London",
+                  "country_code": "GB",
+                  "country": "Great Britain"
+                }
+              },
+              "related": {
+                "service": {
+                  "type": "smartphone"
+                },
+                "provider": {
+                  "type": "phone"
+                },
+                "group": {
+                  "type": null
+                },
+                "site": {
+                  "id": "urn:oc:entity:london",
+                  "type": "city",
+                  "links": {
+                    "self": "/assets/sites/urn:oc:entity:london",
+                    "related": {
+                      "href": "https://en.wikipedia.org/wiki/London"
+                    },
+                    "avatar": {
+                      "href": "http://cliparts.co/cliparts/LTd/jL4/LTdjL4djc.jpg"
+                    }
+                  },
+                  "position": {
+                    "latitude": 51.522096410000003175,
+                    "longitude": -0.10705950999999999662,
+                    "city": "London",
+                    "country_code": "GB",
+                    "country": "Great Britain"
+                  },
+                  "name": "London"
+                },
+                "experiment": {
+                  "id": "56991853005557f52f277a88",
+                  "type": "audio",
+                  "links": {
+                    "self": "/experiments/56991853005557f52f277a88",
+                    "related": {
+                      "href": "http://www.greatexperiment.org/organicity"
+                    }
+                  }
+                }
+              }
+             } 
+  Experiment:
+    title: Experiment response
     type: object
     properties:
       id:
@@ -504,19 +678,75 @@ definitions:
       assets:
         type: array
         items: 
-          type: object
-          properties:
-            id:
-              type: string
-            type:
-              type: string
-            context:
-              type: object
-            related:
-              type: object
-      # assets:
-      #   $ref: '#/definitions/RetrieveAssetbyURNresponse'
+          $ref: '#/definitions/Asset'
     required:
     - id
     - type
     - context
+    example: {
+                "id": "56991853005557f52f277a88",
+                "type": "audio",
+                "experimenterId": "da41542651515151514141",
+                "registered": "2016-03-10T18:03:05.000Z",
+                "expirationTime": "2016-10-10T18:03:05.000Z",
+                "startingTime": "2016-04-10T18:03:05.000Z",
+                "status": "active",
+                "experimentArea": [{
+                  "position": {
+                    "latitude": 51.522096410000003175,
+                    "longitude": -0.10705950999999999662
+                  }
+                }],
+                "keywords": ["sound", "device", "iot"],
+                "assets": [{
+                  "id": "urn:oc:entity:london:smartphone:phone:9",
+                  "type": "smartphone",
+                  "context": {
+                    "experiment": "56991853005557f52f277a88",
+                    "service": "smartphone",
+                    "provider": "phone",
+                    "group": null,
+                    "name": "9",
+                    "last_reading_at": "2016-03-10T18:03:05.000Z",
+                    "position": {
+                      "latitude": 51.522096410000003175,
+                      "longitude": -0.10705950999999999662,
+                      "city": "London",
+                      "country_code": "GB",
+                      "country": "Great Britain"
+                    }
+                  },
+                  "related": {
+                    "service": {
+                      "type": "smartphone"
+                    },
+                    "provider": {
+                      "type": "phone"
+                    },
+                    "group": {
+                      "type": null
+                    },
+                    "site": {
+                      "id": "urn:oc:entity:london",
+                      "type": "city",
+                      "links": {
+                        "self": "/assets/sites/urn:oc:entity:london",
+                        "related": {
+                          "href": "https://en.wikipedia.org/wiki/London"
+                        },
+                        "avatar": {
+                          "href": "http://cliparts.co/cliparts/LTd/jL4/LTdjL4djc.jpg"
+                        }
+                      },
+                      "position": {
+                        "latitude": 51.522096410000003175,
+                        "longitude": -0.10705950999999999662,
+                        "city": "London",
+                        "country_code": "GB",
+                        "country": "Great Britain"
+                      },
+                      "name": "London"
+                    }
+                  }
+                }]
+              }
