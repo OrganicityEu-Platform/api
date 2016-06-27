@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   version: '0.1'
-  title: Organicity Assets Discovery Service
+  title: Assets Discovery Service
   description: |
     This API aims to create the foundations for a novel urban data observatory in the form of a service that allow various stakeholders (data scientists, city decision makers, organisations and citizens) to explore, with the intent to act, mixed static and real-time urban and social data streams and their exploitation in experimentation.
 
@@ -18,6 +18,9 @@ info:
     name: Organicity Helpdesk
 host: api.organicity.eu
 basePath: /discovery/v0
+schemes:
+  - http
+  - https
 securityDefinitions:
   oAuth:
     type: oauth2
@@ -26,82 +29,73 @@ securityDefinitions:
     description: |
       The Scenario Tool requires setting up an oAuth prior to performing actions that require authorisation.
 paths:
-  '/assets?{asset_urn}&{last_updated}&{type}&{sort}&{filter}&{order}&{offset}&{page}&{per}&{sample}&{query}':
+  '/assets?urn=###&last_updated=###&type=###&sort=###&filter=###&order=###&offset=###&page=###&per=###&sample=###&query':
     get:
       description: 'Retrieve an assets using multiple criteria'
       operationId: List All Assets_
       produces:
       - application/json
+      tags:
+        - Assets
       parameters:
-      - name: asset_urn
-        in: path
-        required: true
-        x-is-map: false
+      - name: urn
+        in: query
+        required: false
         type: string
         description: Filter assets by their Unique Resource Name
       - name: last_updated
-        in: path
-        required: true
-        x-is-map: false
+        in: query
+        required: false
         type: string
         format: date-time
         description: Filter assets by last updated date
       - name: type
-        in: path
-        required: true
-        x-is-map: false
+        in: query
+        required: false
         type: string
         description: Filter access by type
       - name: sort
-        in: path
-        required: true
-        x-is-map: false
+        in: query
+        required: false
         type: string
         description: Sort assets. Supported values are to be defined.
       - name: filter
-        in: path
-        required: true
-        x-is-map: false
+        in: query
+        required: false
         type: string
         description: Filter assets. Supported values are to be defined.
       - name: order
-        in: path
-        required: true
-        x-is-map: false
+        in: query
+        required: false
         type: string
         description: Order assets DESC or ASC.
       - name: offset
-        in: path
-        required: true
-        x-is-map: false
+        in: query
+        required: false
         type: integer
         format: int32
         description: Return assets with the given offset of N results.
       - name: page
-        in: path
-        required: true
-        x-is-map: false
+        in: query
+        required: false
         type: integer
         format: int32
         description: Return assets for the given page.
       - name: per
-        in: path
-        required: true
-        x-is-map: false
+        in: query
+        required: false
         type: integer
         format: int32
         description: Return N assets per page.
       - name: sample
-        in: path
-        required: true
-        x-is-map: false
+        in: query
+        required: false
         type: integer
         format: int32
         description: Return a random sample of N assets.
       - name: query
-        in: path
-        required: true
-        x-is-map: false
+        in: query
+        required: false
         type: string
         description: Return a list of assets based on metadatadatatata search
       security:
@@ -119,6 +113,8 @@ paths:
       operationId: List All Assets Services_
       produces:
       - application/json
+      tags:
+        - Assets
       parameters: []
       responses:
         '200':
@@ -133,11 +129,12 @@ paths:
       operationId: List Assets Service_
       produces:
       - application/json
+      tags:
+        - Assets
       parameters:
       - name: service
         in: path
         required: true
-        x-is-map: false
         type: string
         description: Filter assets by service
       responses:
@@ -151,6 +148,8 @@ paths:
       operationId: List All Assets Sites_
       produces:
       - application/json
+      tags:
+        - Assets
       parameters: []
       responses:
         '200':
@@ -165,11 +164,12 @@ paths:
       operationId: List Assets Site_
       produces:
       - application/json
+      tags:
+        - Assets
       parameters:
       - name: site
         in: path
         required: true
-        x-is-map: false
         type: string
         description: Filter access by site
       responses:
@@ -183,6 +183,8 @@ paths:
       operationId: List All Assets Providers_
       produces:
       - application/json
+      tags:
+        - Assets
       parameters: []
       responses:
         '200':
@@ -190,20 +192,19 @@ paths:
           schema:
             type: array
             items:
-              type: array
-              items:
-                $ref: '#/definitions/Provider'
+              $ref: '#/definitions/Provider'
   '/assets/providers/{provider}':
     get:
       description: 'Return a specific provider'
       operationId: List Assets Provider_
       produces:
       - application/json
+      tags:
+        - Assets
       parameters:
       - name: provider
         in: path
         required: true
-        x-is-map: false
         type: string
         description: Filter access by provider
       responses:
@@ -211,53 +212,51 @@ paths:
           description: ''
           schema:
             $ref: '#/definitions/Provider'
-  '/assets/geo/search?{lat}&{long}&{radius}&{query}&{points}&{ip}&{city}':
+  '/assets/geo/search?lat=###&long=###&radius=###&query=###&points=###&ip=###&city=###':
     get:
       description: 'Return a list of assets filtered by geolocation'
       operationId: Get_Assets geo search_
       produces:
       - application/json
+      tags:
+        - Assets
       parameters:
       - name: lat
-        in: path
-        required: true
-        x-is-map: false
-        type: string
+        in: query
+        required: false
+        type: number
+        format: float
         description: Center latitude for geographical queries
       - name: long
-        in: path
-        required: true
-        x-is-map: false
-        type: string
+        in: query
+        required: false
+        type: number
+        format: float
         description: Center longitude for geographical queries
       - name: radius
-        in: path
-        required: true
-        x-is-map: false
-        type: string
+        in: query
+        required: false
+        type: number
+        format: float
         description: Spherical radius for geographical queries
       - name: query
-        in: path
-        required: true
-        x-is-map: false
+        in: query
+        required: false
         type: string
         description: At the moment only query="polygon" is supported
       - name: points
-        in: path
-        required: true
-        x-is-map: false
+        in: query
+        required: false
         type: string
         description: Array of geographical coordinates
       - name: ip
-        in: path
-        required: true
-        x-is-map: false
+        in: query
+        required: false
         type: string
         description: IP address
       - name: city
-        in: path
-        required: true
-        x-is-map: false
+        in: query
+        required: false
         type: string
         description: "City name for geographical queries"
       responses:
@@ -273,11 +272,12 @@ paths:
       operationId: Get_Assets search metadata_
       produces:
       - application/json
+      tags:
+        - Assets
       parameters:
       - name: query
         in: path
         required: true
-        x-is-map: false
         type: string
         description: metadata query string
       responses:
@@ -293,11 +293,12 @@ paths:
       operationId: Retrieve Asset by URN_
       produces:
       - application/json
+      tags:
+        - Assets
       parameters:
       - name: asset_urn
         in: path
         required: true
-        x-is-map: false
         type: string
         description: Unique Resource Name of the asset
       responses:
@@ -311,84 +312,87 @@ paths:
       operationId: Retrieve Asset data by URN_
       produces:
       - application/json
+      tags:
+        - Assets
       parameters:
       - name: asset_urn
         in: path
         required: true
-        x-is-map: false
         type: string
         description: Unique Resource Name of the asset
       responses:
         '200':
           description: ''
           schema:
-            $ref: '#/definitions/Asset'
+            $ref: '#/definitions/AssetData'
   '/assets/{asset_urn}/data/v2':
     get:
       description: The data model follows NGSI v2 approach removing the original XML legacy. It also groups the data based on the Assets structure defined in D2.1 Section 4.5.1, this improve performance on data parsing and presentation.
       operationId: Retrieve Asset data in NGSI v2 by URN_
       produces:
       - application/json
+      tags:
+        - Assets
       parameters:
       - name: asset_urn
         in: path
         required: true
-        x-is-map: false
         type: string
         description: Unique Resource Name of the asset
       responses:
         '200':
           description: ''
           schema:
-            $ref: '#/definitions/Asset'
-  '/assets/{asset_urn}/nearby?{radius}&{city}&{query}&{points}':
+            $ref: '#/definitions/AssetData_v2'
+  '/assets/{asset_urn}/nearby?radius=###&city=###&query=###&points=###':
     get:
       description: 'Retrieve assets geograpically close to other assets'
       operationId: Search Assets nearby to URN_
       produces:
       - application/json
+      tags:
+        - Assets
       parameters:
       - name: asset_urn
         in: path
         required: true
-        x-is-map: false
         type: string
         description: Unique Resource Name of the asset
       - name: radius
-        in: path
-        required: true
-        x-is-map: false
+        in: query
+        required: false
         type: string
         description: Spherical radius for geographical queries
       - name: query
-        in: path
-        required: true
-        x-is-map: false
+        in: query
+        required: false
         type: string
         description: At the moment only query="polygon" is supported
       - name: points
-        in: path
-        required: true
-        x-is-map: false
+        in: query
+        required: false
         type: string
         description: Array of geographical coordinates. Assets lat and long are taken as starting point.
       - name: city
-        in: path
-        required: true
-        x-is-map: false
+        in: query
+        required: false
         type: string
         description: "City name for geographical queries"
       responses:
         '200':
           description: ''
           schema:
-            type: object
+            type: array
+            items:
+              $ref: '#/definitions/Asset'
   '/experiments/':
     get:
       description: 'Retrieve all the experiments'
       operationId: List All Experiments_
       produces:
       - application/json
+      tags:
+        - Experiments
       responses:
         '200':
           description: ''
@@ -402,11 +406,12 @@ paths:
       operationId: Retrieve an Experiments_
       produces:
       - application/json
+      tags:
+        - Experiments
       parameters:
       - name: experiment_id
         in: path
         required: true
-        x-is-map: false
         type: string
         description: "Unique Resource Name of the experiment"
       responses:
@@ -425,38 +430,27 @@ definitions:
         type: string
       related:
         type: object
-    required:
-    - id
-    - type
-    - related
     example: {
-            "id": "1",
-            "type": "Environmental",
-            "related":
-                {
-                    "cities": 
-                        [
-                            { 
-                                "type": "city",
-                                "id": "1",
-                                "metadata":
-                                    {
-                                        "name": "Barcelona",
-                                        "position": 
-                                        {
-                                            "latitude": 41.3851,
-                                            "longitude": 2.1734
-                                        },
-                                    },
-                                "attributes":
-                                    {
-                                        "assets": 254,
-                                        "online": 135,
-                                        "offline": 119
-                                    }
-                            }   
-                        ]
-                }
+              "id": "1",
+              "type": "Environmental",
+              "related": {
+                "cities": [{
+                  "type": "city",
+                  "id": "1",
+                  "metadata": {
+                    "name": "Barcelona",
+                    "position": {
+                      "latitude": 41.3851,
+                      "longitude": 2.1734
+                    }
+                  },
+                  "attributes": {
+                    "assets": 254,
+                    "online": 135,
+                    "offline": 119
+                  }
+                }]
+              }
             }
   Site:
     title: Assets Site response
@@ -467,17 +461,11 @@ definitions:
       type:
         type: string
       context:
-        type: object
+        $ref: '#/definitions/Context'
       attributes:
         type: object
       links:
         type: object
-    required:
-    - id
-    - type
-    - context
-    - attributes
-    - links
     example: {
                 "id":"urn:oc:entity:barcelona",
                 "type": "city",
@@ -521,11 +509,6 @@ definitions:
         type: object
       related:
         type: object
-    required:
-    - id
-    - type
-    - links
-    - related
     example: {
               "id": "135aa31",
               "type": "phone",
@@ -572,21 +555,15 @@ definitions:
       type:
         type: string
       context:
-        type: object
+        $ref: '#/definitions/Context'
       related:
         type: object
-    required:
-    - id
-    - type
-    - context
-    - related
     example:  {
               "id": "urn:oc:entity:london:smartphone:phone:9",
               "type": "smartphone",
               "context": {
                 "service": "smartphone",
                 "provider": "phone",
-                "group": null,
                 "name": "9",
                 "last_reading_at": "2016-03-10T18:03:05.000Z",
                 "experiment": "56991853005557f52f277a88",
@@ -640,7 +617,273 @@ definitions:
                   }
                 }
               }
-             } 
+             }
+  AssetData:
+    title: Assets Data response
+    description: |
+      The Assets data following the NGSI 9/10 definition
+    type: object
+    properties:
+      id:
+        type: string
+      type:
+        type: string
+      context:
+        $ref: '#/definitions/Context'
+      related:
+        type: object
+      attributes:
+        type: array
+        items:
+          type: object
+          properties:
+            type:
+              type: string
+            name:
+              type: string
+            value:
+              type: string
+            metadata:
+              type: array
+              items: 
+                type: object
+                properties:
+                  type:
+                    type: string
+                  name:
+                    type: string
+                  value:
+                    type: string
+    example:  {
+        "id": "urn:oc:entity:london:smartphone:phone:9",
+        "type": "rawdata",
+        "context": {
+          "service": "smartphone",
+          "provider": "phone",
+          "group": null,
+          "name": "9",
+          "last_reading_at": "2016-03-10T18:03:05.000Z",
+          "recorded_at": "2016-03-10T18:03:05.000Z",
+          "experiment": "56991853005557f52f277a88",
+          "position": {
+            "latitude": 51.522096410000003175,
+            "longitude": -0.10705950999999999662,
+            "city": "London",
+            "country_code": "GB",
+            "country": "Great Britain"
+          }
+        },
+        "attributes": [{
+          "name": "historicdata",
+          "type": "string",
+          "value": "https://api.transportapi.com/v1/",
+          "metadata": [{
+            "name": "internal",
+            "type": "boolean",
+            "value": "false"
+          }, {
+            "name": "documentation",
+            "type": "string",
+            "value": "https://developer.transportapi.com/"
+          }]
+        }, {
+          "name": "historicdata",
+          "type": "string",
+          "value": "http://santander.organicity.eu/entities/",
+          "metadata": [{
+            "name": "internal",
+            "type": "boolean",
+            "value": "true"
+          }]
+        }, {
+          "name": "historicdata",
+          "type": "string",
+          "value": "http://datos.santander.es/resource?ds=sensores-parking-superficie&id=3b9de218-9678-4ebe-9390-b2bad7cfe6cb&ft=XML",
+          "metadata": [{
+            "name": "internal",
+            "type": "boolean",
+            "value": "false"
+          }, {
+            "name": "mediatype",
+            "type": "string",
+            "value": "XML"
+          }]
+        }, {
+          "type": "soundPressureLevel:ambient",
+          "isPattern": "false",
+          "id": "urn:oc:entity:london:enableiot:fixed:02‐00‐86‐76‐97‐26",
+          "attributes": [{
+            "name": "description",
+            "type": "urn:oc:attributeType:description",
+            "value": "Edison - IC Room 5"
+          }, {
+            "name": "soundPressureLevel:ambient",
+            "type": "urn:oc:attributeType:soundPressureLevel:ambient",
+            "value": "60.0",
+            "metadata": [{
+              "name": "unit",
+              "type": "urn:oc:uom:decibel",
+              "value": "decibel"
+            }, {
+              "name": "datatype",
+              "type": "urn:oc:datatype:numeric",
+              "value": "numeric"
+            }]
+          }]
+        }]
+      }
+  AssetData_v2:
+    title: Assets Data response v2
+    description: |
+      **This is in beta, documentation is not stable!**
+      *The data model follows NGSI v2 approach removing the original XML legacy. 
+      It also groups the data based on the Assets structure defined in D2.1 Section 4.5.1, 
+      this improve performance on data parsing and presentation.*
+    type: object
+    properties:
+      id:
+        type: string
+      type:
+        type: string
+      context:
+        $ref: '#/definitions/Context'
+      attributes:
+          properties:
+            historic:
+              type: array
+              items:
+                type: object
+            observations:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  value:
+                    type: string
+                  metadata:
+                    type: object
+    example:  {
+            "id": "urn:oc:entity:london:smartphone:phone:9",
+            "type": "rawdata",
+            "context": {
+              "service": "smartphone",
+              "provider": "phone",
+              "group": null,
+              "name": "9",
+              "last_reading_at": "2016-03-10T18:03:05.000Z",
+              "recorded_at": "2016-03-10T18:03:05.000Z",
+              "experiment": "56991853005557f52f277a88",
+              "position": {
+                "latitude": 51.522096410000003175,
+                "longitude": -0.10705950999999999662,
+                "city": "London",
+                "country_code": "GB",
+                "country": "Great Britain"
+              }
+            },
+            "attributes": {
+              "historic": [{
+                "type": "dataset",
+                "value": "https://api.transportapi.com/v1/",
+                "metadata": {
+                  "internal": {
+                    "value": "false",
+                    "type": "boolean"
+                  },
+                  "documentation": {
+                    "value": "https://developer.transportapi.com/",
+                    "type": "href"
+                  }
+                }
+              }, {
+                "type": "raw",
+                "value": "http://santander.organicity.eu/entities/",
+                "metadata": {
+                  "internal": {
+                    "value": "true",
+                    "type": "boolean"
+                  }
+                }
+              }, {
+                "type": "dataservice",
+                "value": "http://datos.santander.es/resource?ds=sensores-parking-superficie&id=3b9de218-9678-4ebe-9390-b2bad7cfe6cb&ft=XML",
+                "metadata": {
+                  "internal": {
+                    "value": "false",
+                    "type": "boolean"
+                  },
+                  "mediatype": {
+                    "value": "XML",
+                    "type": "d"
+                  }
+                }
+              }],
+              "observations": [{
+                "type": "soundPressureLevel:ambient",
+                "isPattern": "false",
+                "id": "urn:oc:entity:london:enableiot:fixed:02‐00‐86‐76‐97‐26",
+                "attributes": {
+                  "description": {
+                    "value": "Edison - IC Room 5",
+                    "type": "urn:oc:attributeType:description"
+                  },
+                  "soundPressureLevel:ambient": {
+                    "type": "urn:oc:attributeType:soundPressureLevel:ambient",
+                    "value": "60.0",
+                    "metadata": {
+                      "unit": {
+                        "type": "urn:oc:uom:decibel",
+                        "value": "decibel"
+                      },
+                      "datatype": {
+                        "type": "urn:oc:datatype:numeric",
+                        "value": "numeric"
+                      }
+                    }
+                  }
+                }
+              }]
+            }
+          }
+  Context:
+    title: Asset context
+    type: object
+    properties:
+      service: 
+        type: string
+      provider:
+        type: string
+      name: 
+          type: string  
+      location:
+          type: object
+          properties:
+            latitude: 
+              type: number
+              format: float
+            longitude: 
+              type: number
+              format: float
+            city:
+                type: string
+            country_code: 
+                type: string
+            country: 
+                type: string
+    example: {
+              "service": "smartphone",
+              "provider": "phone",
+              "name": "9",
+              "position": {
+                "latitude": 51.522096410000003175,
+                "longitude": -0.10705950999999999662,
+                "city": "London",
+                "country_code": "GB",
+                "country": "Great Britain"
+              }
+            }
   Experiment:
     title: Experiment response
     type: object
@@ -650,7 +893,7 @@ definitions:
       type:
         type: string
       context:
-        type: object
+        $ref: '#/definitions/Context'
       experimenterId:
         type: integer
       registered:
@@ -668,9 +911,11 @@ definitions:
         type: object
         properties:
           latitude: 
-            type: string
+            type: number
+            format: float
           longitude: 
-            type: string
+            type: number
+            format: float
       keywords:
         type: array
         items: 
@@ -679,10 +924,6 @@ definitions:
         type: array
         items: 
           $ref: '#/definitions/Asset'
-    required:
-    - id
-    - type
-    - context
     example: {
                 "id": "56991853005557f52f277a88",
                 "type": "audio",
