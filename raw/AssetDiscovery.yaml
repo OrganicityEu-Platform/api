@@ -130,7 +130,7 @@ paths:
             type: array
             items: 
               $ref: '#/definitions/Service'
-  '/assets/services/{service}':
+  '/assets/service/{service}':
     get:
       description: 'Return a specific service'
       summary: 'Return a specific service'
@@ -144,12 +144,86 @@ paths:
         in: path
         required: true
         type: string
-        description: Filter assets by service
+        description: Filter services by service name
       responses:
         '200':
           description: ''
           schema:
             $ref: '#/definitions/Service'
+  '/assets/types/{types}':
+    get:
+      description: 'Return a specific asset types'
+      summary: 'Return a specific asset type'
+      operationId: List Assets Types_
+      produces:
+      - application/json
+      tags:
+        - Types
+      parameters:
+      - name: types
+        in: path
+        required: true
+        type: string
+        description: Filter assets types by assets type name
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Types'
+  '/assets/types':
+    get:
+      description: 'Return the types the assets belong to'
+      summary: 'Return the types the assets belong to'
+      operationId: List All Assets Types_
+      produces:
+      - application/json
+      tags:
+        - Types
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items: 
+              $ref: '#/definitions/Types'
+  '/assets/attributes/types/{types}':
+    get:
+      description: 'Return a specific attributes types'
+      summary: 'Return a specific attributes type'
+      operationId: List Attributes Types_
+      produces:
+      - application/json
+      tags:
+        - Types
+      parameters:
+      - name: types
+        in: path
+        required: true
+        type: string
+        description: Filter attributes types by attributes type name
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/AttributesTypes'
+  '/assets/attributes/types':
+    get:
+      description: 'Return the attributes types the assets belong to'
+      summary: 'Return the attributes types the assets belong to'
+      operationId: List All Attributes Types_
+      produces:
+      - application/json
+      tags:
+        - Types
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items: 
+              $ref: '#/definitions/AttributesTypes'
   '/assets/sites':
     get:
       description: 'Return the sites the assets belong to'
@@ -181,7 +255,7 @@ paths:
         in: path
         required: true
         type: string
-        description: Filter assets by site
+        description: Filter sites by site name
       responses:
         '200':
           description: ''
@@ -218,7 +292,7 @@ paths:
         in: path
         required: true
         type: string
-        description: Filter assets by provider
+        description: Filter providers by provider name
       responses:
         '200':
           description: ''
@@ -873,6 +947,46 @@ definitions:
                 "country": "Great Britain"
               }
             }
+  Types:
+    title: Asset types
+    type: object
+    properties:
+      type: 
+        type: string
+      description: 
+        type: string
+    example: {
+              "type": "urn:oc:entityType:iotdevice",
+              "description": "An internet connected sensor or actuator.",
+            }
+  AttributesTypes:
+    title: Assets Attributes types
+    type: object
+    properties:
+      type: 
+        type: string
+      description:
+        type: string
+      units: 
+        type: array
+        items: 
+          type: object
+          properties:
+            name: 
+              type: string
+            description: 
+              type: string
+            type: 
+              type: string
+    example: {
+                "type": "chemicalAgentAtmosphericConcentration:airParticles",
+                "description": "An Air Quality Sensor for Particle Matter",
+                "units": [{
+                  "name": "urn:oc:uom:milligramPerCubicMetre",
+                  "description": "The weight in milligrams on a cubic meter volume",
+                  "type": "urn:oc:dataType:numeric"
+                }]
+              }
   Experiment:
     title: Experiment response
     type: object
