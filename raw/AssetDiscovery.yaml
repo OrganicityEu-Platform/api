@@ -53,7 +53,7 @@ paths:
         in: query
         required: false
         type: string
-        description: Filter access by type
+        description: Filter assets by type
       - name: sort
         in: query
         required: false
@@ -171,7 +171,7 @@ paths:
         in: path
         required: true
         type: string
-        description: Filter access by site
+        description: Filter assets by site
       responses:
         '200':
           description: ''
@@ -206,7 +206,7 @@ paths:
         in: path
         required: true
         type: string
-        description: Filter access by provider
+        description: Filter assets by provider
       responses:
         '200':
           description: ''
@@ -247,7 +247,12 @@ paths:
       - name: points
         in: query
         required: false
-        type: string
+        type: array
+        items: 
+          type: array
+          items:
+            type: number
+            format: float
         description: Array of geographical coordinates
       - name: ip
         in: query
