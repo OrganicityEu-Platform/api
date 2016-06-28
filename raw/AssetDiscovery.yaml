@@ -29,9 +29,10 @@ securityDefinitions:
     description: |
       The Scenario Tool requires setting up an oAuth prior to performing actions that require authorisation.
 paths:
-  '/assets?urn=###&last_updated=###&type=###&sort=###&filter=###&order=###&offset=###&page=###&per=###&sample=###&query':
+  '/assets':
     get:
       description: 'Retrieve an assets using multiple criteria'
+      summary: 'Retrieve an assets using multiple criteria'
       operationId: List All Assets_
       produces:
       - application/json
@@ -43,7 +44,7 @@ paths:
         required: false
         type: string
         description: Filter assets by their Unique Resource Name
-      - name: last_updated
+      - name: lastUpdated
         in: query
         required: false
         type: string
@@ -98,6 +99,11 @@ paths:
         required: false
         type: string
         description: Return a list of assets based on metadatadatatata search
+      - name: experimentId
+        in: query
+        required: false
+        type: string
+        description: Return a list of assets used on an experiment
       security:
         - oAuth: []
       responses:
@@ -110,6 +116,7 @@ paths:
   '/assets/services':
     get:
       description: 'Return the services the assets belong to'
+      summary: 'Return the services the assets belong to'
       operationId: List All Assets Services_
       produces:
       - application/json
@@ -126,6 +133,7 @@ paths:
   '/assets/services/{service}':
     get:
       description: 'Return a specific service'
+      summary: 'Return a specific service'
       operationId: List Assets Service_
       produces:
       - application/json
@@ -145,6 +153,7 @@ paths:
   '/assets/sites':
     get:
       description: 'Return the sites the assets belong to'
+      summary: 'Return the sites the assets belong to'
       operationId: List All Assets Sites_
       produces:
       - application/json
@@ -161,6 +170,7 @@ paths:
   '/assets/sites/{site}':
     get:
       description: 'Return a specific site'
+      summary: 'Return a specific site'
       operationId: List Assets Site_
       produces:
       - application/json
@@ -180,6 +190,7 @@ paths:
   '/assets/providers':
     get:
       description: 'Return the providers the assets belong to'
+      summary: 'Return the providers the assets belong to'
       operationId: List All Assets Providers_
       produces:
       - application/json
@@ -196,6 +207,7 @@ paths:
   '/assets/providers/{provider}':
     get:
       description: 'Return a specific provider'
+      summary: 'Return a specific provider'
       operationId: List Assets Provider_
       produces:
       - application/json
@@ -212,9 +224,10 @@ paths:
           description: ''
           schema:
             $ref: '#/definitions/Provider'
-  '/assets/geo/search?lat=###&long=###&radius=###&query=###&points=###&ip=###&city=###':
+  '/assets/geo/search':
     get:
       description: 'Return a list of assets filtered by geolocation'
+      summary: 'Return a list of assets filtered by geolocation'
       operationId: Get_Assets geo search_
       produces:
       - application/json
@@ -271,9 +284,10 @@ paths:
             type: array
             items: 
               $ref: '#/definitions/Asset'
-  '/assets/metadata?{query}':
+  '/assets/metadata':
     get:
       description: 'Return a list of assets filtered by specific metadata'
+      summary: 'Return a list of assets filtered by specific metadata'
       operationId: Get_Assets search metadata_
       produces:
       - application/json
@@ -281,7 +295,7 @@ paths:
         - Assets
       parameters:
       - name: query
-        in: path
+        in: query
         required: true
         type: string
         description: metadata query string
@@ -292,16 +306,17 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Asset'
-  '/assets/{asset_urn}':
+  '/assets/{assetUrn}':
     get:
-      description: 'Return an assets by URN'
+      description: 'Return an assets by Unique Resource Name'
+      summary: 'Return an assets by Unique Resource Name'
       operationId: Retrieve Asset by URN_
       produces:
       - application/json
       tags:
         - Assets
       parameters:
-      - name: asset_urn
+      - name: assetUrn
         in: path
         required: true
         type: string
@@ -311,16 +326,17 @@ paths:
           description: ''
           schema:
             $ref: '#/definitions/Asset'
-  '/assets/{asset_urn}/data':
+  '/assets/{assetUrn}/data':
     get:
-      description: The data model follows NGSI 9/10 model defined in Organicity Assets Directory.
+      description:  The Asset data following the NGSI 9/10 model defined in Organicity Assets Directory.
+      summary: The Asset data by Unique Resource Name
       operationId: Retrieve Asset data by URN_
       produces:
       - application/json
       tags:
         - Assets
       parameters:
-      - name: asset_urn
+      - name: assetUrn
         in: path
         required: true
         type: string
@@ -330,16 +346,17 @@ paths:
           description: ''
           schema:
             $ref: '#/definitions/AssetData'
-  '/assets/{asset_urn}/data/v2':
+  '/assets/{assetUrn}/data/v2':
     get:
-      description: The data model follows NGSI v2 approach removing the original XML legacy. It also groups the data based on the Assets structure defined in D2.1 Section 4.5.1, this improve performance on data parsing and presentation.
+      description: The Asset data following the NGSI v2 approach removing the original XML legacy. It also groups the data based on the Assets structure defined in D2.1 Section 4.5.1, this improve performance on data parsing and presentation.
+      summary: The Asset data by Unique Resource Name. Temp beta model!
       operationId: Retrieve Asset data in NGSI v2 by URN_
       produces:
       - application/json
       tags:
         - Assets
       parameters:
-      - name: asset_urn
+      - name: assetUrn
         in: path
         required: true
         type: string
@@ -349,16 +366,17 @@ paths:
           description: ''
           schema:
             $ref: '#/definitions/AssetData_v2'
-  '/assets/{asset_urn}/nearby?radius=###&city=###&query=###&points=###':
+  '/assets/{assetUrn}/nearby':
     get:
       description: 'Retrieve assets geograpically close to other assets'
+      summary: 'Retrieve assets geograpically'
       operationId: Search Assets nearby to URN_
       produces:
       - application/json
       tags:
         - Assets
       parameters:
-      - name: asset_urn
+      - name: assetUrn
         in: path
         required: true
         type: string
@@ -390,40 +408,6 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Asset'
-  '/experiments/':
-    get:
-      description: 'Retrieve all the experiments'
-      operationId: List All Experiments_
-      produces:
-      - application/json
-      tags:
-        - Experiments
-      responses:
-        '200':
-          description: ''
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Experiment'
-  '/experiments/{experiment_id}':
-    get:
-      description: 'Retrieve an experiment by the experiment id'
-      operationId: Retrieve an Experiments_
-      produces:
-      - application/json
-      tags:
-        - Experiments
-      parameters:
-      - name: experiment_id
-        in: path
-        required: true
-        type: string
-        description: "Unique Resource Name of the experiment"
-      responses:
-        '200':
-          description: ''
-          schema:
-            $ref: '#/definitions/Experiment'
 definitions:
   Service:
     title: Assets Service response
