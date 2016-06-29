@@ -1,0 +1,59 @@
+swagger: '2.0'
+info:
+  title: Organicity Accounts - Permission Component
+  description: |
+    Several functions of Organicity are not available to any user, but
+    require additional permissions to be executed. This component
+    streamlines the handling of reading, editing and assigning roles
+    for specific users.
+  version: 0.1.0-development
+
+schemes:
+  - https
+host: accounts.organicity.eu
+basePath: /permissions/
+
+securityDefinitions:
+  organicityAccounts:
+    type: oauth2
+    scopes:
+      viewRoles: Read assigned and available roles
+      editRoles: Assign and revoke roles from users
+    flow: accessCode
+    authorizationUrl: https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/auth
+    tokenUrl: https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/token
+
+paths:
+  '/user/{userId}/roles':
+    get:
+      summary: |
+        Retrieves commonly visible the roles of a user
+
+      produces:
+        - application/json
+
+      security:
+        - organicityAccounts:
+            - viewRoles
+
+      parameters:
+        - name: userId
+          in: path
+          description: |
+            The identifier of the user, as given by the subject in
+            the users id token (the authentication token handed out
+            by Organicity Accounts on login).
+          required: true
+          type: string
+      responses:
+        200:
+          description: |
+            The request has been processed and the determined roles
+            are returned.
+          schema:
+            type: array
+            items:
+              type: string
+            description: |
+              An array of strings, where each string describes a
+              role assigned to the user.

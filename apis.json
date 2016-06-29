@@ -1,9 +1,4 @@
 {
-  "Annotation.yaml":
-  {
-    name: "Data Annotations",
-    description: "Data Annotations expand assets and single data points with reliability and trustworthiness information."
-  },
   "AssetDiscovery.yaml":
   {
     name: "Asset Discovery",
@@ -14,10 +9,10 @@
     name: "Authentication",
     description: "Provides the mechanism for a tool or experiment to acquire authentication from a user."
   },
-  "Authorisation.html":
+  "AssetDirectory.yaml":
   {
-    name: "Authorisation",
-    description: "Authorisation enables applications to restrict actions only to permitted users."
+    name: "Asset Directory",
+    description: "The Asset Directory API provides access to the Organicity Asset Directory."
   },
   "DataSource.yaml":
   {
@@ -33,6 +28,11 @@
   {
     name: "Experimentation Monitoring",
     description: "Monitorisation of experiments taking place in OrganiCity platform."
+  },
+  "Permissions.yaml":
+  {
+    name: "Permission Component",
+    description: "The Permission Component of Organicity Accounts provides inspection, editing and updating of access permissions."
   },
   "PlatformManagement.yaml":
   {
