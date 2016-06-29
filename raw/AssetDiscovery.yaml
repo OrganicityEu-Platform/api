@@ -16,11 +16,10 @@ info:
   termsOfService: 'http://www.organicity.eu'
   contact:
     name: Organicity Helpdesk
-host: api.organicity.eu
-basePath: /discovery/v0
+host: discovery.organicity.eu
+basePath: /v0
 schemes:
   - http
-  - https
 securityDefinitions:
   oAuth:
     type: oauth2
