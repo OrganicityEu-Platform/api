@@ -31,7 +31,7 @@
   },
   "Permissions.yaml":
   {
-    name: "Permission Component",
+    name: "Permissions",
     description: "The Permission Component of Organicity Accounts provides inspection, editing and updating of access permissions."
   },
   "PlatformManagement.yaml":

@@ -6,7 +6,7 @@ info:
     require additional permissions to be executed. This component
     streamlines the handling of reading, editing and assigning roles
     for specific users.
-  version: 0.1.0-development
+  version: 0.1.1-development
 
 schemes:
   - https
@@ -14,35 +14,82 @@ host: accounts.organicity.eu
 basePath: /permissions/
 
 securityDefinitions:
-  organicityAccounts:
+  OrganicityPermissions:
     type: oauth2
-    scopes:
-      viewRoles: Read assigned and available roles
-      editRoles: Assign and revoke roles from users
+    # scopes:
+    #   viewRoles: Read assigned and available roles
+    #   editRoles: Assign and revoke roles from users
     flow: accessCode
     authorizationUrl: https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/auth
     tokenUrl: https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/token
 
+definitions:
+  Role:
+    title: A single role
+    description: |
+      The actual roles managed by the Organicity Permissions. Roles
+      are represented by strings, which can come in two flavours: A
+      role might be a global role, applying to all of Organicity, or
+      it might be specific to a single tool (a Client from the view of
+      Organicity Accounts). A tool-specific role is always prefixed
+      with the tool name and a colon. For example, the global role to
+      create a new asset is called: `createAsset`. In contrast, the
+      specific role of an administrator of the Scenario Tool is
+      called: `scenarios:administrator`.
+
+      Note that tool-specific roles are only visible to the respective
+      tools. Consequently, when a tool queries the Permission
+      Component for the roles of a single user, only the global roles
+      and the roles specific to the querying tool are returned.
+
+      The following global roles are currently available. For a
+      description of the purpose of these roles, please refer to the
+      [Roles and Permissions in
+      Organicity](https://docs.google.com/document/d/1Owz9RfvL2-jUAFtV_6nIe-jD4qlubq8RFAM2e7CNXoo/edit)
+      document available on Google Drive.
+
+      * `readProtectedAssets`
+      * `createAssets`
+      * `manageAssets`
+      * `readProtectedData`
+      * `createData`
+      * `manageData`
+
+      > TODO: Add remaining roles.
+
+    type: string
+    pattern: "^[a-zA-Z][a-zA-Z0-9-_]+(:[a-zA-Z0-9-_]+)?$"
+    example: createAsset
+
 paths:
-  '/user/{userId}/roles':
+  '/users/{userId}/roles':
     get:
-      summary: |
-        Retrieves commonly visible the roles of a user
+      summary: Retrieves a list of all available roles of a user
+
+      description: |
+        This endpoint retrieves a list of all roles available to the
+        supplied user and visible to the requesting tool. This
+        includes global roles as well as roles specific to the
+        requesting tool.
+
+        Consequently, this call must be authorized with a tool token,
+        i.e. the supplied Bearer Token must belong to tool that
+        requests the list of roles.
 
       produces:
         - application/json
 
-      security:
-        - organicityAccounts:
-            - viewRoles
+      # security:
+      #   - OrganicityPermissions:
+      #       - viewRoles
 
       parameters:
         - name: userId
           in: path
           description: |
-            The identifier of the user, as given by the subject in
-            the users id token (the authentication token handed out
-            by Organicity Accounts on login).
+            The identifier of the user, as given by the subject field
+            in the user's ID Token (the authentication token handed
+            out by Organicity Accounts on login).
           required: true
           type: string
       responses:
@@ -50,10 +97,189 @@ paths:
           description: |
             The request has been processed and the determined roles
             are returned.
+
+            Note that for a user that has no (visible) roles, an empty
+            list is returned.
           schema:
             type: array
             items:
-              type: string
+              $ref: '#/definitions/Role'
             description: |
               An array of strings, where each string describes a
               role assigned to the user.
+          examples:
+            application/json:
+              ["createAsset", "searchAssets", "manageExperiment",
+              "dataReputation:editApplications"]
+        401:
+          description: |
+            The requesting client did not supply identify information
+            (see [Security
+            Definitions](#security-definition-OrganicityPermissions)).
+        403:
+          description: |
+            The requesting client does not have sufficient permissions
+            to inspect the roles of users.
+        404:
+          description: |
+            The supplied user ID does not denote an existing user.
+    post:
+      summary: Add a role to a user
+      description: |
+        This endpoint allows tools to assign roles to a specific user,
+        effectively allowing the user to perform additional actions.
+
+        This call must be authorized with a tool token, i.e. the
+        supplied Bearer Token must belong to tool that performs the
+        call to this endpoint.
+
+      # security:
+      #   - OrganicityPermissions:
+      #       - editRoles
+
+      produces: []
+      parameters:
+        - name: userId
+          in: path
+          description: |
+            The identifier of the user, as given by the subject field
+            in the user's ID Token (the authentication token handed
+            out by Organicity Accounts on login).
+          required: true
+          type: string
+        - name: role
+          in: body
+          description: |
+            The new role to be assigned to the user.
+          required: true
+          schema:
+            $ref: '#/definitions/Role'
+
+      responses:
+        201:
+          description: |
+            The given role was successfully assigned to the specified
+            user. This reply is also returned if the role was already
+            assigned to the user previously; in that case, no changes
+            have been made.
+        401:
+          description: |
+            The requesting client did not supply identify information
+            (see [Security
+            Definitions](#security-definition-OrganicityPermissions)).
+        403:
+          description: |
+            The requesting client does not have sufficient permissions
+            to assign roles to users.
+        404:
+          description: |
+            The supplied user ID does not denote an existing user.
+
+  '/users/{userId}/roles/{roleName}':
+    get:
+      summary: Tests if a user is assigned a specific role
+
+      description: |
+        This endpoint can be used if a tool is not interested in the
+        complete list of assigned roles, but wants to check one
+        specific role for a user.
+
+      produces: []
+
+
+      # security:
+      #   - OrganicityPermissions:
+      #       - viewRoles
+
+      parameters:
+        - name: userId
+          in: path
+          description: |
+            The identifier of the user, as given by the subject field
+            in the user's ID Token (the authentication token handed
+            out by Organicity Accounts on login).
+          required: true
+          type: string
+        - name: roleName
+          in: path
+          description: |
+            The role to be checked for. This needs to adhere to the
+            format specified in the [Role Type
+            Definition](#/definitions/Role).
+          type: string
+          required: true
+
+      responses:
+        200:
+          description: |
+            The role is assigned to the user.
+        404:
+          description: |
+            The user ID does not describe a valid user, or the role
+            name does not denote a valid role.
+        401:
+          description: |
+            The requesting client did not supply identify information
+            (see [Security
+            Definitions](#security-definition-OrganicityPermissions)).
+        403:
+          description: |
+            The requesting client does not have the permissions to
+            inspect roles, or the client tried to inspect permissions
+            that are not visible to the client (e.g. because they
+            belong to a different tool).
+    delete:
+      summary: Removes a specific role from a user
+
+      description: |
+        This endpoint allows a requesting client to remove a role from
+        a user, effectively revoking permissions or access to specific
+        resources.
+
+        This endpoint only allows a requesting tool to manipulate the
+        global roles or the roles specific to itself. A tool cannot
+        remove permissions assigned to the user that are specific to a
+        different tool.
+
+      produces: []
+
+      # security:
+      #   - OrganicityPermissions:
+      #       - viewRoles
+
+      parameters:
+        - name: userId
+          in: path
+          description: |
+            The identifier of the user, as given by the subject field
+            in the user's ID Token (the authentication token handed
+            out by Organicity Accounts on login).
+          required: true
+          type: string
+        - name: roleName
+          in: path
+          description: |
+            The role to be checked for. This needs to adhere to the
+            format specified in the [Role Type
+            Definition](#/definitions/Role).
+          type: string
+          required: true
+
+      responses:
+        200:
+          description: |
+            The given role has been successfully removed from the
+            supplied user.
+        404:
+          description: |
+            The user ID does not describe a valid user, or the role
+            name does not denote a valid role.
+        401:
+          description: |
+            The requesting client did not supply identify information
+            (see [Security
+            Definitions](#security-definition-OrganicityPermissions)).
+        403:
+          description: |
+            The requesting client does not have the permissions to
+            remove roles.
