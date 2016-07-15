@@ -6,7 +6,22 @@ info:
     require additional permissions to be executed. This component
     streamlines the handling of reading, editing and assigning roles
     for specific users.
-  version: 0.1.1-development
+
+    The functionalities in this document are only available to the
+    service accounts of clients, and require appropriate roles
+    themselves. These roles are:
+
+    * `accounts-permissions:readGlobalRoles`, which allows reading
+      global roles assigned to a user.
+    * `accounts-permissions:readLocalRoles`, which allows reading
+      roles specific the requesting client assigned to a user.
+    * `accounts-permissions:editGlobalRoles`, which allows adding or
+      removing global roles to or from a user.
+    * `accounts-permissions:editLocalRoles`, which allows adding or
+      removing roles specific to the requesting client to or from a
+      user.
+
+  version: 0.1.3-development
 
 schemes:
   - https
@@ -46,7 +61,8 @@ definitions:
       description of the purpose of these roles, please refer to the
       [Roles and Permissions in
       Organicity](https://docs.google.com/document/d/1Owz9RfvL2-jUAFtV_6nIe-jD4qlubq8RFAM2e7CNXoo/edit)
-      document available on Google Drive.
+      document available on Google Drive, or the respective [API
+      documentation](https://api.organicity.eu/).
 
       * `readProtectedAssets`
       * `createAssets`
@@ -57,9 +73,42 @@ definitions:
 
       > TODO: Add remaining roles.
 
-    type: string
-    pattern: "^[a-zA-Z][a-zA-Z0-9-_]+(:[a-zA-Z0-9-_]+)?$"
-    example: createAsset
+    type: object
+    required:
+      - role
+    properties:
+      role:
+        type: string
+        description: The name of the role
+        pattern: "^[a-zA-Z][a-zA-Z0-9-_]+(:[a-zA-Z0-9-_]+)?$"
+      experiment:
+        type: string
+        description: |
+          An experiment identifier, denoting the experiment that this
+          specific role applies to.
+
+          This field only needs to be set for roles restricted to
+          specific experiments. If a query specifies a such a role
+          without supplying an experiment id, the query will fail.
+    example:
+      role: createAsset
+
+  Error:
+    title: An error state
+    description: |
+      These objects are returned when the server encounters an error
+      on processing a request, and needs to explain further error
+      details to the requesting client.
+    type: object
+    required:
+      - error
+    properties:
+      error:
+        type: string
+        description: |
+          A detailed explanation on why the request failed.
+    example:
+      { "error": "The requested role does not adhere to the required format." }
 
 paths:
   '/users/{userId}/roles':
@@ -105,12 +154,13 @@ paths:
             items:
               $ref: '#/definitions/Role'
             description: |
-              An array of strings, where each string describes a
+              An array of roles, where each role describes a
               role assigned to the user.
           examples:
             application/json:
-              ["createAsset", "searchAssets", "manageExperiment",
-              "dataReputation:editApplications"]
+              [{ "role": "createAsset"}, { "role": "searchAssets" },
+               { "role": "manageExperiment", "experiment":
+                 "d87c9025-61bf-4a16-83ec-ee66915832a1" }]
         401:
           description: |
             The requesting client did not supply identify information
@@ -150,11 +200,13 @@ paths:
         - name: role
           in: body
           description: |
-            The new role to be assigned to the user.
+            The new role to be assigned to the user. See the [definition
+            of roles](#/definitions/Role) for possible values.
+
+            Example: `{ "role": "createAsset" }`
           required: true
           schema:
             $ref: '#/definitions/Role'
-
       responses:
         201:
           description: |
@@ -162,6 +214,17 @@ paths:
             user. This reply is also returned if the role was already
             assigned to the user previously; in that case, no changes
             have been made.
+        422:
+          description: |
+            The supplied role is not valid. This usually means that an
+            experiment identifier was required as part of the role,
+            but was not supplied.
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              { "error":
+                "An Experiment ID is required for the given role, but was not supplied." }
         401:
           description: |
             The requesting client did not supply identify information
@@ -208,11 +271,30 @@ paths:
             Definition](#/definitions/Role).
           type: string
           required: true
+        - name: experiment
+          in: query
+          description: |
+            This field specifies an experiment to check against. The
+            parameter should only be supplied if the given role
+            requires an experiment identifier.
+          required: false
+          type: string
 
       responses:
         200:
           description: |
             The role is assigned to the user.
+        422:
+          description: |
+            The supplied role is not valid. This usually means that an
+            experiment identifier was required as part of the role,
+            but was not supplied.
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              { "error":
+                "An Experiment ID is required for the given role, but was not supplied." }
         404:
           description: |
             The user ID does not describe a valid user, or the role
@@ -228,6 +310,7 @@ paths:
             inspect roles, or the client tried to inspect permissions
             that are not visible to the client (e.g. because they
             belong to a different tool).
+
     delete:
       summary: Removes a specific role from a user
 
@@ -264,12 +347,30 @@ paths:
             Definition](#/definitions/Role).
           type: string
           required: true
+        - name: experiment
+          in: query
+          description: |
+            This field supplies an experiment identifier if the role
+            to be deleted is specific for an experiment.
+          required: false
+          type: string
 
       responses:
         200:
           description: |
             The given role has been successfully removed from the
             supplied user.
+        422:
+          description: |
+            The supplied role is not valid. This usually means that an
+            experiment identifier was required as part of the role,
+            but was not supplied.
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              { "error":
+                "An Experiment ID is required for the given role, but was not supplied." }
         404:
           description: |
             The user ID does not describe a valid user, or the role
