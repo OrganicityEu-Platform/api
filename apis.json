@@ -4,11 +4,6 @@
     name: "Asset Discovery",
     description: "The Asset Discovery API facilitates exploration and inspection of available assets."
   },
-  "Authentication.yaml":
-  {
-    name: "Authentication",
-    description: "Provides the mechanism for a tool or experiment to acquire authentication from a user."
-  },
   "AssetDirectory.yaml":
   {
     name: "Asset Directory",
