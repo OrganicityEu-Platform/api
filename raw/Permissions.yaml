@@ -156,6 +156,13 @@ paths:
         If you want to query for more users, you have to make multiple
         calls to the api.
 
+        The list of users is always sorted alphabetically with regard
+        to the user name. The offset into a list is thus not
+        guaranteed to always return a list starting with the same
+        user, as new users might shift the offset. However, as long as
+        the list of users itself does not change, the returned list is
+        constant as well.
+
       produces:
         - application/json
 
