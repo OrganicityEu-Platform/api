@@ -20,8 +20,10 @@ info:
     * `accounts-permissions:editLocalRoles`, which allows adding or
       removing roles specific to the requesting client to or from a
       user.
+    * `accounts-permissions:listUsers`, which allows listing of all
+      users.
 
-  version: 0.1.3-development
+  version: 0.2.1-development
 
 schemes:
   - https
@@ -110,7 +112,118 @@ definitions:
     example:
       { "error": "The requested role does not adhere to the required format." }
 
+  UserIdentifier:
+    title: A short user identifier
+    description: |
+      This is a simple record of only user id and name, to group
+      a system-unique identifier together with a human-readable
+      name of a user. This record is deliberatly kept small to
+      not leak any privacy-related information.
+    type: object
+    required:
+      - id
+      - name
+    properties:
+      id:
+        type: string
+        description: |
+          The unique and permanent user identifier.
+      name:
+        type: string
+        description: |
+          The self-appointed user name.
+    example:
+      { "id": "0dfc01f7-a234-4cbc-8e70-7ae361127dd4",
+        "name": "jackie" }
+
 paths:
+  /users:
+    get:
+      summary: Retrieve a list of users
+
+      description: |
+        This endpoint supplies a list of available user names and
+        userIds that can be used for the more detailed actions.
+
+        Due to privacy resons, this endpoint only returns these two
+        fields; more data can only be obtained when the respective
+        user performs a successful login through the client and
+        supplies an ID Token.
+
+        The endpoint always only returns a part of the list of users
+        (paginated), given by the offset (which defaults to `0`) and
+        the page length (which defaults to the maximum value of `50`).
+        If you want to query for more users, you have to make multiple
+        calls to the api.
+
+      produces:
+        - application/json
+
+      parameters:
+        - name: offset
+          in: query
+          description: |
+            The offset in the list of users, given as the amount of
+            users to skip. Defaults to `0`, thus returning the start
+            of the list.
+          required: false
+          type: integer
+          minimum: 0
+          default: 0
+
+        - name: count
+          in: query
+          description: |
+            The maximum amount of users to return as the result of the
+            call. Only values between 1 and 50 are allowed, in order
+            to limit the result size. Defaults to `50`.
+          default: 50
+          type: integer
+          minimum: 1
+          maximum: 50
+          required: false
+
+      responses:
+        200:
+          description: |
+            The requested list of users has been extracted and is
+            returned as the body of the reply. If no users matched
+            the query (i.e. the offset is too high), an empty
+            array may be returned.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/UserIdentifier'
+            description: |
+              An array of user identifiers, along with the
+              human-readable user name.
+          examples:
+            application/json:
+              [{"id":"cf2c1723-3369-4123-8b32-49abe71c0e57",
+              "name":"fbuether"},
+              {"id":"0dfc01f7-a234-4cbc-8e70-7ae361127dd4",
+              "name":"jackie"}]
+        422:
+          description: |
+            The given query parameters where not valid. This might
+            occur if either the given offset or count where negative,
+            or if count was too large.
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              { "error":
+                "The given count is too large." }
+        401:
+          description: |
+            The requesting client did not supply identify information
+            (see [Security
+            Definitions](#security-definition-OrganicityPermissions)).
+        403:
+          description: |
+            The requesting client does not have sufficient permissions
+            to list users.
+
   '/users/{userId}/roles':
     get:
       summary: Retrieves a list of all available roles of a user
