@@ -109,7 +109,7 @@ paths:
             type: array
             items: 
               $ref: '#/definitions/Asset'
-  '/assets/v2':
+  '/assets/ngsiv2':
     get:
       description: 'Retrieve an assets using multiple criteria in NGSI V2'
       summary: 'Retrieve an assets using multiple criteria in NGSI V2'
@@ -193,8 +193,8 @@ paths:
           schema:
             type: array
             items: 
-              $ref: '#/definitions/AssetV2/' 
-  '/assets/{urn}/v2':
+              $ref: '#/definitions/AssetNSGI/' 
+  '/assets/{urn}/ngsiv2':
     get:
       description: 'Retrieve an assets using multiple criteria in NGSI V2'
       summary: 'Retrieve an assets using multiple criteria in NGSI V2'
@@ -218,7 +218,7 @@ paths:
           schema:
             type: array
             items: 
-              $ref: '#/definitions/AssetV2/'                            
+              $ref: '#/definitions/AssetNSGI/'                            
   '/assets/services':
     get:
       description: 'Return the services the assets belong to (under development)'
@@ -549,7 +549,7 @@ paths:
           description: ''
           schema:
             $ref: '#/definitions/AssetData'
-  '/assets/{assetUrn}/data/v2':
+  '/assets/{assetUrn}/data/ngsiv2':
     get:
       description: The Asset data following the NGSI v2 approach removing the original XML legacy. It also groups the data based on the Assets structure defined in D2.1 Section 4.5.1, this improve performance on data parsing and presentation.
       summary: The Asset data by Unique Resource Name.
@@ -569,7 +569,7 @@ paths:
         '200':
           description: ''
           schema:
-            $ref: '#/definitions/AssetData_v2'
+            $ref: '#/definitions/AssetData_NSGI'
   '/assets/{assetUrn}/nearby':
     get:
       description: 'Retrieve assets geograpically close to other assets'
@@ -811,7 +811,7 @@ definitions:
                 }
               }
              }
-  AssetV2:
+  AssetNSGI:
     title: Assets response NGSI V2
     type: object
     example:  {
@@ -982,7 +982,7 @@ definitions:
           }]
         }]
       }
-  AssetData_v2:
+  AssetData_NSGI:
     title: Assets Data response v2
     description: |
       **This is in beta, documentation is not stable!**
