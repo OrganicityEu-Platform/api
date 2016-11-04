@@ -256,7 +256,7 @@ paths:
           description: ''
           schema:
             $ref: '#/definitions/Service'
-  '/assets/types/{types}':
+  '/types/{types}':
     get:
       description: 'Return a specific asset types'
       summary: 'Return a specific asset type'
@@ -276,7 +276,7 @@ paths:
           description: ''
           schema:
             $ref: '#/definitions/Types'
-  '/assets/types':
+  '/types':
     get:
       description: 'Return the types the assets belong to'
       summary: 'Return the types the assets belong to'
@@ -293,43 +293,6 @@ paths:
             type: array
             items: 
               $ref: '#/definitions/Types'
-  '/assets/attributes/types/{types}':
-    get:
-      description: 'Return a specific attributes types'
-      summary: 'Return a specific attributes type'
-      operationId: List Attributes Types_
-      produces:
-      - application/json
-      tags:
-        - Types
-      parameters:
-      - name: types
-        in: path
-        required: true
-        type: string
-        description: Filter attributes types by attributes type name
-      responses:
-        '200':
-          description: ''
-          schema:
-            $ref: '#/definitions/AttributesTypes'
-  '/assets/attributes/types':
-    get:
-      description: 'Return the attributes types the assets belong to'
-      summary: 'Return the attributes types the assets belong to'
-      operationId: List All Attributes Types_
-      produces:
-      - application/json
-      tags:
-        - Types
-      parameters: []
-      responses:
-        '200':
-          description: ''
-          schema:
-            type: array
-            items: 
-              $ref: '#/definitions/AttributesTypes'
   '/assets/sites':
     get:
       description: 'Return the sites the assets belong to'
