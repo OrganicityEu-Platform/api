@@ -345,7 +345,7 @@ paths:
           description: ''
           schema:
             type: array
-            items:
+            items: 
               $ref: '#/definitions/Asset'
   '/assets/experimenters/{experimenterID}':
     get:
@@ -367,7 +367,7 @@ paths:
           description: ''
           schema:
             type: array
-            items:
+            items: 
               $ref: '#/definitions/Asset'
   '/assets/providers':
     get:
