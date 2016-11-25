@@ -95,11 +95,6 @@ paths:
         type: integer
         format: int32
         description: Return a random sample of N assets.
-      - name: experimentId
-        in: query
-        required: false
-        type: string
-        description: Return a list of assets used on an experiment
       security:
         - oAuth: []
       responses:
@@ -180,11 +175,6 @@ paths:
         required: false
         type: string
         description: Return a list of assets based on metadatadatatata search
-      - name: experimentId
-        in: query
-        required: false
-        type: string
-        description: Return a list of assets used on an experiment
       security:
         - oAuth: []
       responses:
@@ -335,6 +325,50 @@ paths:
           description: ''
           schema:
             $ref: '#/definitions/Site'
+  '/assets/experiments/{experimentsID}':
+    get:
+      description: 'Return assets from an experiment'
+      summary: 'Return assets from an experiment'
+      operationId: List Assets Experiment_
+      produces:
+      - application/json
+      tags:
+        - Assets
+      parameters:
+      - name: experimentsID
+        in: path
+        required: true
+        type: string
+        description: Filter assets by experiment
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Asset'
+  '/assets/experimenters/{experimenterID}':
+    get:
+      description: 'Return assets from from an experimenter'
+      summary: 'Return assets from from an experimenter'
+      operationId: List Assets Experimenter_
+      produces:
+      - application/json
+      tags:
+        - Assets
+      parameters:
+      - name: experimenterID
+        in: path
+        required: true
+        type: string
+        description: Filter assets by experimenter
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Asset'
   '/assets/providers':
     get:
       description: 'Return the providers the assets belong to'
@@ -417,7 +451,12 @@ paths:
         required: false
         type: number
         format: float
-        description: Spherical radius for geographical queries
+        description: Spherical radius for geographical queries in radians or when km is true in kilometers
+      - name: km
+        in: query
+        required: false
+        type: boolean
+        description: When true sets radius property to work in kilometers
       - name: query
         in: query
         required: false
