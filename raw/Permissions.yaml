@@ -11,17 +11,15 @@ info:
     service accounts of clients, and require appropriate roles
     themselves. These roles are:
 
-    * `accounts-permissions:readGlobalRoles`, which allows reading
-      global roles assigned to a user.
-    * `accounts-permissions:readLocalRoles`, which allows reading
-      roles specific the requesting client assigned to a user.
-    * `accounts-permissions:editGlobalRoles`, which allows adding or
-      removing global roles to or from a user.
-    * `accounts-permissions:editLocalRoles`, which allows adding or
-      removing roles specific to the requesting client to or from a
-      user.
-    * `accounts-permissions:listUsers`, which allows listing of all
-      users.
+    * `accounts-permissions:readGlobalRoles`, which allows reading global roles assigned to a user.
+    * `accounts-permissions:readLocalRoles`, which allows reading roles specific the requesting client assigned to a user.
+    * `accounts-permissions:editGlobalRoles`, which allows adding or removing global roles to or from a user.
+    * `accounts-permissions:editLocalRoles`, which allows adding or removing roles specific to the requesting client to or from a user.
+    * `accounts-permissions:listUsers`, which allows listing of all users.
+    * `accounts-permissions:findUserByEmail`, which allows to find users by an email.
+    * `accounts-permissions:createClient`, which allows to create a client
+    * `accounts-permissions:readClientRedirectUris`, which allows reading the redirect urls beloning to a client
+    * `accounts-permissions:editClientRedirectUris`, which allows editing the redirect urls beloning to a client
 
   version: 0.2.1-development
 
@@ -31,16 +29,44 @@ host: accounts.organicity.eu
 basePath: /permissions/
 
 securityDefinitions:
-  OrganicityPermissions:
-    type: oauth2
-    # scopes:
-    #   viewRoles: Read assigned and available roles
-    #   editRoles: Assign and revoke roles from users
-    flow: accessCode
-    authorizationUrl: https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/auth
-    tokenUrl: https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/token
-
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+    description: |
+      Every API call must be authorized with a Bearer Token in the HTTP header
+      (Authorization: Bearer <TOKEN>) provided by OrganiCity Accounts -
+      https://accounts.organicity.eu
 definitions:
+  Client:
+    title: An error state
+    description: |
+      This object is needed to create a client.
+    type: object
+    required:
+      - clientName
+      - clientUri
+      - redirectUri
+    properties:
+      clientName:
+        type: string
+        description: |
+          A name for the client
+      clientUri:
+        type: string
+        description: |
+          The URI of a client
+      redirectUri:
+        type: string
+        description: |
+          A redirect URI for a client
+    example:
+      {
+        "clientName": "A client name",
+        "clientUri": "http://localhost",
+        "redirectUri": "http://localhost"
+      }
+
   Role:
     title: A single role
     description: |
@@ -93,7 +119,9 @@ definitions:
           specific experiments. If a query specifies a such a role
           without supplying an experiment id, the query will fail.
     example:
-      role: createAsset
+      {
+        "role": "createAsset"
+      }
 
   Error:
     title: An error state
@@ -133,15 +161,21 @@ definitions:
         description: |
           The self-appointed user name.
     example:
-      { "id": "0dfc01f7-a234-4cbc-8e70-7ae361127dd4",
-        "name": "jackie" }
+      {
+        "id": "0dfc01f7-a234-4cbc-8e70-7ae361127dd4",
+        "name": "jackie"
+      }
 
 paths:
   /users:
     get:
+      security:
+        - Bearer: []
       summary: Retrieve a list of users
 
       description: |
+        Permission `accounts-permissions:listUsers` or/and `accounts-permissions:findUserByEmail` required.
+
         This endpoint supplies a list of available user names and
         userIds that can be used for the more detailed actions.
 
@@ -170,6 +204,8 @@ paths:
         - name: offset
           in: query
           description: |
+            Permission `accounts-permissions:listUsers` required.
+
             The offset in the list of users, given as the amount of
             users to skip. Defaults to `0`, thus returning the start
             of the list.
@@ -181,6 +217,8 @@ paths:
         - name: count
           in: query
           description: |
+            Permission `accounts-permissions:listUsers` required.
+
             The maximum amount of users to return as the result of the
             call. Only values between 1 and 50 are allowed, in order
             to limit the result size. Defaults to `50`.
@@ -190,11 +228,21 @@ paths:
           maximum: 50
           required: false
 
+        - name: email
+          in: query
+          description: |
+            Permission `accounts-permissions:findUserByEmail` required.
+
+            Using this parameter allows to search for a user by an email address.
+            If found, an HTTP 200 with a list containing one user will be returned,
+            otherwise an HTTP 404 NOT FOUND.
+          type: string
+          required: false
       responses:
         200:
           description: |
             The requested list of users has been extracted and is
-            returned as the body of the reply. If no users matched
+            returned as the body of the reply as an array. If no users matched
             the query (i.e. the offset is too high), an empty
             array may be returned.
           schema:
@@ -206,10 +254,15 @@ paths:
               human-readable user name.
           examples:
             application/json:
-              [{"id":"cf2c1723-3369-4123-8b32-49abe71c0e57",
-              "name":"fbuether"},
-              {"id":"0dfc01f7-a234-4cbc-8e70-7ae361127dd4",
-              "name":"jackie"}]
+              [
+                {
+                  "id":"cf2c1723-3369-4123-8b32-49abe71c0e57",
+                  "name":"fbuether"
+                }, {
+                  "id":"0dfc01f7-a234-4cbc-8e70-7ae361127dd4",
+                  "name":"jackie"
+                }
+              ]
         422:
           description: |
             The given query parameters where not valid. This might
@@ -229,28 +282,28 @@ paths:
         403:
           description: |
             The requesting client does not have sufficient permissions
+            (e.g., `accounts-permissions:listUsers` or/and `accounts-permissions:findUserByEmail`)
             to list users.
+        404:
+          description: |
+            Will be returned, if no users will be found. The body will be empty.
 
   '/users/{userId}/roles':
     get:
+      security:
+        - Bearer: []
       summary: Retrieves a list of all available roles of a user
 
       description: |
+        Permission `accounts-permissions:readGlobalRoles` or/and `accounts-permissions:readLocalRoles` required.
+
         This endpoint retrieves a list of all roles available to the
         supplied user and visible to the requesting tool. This
         includes global roles as well as roles specific to the
         requesting tool.
 
-        Consequently, this call must be authorized with a tool token,
-        i.e. the supplied Bearer Token must belong to tool that
-        requests the list of roles.
-
       produces:
         - application/json
-
-      # security:
-      #   - OrganicityPermissions:
-      #       - viewRoles
 
       parameters:
         - name: userId
@@ -289,25 +342,25 @@ paths:
         403:
           description: |
             The requesting client does not have sufficient permissions
+            (e.g., `accounts-permissions:readGlobalRoles` or/and `accounts-permissions:readLocalRoles`)
             to inspect the roles of users.
         404:
           description: |
             The supplied user ID does not denote an existing user.
     post:
+      security:
+        - Bearer: []
       summary: Add a role to a user
       description: |
+        Permission `accounts-permissions:editGlobalRoles` or/and `accounts-permissions:editLocalRoles` required.
+
         This endpoint allows tools to assign roles to a specific user,
         effectively allowing the user to perform additional actions.
+      produces:
+        - application/json
+      consumes:
+      - application/json
 
-        This call must be authorized with a tool token, i.e. the
-        supplied Bearer Token must belong to tool that performs the
-        call to this endpoint.
-
-      # security:
-      #   - OrganicityPermissions:
-      #       - editRoles
-
-      produces: []
       parameters:
         - name: userId
           in: path
@@ -322,8 +375,6 @@ paths:
           description: |
             The new role to be assigned to the user. See the [definition
             of roles](#/definitions/Role) for possible values.
-
-            Example: `{ "role": "createAsset" }`
           required: true
           schema:
             $ref: '#/definitions/Role'
@@ -353,6 +404,7 @@ paths:
         403:
           description: |
             The requesting client does not have sufficient permissions
+            (e.g., Permission `accounts-permissions:editGlobalRoles` or/and `accounts-permissions:editLocalRoles` required.)
             to assign roles to users.
         404:
           description: |
@@ -360,19 +412,19 @@ paths:
 
   '/users/{userId}/roles/{roleName}':
     get:
+      security:
+        - Bearer: []
       summary: Tests if a user is assigned a specific role
 
       description: |
+        Permission `accounts-permissions:readGlobalRoles` or/and `accounts-permissions:readLocalRoles` required.
+
         This endpoint can be used if a tool is not interested in the
         complete list of assigned roles, but wants to check one
         specific role for a user.
 
-      produces: []
-
-
-      # security:
-      #   - OrganicityPermissions:
-      #       - viewRoles
+      produces:
+        - application/json
 
       parameters:
         - name: userId
@@ -426,15 +478,20 @@ paths:
             Definitions](#security-definition-OrganicityPermissions)).
         403:
           description: |
-            The requesting client does not have the permissions to
-            inspect roles, or the client tried to inspect permissions
+            The requesting client does not have sufficient permissions
+            (e.g., `accounts-permissions:readGlobalRoles` or/and `accounts-permissions:readLocalRoles`)
+            to inspect roles, or the client tried to inspect permissions
             that are not visible to the client (e.g. because they
             belong to a different tool).
 
     delete:
+      security:
+        - Bearer: []
       summary: Removes a specific role from a user
 
       description: |
+        Permission `accounts-permissions:editGlobalRoles` or/and `accounts-permissions:editLocalRoles` required.
+
         This endpoint allows a requesting client to remove a role from
         a user, effectively revoking permissions or access to specific
         resources.
@@ -444,11 +501,8 @@ paths:
         remove permissions assigned to the user that are specific to a
         different tool.
 
-      produces: []
-
-      # security:
-      #   - OrganicityPermissions:
-      #       - viewRoles
+      produces:
+        - application/json
 
       parameters:
         - name: userId
@@ -502,5 +556,50 @@ paths:
             Definitions](#security-definition-OrganicityPermissions)).
         403:
           description: |
-            The requesting client does not have the permissions to
-            remove roles.
+            The requesting client does not have sufficient permissions
+            (e.g., `accounts-permissions:editGlobalRoles` or/and `accounts-permissions:editLocalRoles`)
+            to remove roles.
+
+  '/clients':
+    post:
+      security:
+        - Bearer: []
+      summary: Create a client
+      description: |
+        Permission `accounts-permissions:createClient` required.
+
+        This endpoint allows tools to create clients.
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+        - name: client
+          in: body
+          description: |
+            The new client to be created.
+          required: true
+          schema:
+            $ref: '#/definitions/Client'
+      responses :
+        201:
+          description: |
+            The client was successfully created.
+          examples:
+            application/json:
+              {
+                "client_id": "c6e3c4ae-37e8-4662-b201-65ddb9bca6ff",
+                "secret": "e49545ba-48a0-40de-9ad9-ea75ca23f15f"
+              }
+        403:
+          description: |
+            The requesting client does not have sufficient permissions
+            (e.g., `accounts-permissions:createClient`)
+            to create a client.
+        500:
+          description: |
+            An unknown internal error occured.
+
+
+# TODO
+# consumes to all where it fits
