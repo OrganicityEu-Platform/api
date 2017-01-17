@@ -1,0 +1,267 @@
+swagger: '2.0'
+info:
+  title: Federation
+  description: |
+    This document described the Federation API, which must be used to federate assets to the OrganiCity Platform.
+
+    This API can only be called by `clients` with the prefix `ocsite-`, e.g. `ocsite-santander` or `ocsite-london`.
+
+    The Federation API is implmented by the [OC Proxy](https://github.com/OrganicityEu-Platform/oc-proxy/).
+
+    [A tutorial can be found here](https://github.com/OrganicityEu/organicityeu.github.io/blob/master/doc/HowToOcSite.md).
+  version: 0.1.0-development
+
+schemes:
+  - https
+host: dev.orion.organicity.eu
+basePath: /v2/
+
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+    description: |
+      Every API call must be authorized with a Bearer Token in the HTTP header
+      (Authorization: Bearer <TOKEN>) provided by OrganiCity Accounts -
+      https://accounts.organicity.eu
+definitions:
+  AssetCreation:
+    title: An Asset
+    description: |
+      This JSON object represents an asset, if it is created. The minimal required attrbutes are `id`, `type` and `TimeInstant`.
+    type: object
+    required:
+    - id
+    - type
+    - TimeInstant
+    properties:
+      id:
+        type: string
+        description: |
+          Each entity must have an unique identifier (IDs) in the form of
+
+          `urn:oc:entity:[site]:[service]:[provider]:[group]:[entityName]`
+
+          where:
+
+          * `urn:oc:entity:[site]:[service]:[provider]:[group]:[entityName]` must be unique across the whole OC Facility.
+          * `[site]` is representing the federated OC Site (e.g., London, Santander, Aarhus, Experimenters etc.). During the creation of your experiment you are going to acquire the proper prefixes for your assets.
+          * `[service]` is representing a smart city service/application domain for example parking, garbage, environmental etc.
+          * `[provider]` is the logic separator for which service the asset belongs to. For example, in a city, the bus company and waste management company can use common names for different assets, as they use to work in separate silos. In order to avoid that, the `[provider]` name allows us to avoid the duplication of `[entityNames]` within the OC Facility for a particular site.
+          * `[group]`: This is optional. The group part can be used for grouping assets under the same service and provider. It is responsibility of OS sites to maintain proper group keys.
+          * `[entityName]`: The Entity/Device identifier which should be unique at the corresponding OC Site, service and provider. The same applies at the scope of an experiment.
+
+      type:
+        type: string
+        description: |
+          This attribute specifies the type of the asset, e.g., `urn:oc:entityType:weatherstation`
+      TimeInstant:
+        type: object
+        description: |
+          This attribute encodes the time that an update to the asset has been performed. It must be added by the asset provider. The type is `urn:oc:attributeType:ISO8601`, while the format for the value is specified by the ISO8601, where the following format is used (the `Z` at the end means UTC):
+
+          `YYYY-MM-DDTTHH:mm:ss:SSSZ`
+
+          Since Dec 1st 2016, the OC Platform just accept assets which provide a valid TimeInstant-attribute. For the sake of a good platform function all other time formats will be rejected.
+    example:
+      {
+          "id": "urn:oc:entity:london:environmental:hydePark:weatherstation123",
+          "type": "urn:oc:entityType:weatherstation",
+        "TimeInstant": {
+          "type": "urn:oc:attributeType:ISO8601",
+          "value": "2016-10-04T13:45:00.000Z"
+        }
+      }
+
+  AssetUpdate:
+    title: An Asset
+    description: |
+      This JSON object represents an asset, if it is updated. The minimal required attrbute is `TimeInstant`.
+      To update an asset, it is not allowed to use the attributes `id` and `type`.
+    type: object
+    required:
+    - TimeInstant
+    properties:
+      TimeInstant:
+        type: object
+        description: |
+          This attribute encodes the time that an update to the asset has been performed. It must be added by the asset provider. The type is `urn:oc:attributeType:ISO8601`, while the format for the value is specified by the ISO8601, where the following format is used (the `Z` at the end means UTC):
+
+          `YYYY-MM-DDTTHH:mm:ss:SSSZ`
+
+          Since Dec 1st 2016, the OC Platform just accept assets which provide a valid TimeInstant-attribute. For the sake of a good platform function all other time formats will be rejected.
+    example:
+      {
+        "TimeInstant": {
+          "type": "urn:oc:attributeType:ISO8601",
+          "value": "2016-10-04T13:45:00.000Z"
+        }
+      }
+
+  Error:
+    title: Representation of an error
+    description: |
+      These JSON objects are returned when the server encounters an error
+      on processing a request, and needs to explain further error
+      details to the requesting client.
+
+      Possible errors:
+
+      * Client errors:
+        * You are not a client.
+        * ClientID wrong.
+        * ClientID wrong. You`re not an OC site.
+      * HTTP Header errors
+        * HTTP header Content-Type `application/xm` not acceptable. Please provide application/json.
+        * HTTP header Fiware-Service `test` not acceptable.
+      * HTTP Body errors
+        * No HTTP body provided.
+        * HTTP body is not valid JSON.
+      * Asset errors:
+        * Asset.id prefix wrong.
+        * No Asset ID provided.
+        * asset.type prefix must be `urn:oc:entityType:`
+        * Asset attribute TimeInstant in payload not found.
+        * Asset attribute TimeInstant.value not provided.
+        * Asset attribute TimeInstant.value is not in the required format `YYYY-MM-DDTHH:mm:ss.SSSZ`
+      * Generic errors:
+        * The site reached the quota!
+      * ...
+
+    type: object
+    required:
+      - error
+      - description
+    properties:
+      error:
+        type: string
+        description: |
+          The type of th error, e.g., `InternalServerError`
+      description:
+        type: string
+        description: |
+          A detailed explanation on why the request failed.
+    example:
+      {
+        "error": "InternalServerError",
+        "description": "No HTTP body provided."
+      }
+
+paths:
+  '/entities':
+    post:
+      description: |
+        Role `ocsite` required.
+
+        This endpoint must be used to push (e.g. create) new assets into the OC Platform.
+      security:
+        - Bearer: []
+      parameters:
+        - name: fiware-service
+          in: header
+          description: |
+            The API must be called withe HTTP header `fiware-service:organicity`.
+          required: true
+          type: string
+        - name: asset
+          in: body
+          description: |
+            The HTTP body is an asset to be pushed to the OC Platform in JSON format as [described here](https://github.com/OrganicityEu/organicityeu.github.io/blob/master/doc/AssetDataModel.md).
+          required: true
+          schema:
+            $ref: '#/definitions/AssetCreation'
+      consumes:
+      - application/json
+      responses :
+        201:
+          description: |
+            An asset was created successfully. The location header will be set with `Location: /v2/entities/{assetId}`.
+
+            An example:
+
+            `/v2/entities/urn:oc:entity:experimenters:cf2c1723-3369-4123-8b32-49abe71c0e57:57e127c010590cb31ca82aa4:1?type=urn:oc:entityType:demo`
+        400:
+          description: |
+            An error occured. Examples:
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              {
+                "error": "InternalServerError",
+                "description": "No HTTP body provided."
+              }
+
+        # EXIST ALREADY
+
+  '/entities/{assetId}':
+    delete:
+      description: |
+        Role `ocsite` required.
+
+        This endpoint must be used to delete an asset from the OC Platform.
+      security:
+        - Bearer: []
+      parameters:
+        - name: assetId
+          in: path
+          description: |
+            The identifier of the asset
+          required: true
+          type: string
+      responses :
+        204:
+          description: |
+            An empty response sais, that the asset was deleted successfully.
+
+        # DOES NOT EXIST
+
+  '/entities/{assetId}/attrs':
+    post:
+      description: |
+        Role `ocsite` required.
+
+        This endpoint must be used to update an asset into the OC Platform.
+      security:
+        - Bearer: []
+
+      parameters:
+        - name: fiware-service
+          in: header
+          description: |
+            The API must be called withe HTTP header `fiware-service:organicity`.
+          required: true
+          type: string
+        - name: assetId
+          in: path
+          description: |
+            The identifier of the asset
+          required: true
+          type: string
+        - name: asset
+          in: body
+          description: |
+            The HTTP body is an asset to be updated to the OC Platform in JSON format as [described here](https://github.com/OrganicityEu/organicityeu.github.io/blob/master/doc/AssetDataModel.md).
+
+            In case of an update, the attributes `id` and `type` are not allowed!
+          required: true
+          schema:
+            $ref: '#/definitions/AssetUpdate'
+      responses :
+        204:
+          description: |
+            An empty response sais, that the asset was updated successfully.
+        400:
+          description: |
+            An error occured. Examples:
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              {
+                "error": "InternalServerError",
+                "description": "No HTTP body provided."
+              }
+
+        # DOES NOT EXIST
