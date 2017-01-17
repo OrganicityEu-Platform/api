@@ -192,8 +192,17 @@ paths:
                 "error": "InternalServerError",
                 "description": "No HTTP body provided."
               }
-
-        # EXIST ALREADY
+        422:
+          description: |
+            This error will be thrown, if the asset with the given `id` inside the asset already exists.
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              {
+                "error": "Unprocessable",
+                "description": "Already Exists"
+              }
 
   '/entities/{assetId}':
     delete:
@@ -214,8 +223,17 @@ paths:
         204:
           description: |
             An empty response sais, that the asset was deleted successfully.
-
-        # DOES NOT EXIST
+        404:
+          description: |
+            The asset with the given `assetId` does not exists.
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              {
+                "error": "NotFound",
+                "description": "The requested entity has not been found. Check type and id"
+              }
 
   '/entities/{assetId}/attrs':
     post:
@@ -262,6 +280,16 @@ paths:
               {
                 "error": "InternalServerError",
                 "description": "No HTTP body provided."
-              }
 
-        # DOES NOT EXIST
+              }
+        404:
+          description: |
+            The asset with the given `assetId` does not exists.
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              {
+                "error": "NotFound",
+                "description": "The requested entity has not been found. Check type and id"
+              }
