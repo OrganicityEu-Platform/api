@@ -4,24 +4,14 @@ info:
   description: |
     Several functions of Organicity are not available to any user, but
     require additional permissions to be executed. This component
-    streamlines the handling of reading, editing and assigning roles
-    for specific users.
+    streamlines the handling of reading, editing and assigning roles and permissions
+    for specific users, and the reading and editing of clients.
 
     The functionalities in this document are only available to the
     service accounts of clients, and require appropriate roles
-    themselves. These roles are:
+    themselves, which is documented per resource.
 
-    * `accounts-permissions:readGlobalRoles`, which allows reading global roles assigned to a user.
-    * `accounts-permissions:readLocalRoles`, which allows reading roles specific the requesting client assigned to a user.
-    * `accounts-permissions:editGlobalRoles`, which allows adding or removing global roles to or from a user.
-    * `accounts-permissions:editLocalRoles`, which allows adding or removing roles specific to the requesting client to or from a user.
-    * `accounts-permissions:listUsers`, which allows listing of all users.
-    * `accounts-permissions:findUserByEmail`, which allows to find users by an email.
-    * `accounts-permissions:createClient`, which allows to create a client
-    * `accounts-permissions:readClientRedirectUris`, which allows reading the redirect urls beloning to a client
-    * `accounts-permissions:editClientRedirectUris`, which allows editing the redirect urls beloning to a client
-
-  version: 0.2.1-development
+  version: 0.3.0-development
 
 schemes:
   - https
@@ -38,10 +28,35 @@ securityDefinitions:
       (Authorization: Bearer <TOKEN>) provided by OrganiCity Accounts -
       https://accounts.organicity.eu
 definitions:
-  Client:
-    title: An error state
+
+  RedirectUris:
+    title: A list of redirect URIs
     description: |
-      This object is needed to create a client.
+      This JSON object represents a list of redirect URIs
+    type: object
+#    required:
+#    - redirectUris
+    properties:
+      redirectUris:
+        type: array
+        items:
+          type: "string"
+          description: |
+            All items should be URIs
+        description: |
+          An array of redirectUris
+        example:
+          {
+            "redirectUris": [
+              "https://example.com/callback",
+              "https://login.example.com/callback"
+            ]
+          }
+
+  Client:
+    title: Representation of a client
+    description: |
+      This JSON object is needed to create a client.
     type: object
     required:
       - clientName
@@ -67,39 +82,89 @@ definitions:
         "redirectUri": "http://localhost"
       }
 
-  Role:
-    title: A single role
+  ClientCredentials:
+    title: Representation of client credentials
     description: |
-      The actual roles managed by the Organicity Permissions. Roles
-      are represented by strings, which can come in two flavours: A
-      role might be a global role, applying to all of Organicity, or
+      This JSON object contains the credentials of a client
+    type: object
+    required:
+      - client_id
+      - secret
+    properties:
+      client_id:
+        type: string
+        description: |
+          The unique id of a client
+      secret:
+        type: string
+        description: |
+          The secred (e.g., the password) of the client
+    example:
+      {
+        "client_id": "c6e3c4ae-37e8-4662-b201-65ddb9bca6ff",
+        "secret": "e49545ba-48a0-40de-9ad9-ea75ca23f15f"
+      }
+
+  Role:
+    title: Representation of a single role
+    description: |
+      This JSON object represents a role.
+
+      The actual roles are managed by the Organicity Permissions.
+      Roles are represented by strings, which can come in two flavours:
+
+      A role might be a global **role**, applying to all of Organicity, or
       it might be specific to a single tool (a Client from the view of
-      Organicity Accounts). A tool-specific role is always prefixed
-      with the tool name and a colon. For example, the global role to
-      create a new asset is called: `createAsset`. In contrast, the
-      specific role of an administrator of the Scenario Tool is
-      called: `scenarios:administrator`.
+      Organicity Accounts). A tool-specific role is called **permission** and
+      is always prefixed with the tool name and a colon.
 
-      Note that tool-specific roles are only visible to the respective
+      For example, the global role to create a new asset can be `experimenter`
+      or `participant`.
+      In contrast, the specific role of an administrator of the Scenario Tool
+      is called: `scenarios:admin`.
+
+      **Note**: tool-specific permissions are only visible to the respective
       tools. Consequently, when a tool queries the Permission
-      Component for the roles of a single user, only the global roles
-      and the roles specific to the querying tool are returned.
+      Component for the roles/permission of a single user, only the global roles
+      and the permission specific to the querying tool are returned.
 
-      The following global roles are currently available. For a
-      description of the purpose of these roles, please refer to the
-      [Roles and Permissions in
-      Organicity](https://docs.google.com/document/d/1Owz9RfvL2-jUAFtV_6nIe-jD4qlubq8RFAM2e7CNXoo/edit)
-      document available on Google Drive, or the respective [API
-      documentation](https://api.organicity.eu/).
+      The following roles for users are available:
 
-      * `readProtectedAssets`
-      * `createAssets`
-      * `manageAssets`
-      * `readProtectedData`
-      * `createData`
-      * `manageData`
+      * OC User - Everybody that is registered at OrganiCity, but does not participate in experiments
+      * `experimenter` - OC Experimenter - People that promote and implement an experiment with the OC Platform
+      * `participant` - OC Participant - People that participate in an experiment, e.g., by running it on their smartphones
+      * `sitemanager` - OC Site Manager -
+      > TODO
+      * `administator` - OC Administrator - Technical administration and support, e.g., the OC Facility administrator
 
-      > TODO: Add remaining roles.
+      The following roles for clients are available:
+
+      * `ocsite` - OC Site - A Client, which represents a OC City Site
+      * `provider` - OC Provider -
+      > TODO
+
+      The following permission are available (representative selection):
+
+      * Account Permissions:
+        * `accounts-permissions:readGlobalRoles`, which allows reading global roles assigned to a user.
+        * `accounts-permissions:readLocalRoles`, which allows reading roles specific the requesting client assigned to a user.
+        * `accounts-permissions:editGlobalRoles`, which allows adding or removing global roles to or from a user.
+        * `accounts-permissions:editLocalRoles`, which allows adding or removing roles specific to the requesting client to or from a user.
+        * `accounts-permissions:listUsers`, which allows listing of all users.
+        * `accounts-permissions:findUserByEmail`, which allows to find users by an email.
+        * `accounts-permissions:createClient`, which allows to create a client
+        * `accounts-permissions:readClientRedirectUris`, which allows reading the redirect urls beloning to a client
+        * `accounts-permissions:editClientRedirectUris`, which allows editing the redirect urls beloning to a client
+      * Scenarios:
+        * `scenarios:moderator`
+        * `scenarios:admin`
+      * Site Manager:
+        * `site-manager:role-admin`
+        * `site-manager:dictionary-admin`
+        * ...
+
+      **Note**: Some composite permissions are given, thus an user with the role `administrator`
+        has the permissions `scenarios:admin` and `site-manager:role-admin`
 
     type: object
     required:
@@ -120,13 +185,13 @@ definitions:
           without supplying an experiment id, the query will fail.
     example:
       {
-        "role": "createAsset"
+        "role": "experimenter"
       }
 
   Error:
-    title: An error state
+    title: Representation of an error
     description: |
-      These objects are returned when the server encounters an error
+      These JSON objects are returned when the server encounters an error
       on processing a request, and needs to explain further error
       details to the requesting client.
     type: object
@@ -141,7 +206,7 @@ definitions:
       { "error": "The requested role does not adhere to the required format." }
 
   UserIdentifier:
-    title: A short user identifier
+    title: Representation of a short user identifier
     description: |
       This is a simple record of only user id and name, to group
       a system-unique identifier together with a human-readable
@@ -287,6 +352,9 @@ paths:
         404:
           description: |
             Will be returned, if no users will be found. The body will be empty.
+        500:
+          description: |
+            An unknown internal server error occured.
 
   '/users/{userId}/roles':
     get:
@@ -331,9 +399,10 @@ paths:
               role assigned to the user.
           examples:
             application/json:
-              [{ "role": "createAsset"}, { "role": "searchAssets" },
-               { "role": "manageExperiment", "experiment":
-                 "d87c9025-61bf-4a16-83ec-ee66915832a1" }]
+              [
+                { "role": "experimenter"},
+                { "role": "scenarios:admin" }
+              ]
         401:
           description: |
             The requesting client did not supply identify information
@@ -347,6 +416,10 @@ paths:
         404:
           description: |
             The supplied user ID does not denote an existing user.
+        500:
+          description: |
+            An unknown internal server error occured.
+
     post:
       security:
         - Bearer: []
@@ -409,6 +482,9 @@ paths:
         404:
           description: |
             The supplied user ID does not denote an existing user.
+        500:
+          description: |
+            An unknown internal server error occured.
 
   '/users/{userId}/roles/{roleName}':
     get:
@@ -483,6 +559,9 @@ paths:
             to inspect roles, or the client tried to inspect permissions
             that are not visible to the client (e.g. because they
             belong to a different tool).
+        500:
+          description: |
+            An unknown internal server error occured.
 
     delete:
       security:
@@ -559,6 +638,9 @@ paths:
             The requesting client does not have sufficient permissions
             (e.g., `accounts-permissions:editGlobalRoles` or/and `accounts-permissions:editLocalRoles`)
             to remove roles.
+        500:
+          description: |
+            An unknown internal server error occured.
 
   '/clients':
     post:
@@ -585,6 +667,8 @@ paths:
         201:
           description: |
             The client was successfully created.
+          schema:
+            $ref: '#/definitions/ClientCredentials'
           examples:
             application/json:
               {
@@ -598,7 +682,83 @@ paths:
             to create a client.
         500:
           description: |
-            An unknown internal error occured.
+            An unknown internal server error occured.
+
+  '/clients/{clientId}/redirecturis':
+    get:
+      security:
+      - Bearer: []
+      summary: Get the redirect URIs for a given `clientId`
+      description: |
+        Permission `accounts-permissions:readClientRedirectUris` required.
+
+        This endpoint allows tools to get the redirect URIs for clients.
+      produces:
+      - application/json
+      parameters:
+      - name: clientId
+        in: path
+        description: |
+          The identifier of the client
+        required: true
+        type: string
+      responses:
+        200:
+          description: |
+            The requested list of redirect URIs returned as the body of
+            the reply as an array. If no redirect URIs are available,
+            the array will be emtpy
+          schema:
+            $ref: '#/definitions/RedirectUris'
+          examples:
+            application/json:
+              {
+                "redirectUris": [
+                  "https://example.com/callback",
+                  "https://login.example.com/callback"
+                ]
+              }
+        500:
+          description: |
+            An unknown internal server error occured.
+
+    put:
+      security:
+      - Bearer: []
+      summary: Update the redirect URIs for a given `clientId`
+      description: |
+        Permission `accounts-permissions:editClientRedirectUris` required.
+
+        This endpoint allows tools to update the redirect URIs for clients.
+        This is a full update, e.g. all existing redirect URIs will
+        be *exchanged* by the given one.
+      consumes:
+      - application/json
+      parameters:
+      - name: clientId
+        in: path
+        description: |
+          The identifier of the client
+        required: true
+        type: string
+      - name: redirectUris
+        in: body
+        description: |
+          The list of redirect URIs
+        required: true
+        schema:
+          $ref: '#/definitions/RedirectUris'
+      responses:
+        200:
+          description: |
+            Just a simple 200 will be returned, if the update was successful
+        500:
+          description: |
+            An unknown internal server error occured.
+
+
+
+
 
 
 # TODO
