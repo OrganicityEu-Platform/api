@@ -34,8 +34,8 @@ definitions:
     description: |
       This JSON object represents a list of redirect URIs
     type: object
-#    required:
-#    - redirectUris
+    required:
+    - redirectUris
     properties:
       redirectUris:
         type: array
